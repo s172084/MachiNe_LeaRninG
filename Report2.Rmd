@@ -7,9 +7,12 @@ author:
 date: "From: 2023-10-20 To: 2023-10-31"
 output:
   pdf_document:
-      toc: false
+    toc: false
   html_document: default
+nocite:
 ---
+
+\maketitle
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -17,6 +20,34 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
+```{r echo=FALSE, fig.align='center', out.width='30%'}
+# Include images and pictures using .png files.
+knitr::include_graphics(c("Images/The_Black_Logo.png"))
+```
+
+
+```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='37%'}
+# Include images and pictures using .png files.
+knitr::include_graphics(c("Images/Space.png"))
+```
+
+
+```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='70%'}
+# Include images and pictures using .png files.
+knitr::include_graphics(c("Images/Diamond3.png","Images/Diamond3.png"))
+```
+
+\newpage
+
+```{=latex}
+\newpage
+\setcounter{tocdepth}{4}
+\tableofcontents
+```
+
+\newpage
+
+# Contribution Table
 
 Task           |     Oriade    |     Pietro    |
 ---------------|:-------------:|:-------------:|
@@ -53,12 +84,6 @@ Exam Problem 4 |               |       x       |
 Exam Problem 5 |       x       |               |
 ---------------|---------------|---------------|
 Exam Problem 6 |               |       x       | ------------------------------------------------
-
-```{=latex}
-\newpage
-\setcounter{tocdepth}{4}
-\tableofcontents
-```
 
 \newpage
 
