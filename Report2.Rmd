@@ -96,5 +96,62 @@ Exam Problem 6 |               |       x       | -------------------------------
 ## Question 2 
 ## Question 3 
 
+\newpage
+
 # Exam Problems
 
+**Question 1**
+
+The answer
+
+*** 
+
+**Question 2**
+
+Answer **D**: we have a dataset of $N=135$ elements, divided in 4 classes as follows: 
+
+37-31-33-34 (R)
+
+By considering a tree made of two branches based on the value of $x_7$, we obtain the two following sub-groups:
+
+$x_7=2$ 0-1-0-0 (A) with $N_2=1$
+
+$x_7≠2$ 37-30-33-34 (B) with $N_2=134$
+
+By computing the *classification error impurity measure* for each branch, we obtain:
+
+$I_R=1-37/135=0.726$; $I_A=1-1=0$; $I_B=1-37/134=0.724$
+
+And finally we can calculate the purity gain based on the rule $x_7=2$:
+
+$\Delta_2=0.726-\frac{134}{135}\cdot 0.724=0.0074$
+
+*** 
+
+**Question 3**
+
+The answer
+
+*** 
+
+**Question 4**
+
+Answer **D**: we concentrate on the class 4 and we notice that it is the only one dependent only on $b_1$ (Fig. 4).
+We see from Fig. 3 that rules A and C lead to class 4, so those rules must regard conditions on $b_1$. By looking at
+the four possible answers, only answer **D** shows both A and C rules regarding $b_1$.
+
+*** 
+
+**Question 5**
+
+The answer
+
+*** 
+
+**Question 6**
+
+The answer
+
+\newpage
+
+# References
