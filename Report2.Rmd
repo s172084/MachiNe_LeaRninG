@@ -87,12 +87,14 @@ Exam Problem 6 |               |       x       | -------------------------------
 
 \newpage
 
-# Section A 
+# REGRESSION
 ## Question 1 
 ## Question 2 
 
-# Section B
+# CLASSIFICATION
 ## Question 1 
 ## Question 2 
 ## Question 3 
+
+# Exam Problems
 
