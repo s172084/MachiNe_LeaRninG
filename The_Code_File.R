@@ -4,6 +4,7 @@ dev.off()
 # Libraries
 
 library(ggplot2)
+library(glmnet)
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
@@ -53,10 +54,10 @@ str(diamonds)
 
 summary(diamonds$cut)
 summary(diamonds$cut == 'Ideal')
+(percentage_of_Ideal <- sum(diamonds$cut == 'Ideal')/length(diamonds$cut))
 
 X <- as.data.frame(diamonds[,c(1,3:10)])
-X$color <- as.numeric(X$color)
-X$clarity <- as.numeric(X$clarity)
+X <- X[,-2:3] # Remove Color and Clarity, prediction based on quantitative attributes
 head(X)
 y <- as.numeric(diamonds$cut == 'Ideal')
 
