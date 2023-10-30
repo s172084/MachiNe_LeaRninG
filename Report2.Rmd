@@ -96,11 +96,13 @@ Exam Problem 6 |               |       x       | -------------------------------
 Here, the price is converted from United States Dollars ($)  to Danish Kroner (DKK) , Euro and Pound Sterling (£).  The length, width and depth was converted from millimetres  (mm) to micrometers (um).  In addition to this, carat was converted to milligrams. The original columns for carat, length, width and depth were removed.
 
 **Outliers**
+
 The outliers are any values that lie above the upper boundary or below the lower boundary. 
 There are 20 diamonds with the value of depth listed at 0 in the dataset. The smallest depth is 1,070 micrometers. Two diamonds have a width of 3,730 micrometers and 7 diamonds have the width listed as 0.  There are also 8 diamonds that have a length of 0 in the dataset.
 It is important to deal with outliers because they may distort the statistical model. 
 
 **Regression**
+
 The regression problem looks at the analysis of attributes in order to predict the carat of a diamond. 
 In the multiple linear regression analysis, the price, table, length, width and depth of a diamond is used to compute the weight of a diamond.
 
