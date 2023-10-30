@@ -296,6 +296,72 @@ a | b | c
 # -------  Question 1 ---------
 ################################
 
+# Multiple Linear Regression
+# Aim: predict the carat based on other attributes. 
+clean_diamonds_data
+
+# Get the carat column. 
+y <- clean_diamonds_data$carat_mg
+y
+
+# Get the other columns that are not categorical. 
+Xr <- clean_diamonds_data %>% 
+  select(-c(cut,color,clarity,carat_mg))
+
+head(Xr)
+
+# --- Formula
+(forMula <- as.formula(paste("y ~ ", paste(colnames(Xr), collapse = "+"))))
+
+# ----- linear model
+linear_model <- lm(forMula, data = Xr)    
+linear_model
+
+summary(linear_model)
+
+# ------- predicted vs actual values of carat
+y_est <- linear_model$fitted.values
+
+plot(y, y_est,
+     col = "darkgreen",
+     xlab = "Carat (actual)", ylab = "Carat (estimated)",
+     main = "Diamond Carats", pch = 21, 
+     family = "Avenir"
+)
+
+# Make a histogram of the residual error
+hist(y - y_est, breaks = 41,
+     main = "The Residual Error", 
+     col = "darkgreen", 
+     family = "Avenir")
+
+#---------------------
+# Prediction
+#---------------------
+
+# New data
+y ~ depth + table + priceEuro + pricePS + the_length + the_width + 
+  the_depth
+
+new_diamond <- data.frame(depth = 61.5,
+                          table = 55,
+                          priceEuro = 309, 
+                          pricePS = 269, 
+                          the_length = 3950, 
+                          the_width = 3980, 
+                          the_depth = 2430)
+
+pred <- predict(linear_model, newdata = new_diamond, se = TRUE) 
+cat("The weight of the diamond is predicted to be (mg): ")
+pred$fit
+
+#---------------------
+# Standardisation
+#---------------------
+
+X <- scale(Xr, center = TRUE, scale = TRUE) # create a mean of 0 and sd of 1. 
+X
+
 
 
 
