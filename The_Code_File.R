@@ -327,15 +327,15 @@ a | b | c
 # -----  Classification  -------
 ################################
 
-# Note: summary(clean_diamonds_data$cut) # This has all outliers removed.
+summary(clean_diamonds_data$cut) # This has all outliers removed.
+head(clean_diamonds_data)
 # (30.10.2023)
 
-summary(diamonds$cut)
-summary(diamonds$cut == 'Ideal')
-(percentage_of_Ideal <- sum(diamonds$cut == 'Ideal')/length(diamonds$cut))
+summary(clean_diamonds_data$cut == 'Ideal')
+(percentage_of_Ideal <- sum(clean_diamonds_data$cut == 'Ideal')/length(diamonds$cut))
 
-y <- as.numeric(diamonds$cut == 'Ideal')
-X <- as.data.frame(diamonds[,c(1,5:10)])
+y <- as.numeric(clean_diamonds_data$cut == 'Ideal')
+X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
 
 # CHOOSE AN OPTION AMONG 1, 2 AND 3: ###########
 
@@ -348,7 +348,7 @@ classassignments <- classNames[y + 1]
 (fmla <- as.formula(paste("y ~ ", paste(attributeNames, collapse = "+"))))
 
 
-# # 2) Quadratic model
+# # 2) Quadratic model, DO NOT use it, it does not converge to a solution
 # X <- transform(X,
 #                carat2 = carat^2,
 #                depth2 = depth^2,
@@ -568,6 +568,14 @@ for (k in 1:K) {
   Error_train_nofeatures[k] <- sum(y_train_est != 0) / length(y_train)
   Error_test_nofeatures[k] <- sum(y_train_est != 0) / length(y_train)
 }
+
+(Results <- as.data.frame(matrix(c(1:3,
+                                   round(Error_test_nofeatures,digits = 2)/100,
+                                   lambda_opt,
+                                   round(Error_test_rlr,digits=2)/100,
+                                   cp_opt,
+                                   round(Error_test_tree,digits=2)/100)
+                                 ,nrow=3,byrow=F)))
 
 # EXPLANATION OF (1): Classification errors of models with and without regularization are the same
 # because the dataset has a large number of observations but the model has only 8 parameters
