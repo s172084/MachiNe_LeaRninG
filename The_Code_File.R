@@ -1,20 +1,295 @@
 rm(list=ls())
 dev.off()
 
-# Libraries
-
+#---------------------
+# Access the Libraries
+#---------------------
+library(tidyverse)
+library(magrittr)
+library(forcats)
 library(ggplot2)
 library(glmnet)
 library(caret)
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
+#---------------------
+# Load the Data 
+#---------------------
 data(diamonds)
+#?diamonds
+  
 str(diamonds)
+
+
+#---------------------
+# See the Data 
+#---------------------
+diamonds
+
+
+#---------------------
+# Functions
+#---------------------
+determine_outliers <- function(group) {
+  
+  # ----- See 5 quantiles. 
+  q <- quantile(group, type = 2)
+  cat("QUARTILES:\nThe five quartiles at\n 0%   25 %   50 %   75 %   100 % are:\n",
+      q[1]," ", q[2]," ", q[3]," ",q[4]," ", q[5]," ","\n\n")
+  
+  # ----- See Percentiles. 
+  d <- quantile(group, c(0.25, 0.75) , type = 2)
+  cat("PERCENTILES:\n25%,  75%\n", d[1]," ", d[2], " ","\n\n")
+  
+  # ----- Calculate Interquartile Range. 
+  that_iqr <- IQR(group, type = 2)
+  cat("The interquartile range is :", that_iqr, "\n\n")
+  
+  
+  Q <- quantile(group, probs=c(.25, .75), na.rm = FALSE)
+  iqr <- IQR(group)
+  
+  # ----- Calculate Upper and Lower Limits
+  # Anything beyond the upper and lower limit are outliers. 
+  upper_limit <- Q[2] + 1.5*iqr 
+  lower_limit <- Q[1] - 1.5*iqr 
+  cat("The upper limit is: ",upper_limit, "\n")
+  cat("The lower limit is: ",lower_limit, "\n")
+}
+
+
+#---------------------
+# Transform the Data
+#---------------------
+# - price Conversion from USD($) to DKK, Euro & Pound Sterling(£)
+
+diamonds_price <- diamonds %>%  
+  mutate(priceDKK = price * 7.066874,
+         priceEuro = price * 0.949312,
+         pricePS = price * 0.824538)
+
+#- Remove the USD($) variable. 
+diamonds_price <- diamonds_price %>% 
+  select(-price)
+
+diamonds_price
+
+# - carat conversion to milligrams in weight
+diam_conv_weight <- diamonds_price %>% 
+  mutate(carat_mg = carat * 200) 
+
+# - Remove the carat variable. 
+diam_milligram <- diam_conv_weight %>% 
+  select(-carat)
+
+diam_milligram
+
+# - X,Y,Z conversion from millimeters (mm) to micrometers(µm)
+diamonds_conv <- diam_milligram %>% 
+  mutate(the_length = x * 1000,
+         the_width = y * 1000,
+         the_depth = z * 1000) 
+
+# - Remove the x,y and z variables. 
+new_diamonds_data <- diamonds_conv %>% 
+  select(- c(x,y,z))
+
+new_diamonds_data
+
+#---------------------
+# Detect Outliers
+#---------------------
+
+# Quantile Finds the 25th and 75th Percentile of the data. 
+# IQR Finds the interquartile range.
+# Find the cut off ranges, beyond which all points are outliers. 
+# Remove points beyond the ranges from the dataset. 
+
+boxplot(new_diamonds_data)$out
+
+boxplot(data.frame(x= new_diamonds_data$the_length,
+                   y= new_diamonds_data$the_width,
+                   z= new_diamonds_data$the_depth))
+#---------------------
+boxplot(c(x = new_diamonds_data$the_length), 
+        col= "skyblue",
+        family = "Avenir",
+        main = "Length")
+
+
+determine_outliers(new_diamonds_data$the_length)
+# quantile(new_diamonds_data$the_length, probs=c(.25, .75), na.rm = FALSE)
+# IQR(new_diamonds_data$the_length)
+#---------------------
+
+boxplot(c(x = new_diamonds_data$the_width), 
+        col= "pink",
+        main = "Width",  
+        family = "Avenir")
+
+
+determine_outliers(new_diamonds_data$the_width)
+# quantile(new_diamonds_data$the_width, probs=c(.25, .75), na.rm = FALSE)
+# IQR(new_diamonds_data$the_width)
+
+#---------------------
+boxplot(c(x = new_diamonds_data$the_depth), 
+        col= "cyan",
+        main = "Depth"
+)
+
+
+determine_outliers(new_diamonds_data$the_depth)
+# quantile(new_diamonds_data$the_depth, probs=c(.25, .75), na.rm = FALSE)
+# IQR(new_diamonds_data$the_depth)
+
+#---------------------
+# View Outliers
+#---------------------
+# Length : 
+# The upper limit is:  9285 
+# The lower limit is:  1965 
+
+# Width:
+# The upper limit is:  9270 
+# The lower limit is:  1990 
+
+# Depth : 
+# The upper limit is:  5735 
+# The lower limit is:  1215
+new_diamonds_data
+
+new_diamonds_data %>% filter (the_length > 9285)
+new_diamonds_data %>% filter (the_length < 1965)
+
+new_diamonds_data %>% filter (the_width > 9270)
+new_diamonds_data %>% filter (the_width < 1990)
+
+new_diamonds_data %>% filter (the_depth > 5735)
+new_diamonds_data %>% filter (the_depth < 1215)
+
+#---------------------
+# Remove Outliers
+#---------------------
+# Extract the part of the dataset between the upper and lower ranges leaving out the outliers.
+
+clean_diamonds_data <- new_diamonds_data %>% 
+  filter(the_length < 9285) %>%  # 53,916
+  filter(the_length > 1965) %>%  # 53,908
+  filter(the_width < 9270) %>%   # 53,896
+  filter(the_width > 1990) %>%  
+  filter(the_depth < 5735) %>%   # 53,892
+  filter(the_depth > 1215)       # 53,879
+
+
+
+
+clean_diamonds_data
+
+clean_diamonds_data <- clean_diamonds_data %>% 
+  mutate(cut = forcats::as_factor(cut),
+         color = forcats::as_factor(color),
+         clarity = forcats::as_factor(clarity))
+
+#---------------------
+# The Data Set  -->>>>
+#---------------------
+
+clean_diamonds_data
+
+#---------------------
+# The Data Set <<<---
+#---------------------
+
+
+
+#---------------------
+# Data Visualisation
+#---------------------
+clean_diamonds_data  %>% 
+  ggplot(mapping = aes(x = the_length, y = cut, fill = cut))+
+  coord_flip() + 
+  geom_boxplot(colour = "black", alpha = 0.7)+
+  scale_fill_brewer(palette="Accent")+
+  #facet_wrap(~ cut)+
+  theme(
+    legend.position = "top",
+    axis.line = element_line(colour = "darkblue"),
+    panel.grid.major.y = element_line(linetype = "dashed"),
+    axis.text.x = element_blank())+
+  labs(
+    title = "A Box Plot",
+    subtitle = "of Diamonds",
+    x = "Diamond Length in µm",
+    y = "The Type of Cut",
+    caption = "Diamonds data from Tidyverse"
+  )
+
+library(patchwork)
+
+a <- clean_diamonds_data  %>% 
+  ggplot(mapping = aes(x = the_length))+
+  coord_flip() + 
+  geom_boxplot(colour = "black", fill = "chocolate2", alpha = 0.7)+
+  scale_fill_brewer(palette="Accent")+
+  theme(
+    legend.position = "top",
+    axis.line = element_line(colour = "darkblue"),
+    panel.grid.major.y = element_line(linetype = "dashed"),
+    axis.text.x = element_blank())+
+  labs(
+    #title = "A Box Plot",
+    subtitle = "Length of Diamonds",
+    x = "Diamond Length in µm",
+    y = "The Type of Cut",
+    caption = "Diamonds data from Tidyverse"
+  )
+
+
+b <- clean_diamonds_data  %>% 
+  ggplot(mapping = aes(x = the_width))+
+  coord_flip() + 
+  geom_boxplot(colour = "black", fill = "chartreuse2", alpha = 0.7)+
+  scale_fill_brewer(palette="Accent")+
+  theme(
+    legend.position = "top",
+    axis.line = element_line(colour = "darkblue"),
+    panel.grid.major.y = element_line(linetype = "dashed"),
+    axis.text.x = element_blank())+
+  labs(
+    # title = "A Box Plot",
+    subtitle = "Width of Diamonds",
+    x = "Diamond Width in µm",
+    y = "The Type of Cut",
+    caption = "Diamonds data from Tidyverse"
+  )
+
+c <- clean_diamonds_data  %>% 
+  ggplot(mapping = aes(x = the_depth))+
+  coord_flip() + 
+  geom_boxplot(colour = "black", fill = "cyan3",alpha = 0.7)+
+  scale_fill_brewer(palette="Accent")+
+  theme(
+    legend.position = "top",
+    axis.line = element_line(colour = "darkblue"),
+    panel.grid.major.y = element_line(linetype = "dashed"),
+    axis.text.x = element_blank())+
+  labs(
+    #title = "A Box Plot",
+    subtitle = "Depth of Diamonds",
+    x = "Diamond Depth in µm",
+    y = "The Type of Cut",
+    caption = "Diamonds data from Tidyverse"
+  )
+
+# ------ Show Collective plots 
+a | b | c
 
 ################################
 # ---- Linear Regression  -----
 ################################
+
 
 ################################
 # -------  Question 1 ---------
@@ -23,11 +298,9 @@ str(diamonds)
 
 
 
-
 ################################
 # -------  Question 2 ---------
 ################################
-
 
 
 
@@ -52,6 +325,9 @@ str(diamonds)
 ################################
 # -----  Classification  -------
 ################################
+
+# Note: summary(clean_diamonds_data$cut) # This has all outliers removed.
+# (30.10.2023)
 
 summary(diamonds$cut)
 summary(diamonds$cut == 'Ideal')
