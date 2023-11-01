@@ -11,6 +11,7 @@ library(ggplot2)
 library(glmnet)
 library(caret)
 library(rpart)
+source("setup.R")
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
@@ -415,62 +416,6 @@ classNames <- c("Non-Ideal","Ideal")
 classassignments <- classNames[y + 1]
 (fmla <- as.formula(paste("y ~ ", paste(attributeNames, collapse = "+"))))
 
-
-# # 2) Quadratic model, DO NOT use it, it does not converge to a solution
-# X <- transform(X,
-#                carat2 = carat^2,
-#                depth2 = depth^2,
-#                table2 = table^2,
-#                price2 = price^2,
-#                x2 = x^2,
-#                y2 = y^2,
-#                z2 = z^2,
-#                carat_depth = carat*depth,
-#                carat_table = carat*table,
-#                carat_price = carat*price,
-#                carat_x = carat*x,
-#                carat_y = carat*y,
-#                carat_z = carat*z,
-#                depth_table = depth*table,
-#                depth_price = depth*price,
-#                depth_x = depth*x,
-#                depth_y = depth*y,
-#                depth_z = depth*z,
-#                table_price = table*price,
-#                table_x = table*x,
-#                table_y = table*y,
-#                table_z = table*z,
-#                price_x = price*x,
-#                price_y = price*y,
-#                price_z = price*z,
-#                x_y = x*y,
-#                x_z = x*z,
-#                y_z = y*z
-# )
-# attributeNames <- colnames(X)
-
-# # 3) Quadratic model applied to data projected onto the first four principal components
-# stds <- apply(X, 2, sd)
-# X <- t(apply(X, 1, "-", colMeans(X)))
-# X <- t(apply(X, 1, "*", 1 / stds))
-# X <- as.data.frame(X)
-# S <- svd(X)
-# X <- as.data.frame(S$u %*% diag(S$d))
-# X <- X[,1:4]
-# X <- transform(X,
-#                V1_2 = V1^2,
-#                V2_2 = V2^2,
-#                V3_2 = V3^2,
-#                V4_2 = V4^2,
-#                V1_V2 = V1*V2,
-#                V1_V3 = V1*V3,
-#                V1_V4 = V1*V4,
-#                V2_V3 = V2*V3,
-#                V2_V4 = V2*V4,
-#                V3_V4 = V3*V4
-# )
-# rm(S)
-
 # END OF THE CHOICE #############################
 
 head(X)
@@ -605,10 +550,10 @@ for (k in 1:K) {
   Error_train_tree[k] <- sum(y_train_tree != y_train) / length(y_train)
   Error_test_tree[k] <- sum(y_test_tree != y_test) / length(y_test)
   
-  if (k == 1) y_tree <- as.numeric(y_test_tree)
+  if (k == 1) c_tree <- as.numeric(y_test_tree == y_test)
   if (k != 1){
     if (Error_test_tree[k] == min(Error_test_tree)){
-      y_tree <- as.numeric(y_test_tree)
+      c_tree <- as.numeric(y_test_tree == y_test)
       print("tree")
     }
   }
@@ -629,10 +574,10 @@ for (k in 1:K) {
   Error_train_rlr[k] <- sum(y_train_est != y_train) / length(y_train)
   Error_test_rlr[k] <- sum(y_test_est != y_test) / length(y_test)
   
-  if (k == 1) y_lr <- as.numeric(y_test_est)
+  if (k == 1) c_lr <- as.numeric(y_test_est == y_test)
   if (k != 1){
     if (Error_test_rlr[k] == min(Error_test_rlr)){
-      y_lr <- as.numeric(y_test_est)
+      c_lr <- as.numeric(y_test_est == y_test)
       print("lr")
     }
   }
@@ -651,6 +596,14 @@ for (k in 1:K) {
   
   Error_train_nofeatures[k] <- sum(y_train != 0) / length(y_train)
   Error_test_nofeatures[k] <- sum(y_test != 0) / length(y_test)
+  
+  if (k == 1) c_base <- as.numeric(y_test == 0)
+  if (k != 1){
+    if (Error_test_nofeatures[k] == min(Error_test_nofeatures)){
+      c_base <- as.numeric(y_test == 0)
+      print("base")
+    }
+  }
 }
 
 # EXPLANATION OF (1): Classification errors of models with and without regularization are the same
@@ -786,10 +739,10 @@ for (k in 1:K) {
   Error_train_PCA[k] <- sum(y_train_est != y_train) / length(y_train)
   Error_test_PCA[k] <- sum(y_test_est != y_test) / length(y_test)
   
-  if (k == 1 & length(y_test_est) == round(N/K)) y_PCA <- as.numeric(y_test_est)
+  if (k == 1 & length(y_test_est) == round(N/K)) c_PCA <- as.numeric(y_test_est == y_test)
   if (k != 1 & length(y_test_est) == round(N/K)){
     if (Error_test_PCA[k] == min(Error_test_PCA)){
-      y_PCA <- as.numeric(y_test_est)
+      c_PCA <- as.numeric(y_test_est == y_test)
       print("PCA")
     }
   }
@@ -805,8 +758,14 @@ for (k in 1:K) {
                                    cp_opt,
                                    round(Error_test_tree*100,digits=2)),
                                  nrow=K,byrow=F)))
-
+# Page 216 of the book: why we cannot average the errors
 # Use y_lr, y_tree and y_PCA, with y_base = 0, to compute statistics
+
+# Setup I: McNemar test
+# Get from the "for loop" the best parameters for each model.
+# Use them to predict data on the entire data-set.
+# Use prediction-vectors and true-vector to compute the McNemar test
+
 
 ################################################################
 # APPEDIX
