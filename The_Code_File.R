@@ -423,6 +423,10 @@ head(X)
 N <- as.numeric(dim(X)[1])
 M <- as.numeric(dim(X)[2])
 
+###################################
+# -------  Question 2 & 3 ---------
+###################################
+
 # K-folds cross-validation ######################
 
 # Create cross-validation partition for evaluation of performance of optimal model
@@ -766,6 +770,10 @@ ind_PCA <- 1
 # Page 216 of the book: why we cannot average the errors
 # Use y_lr, y_tree and y_PCA, with y_base = 0, to compute statistics
 
+################################
+# -------  Question 4 ---------
+################################
+
 # Apply each model to the entire dataset:
 
 y_base <- rep(0,N)
@@ -812,9 +820,21 @@ rt_lt <- mcnemar(y, y_lr, y_tree, alpha = alpha)
 rt_lp <- mcnemar(y, y_lr, y_PCA, alpha = alpha)
 rt_tp <- mcnemar(y, y_tree, y_PCA, alpha = alpha)
 
+# p-value is always 0 because the data-set is very large and p-value formula
+# has a N at the denominator. It seems that the tree and the PCA are the
+# closest models
+
+################################
+# -------  Question 5 ---------
+################################
+
+mdl_lr$a0
+mdl_lr$beta
+
+# table and length have a larger weight wrt the other attributes
 
 ################################################################
-# APPEDIX
+# APPENDIX
 ################################################################
 Z <- transform(Z,
                V1_2 = V1^2,
