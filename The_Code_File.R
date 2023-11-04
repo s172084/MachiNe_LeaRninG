@@ -194,15 +194,15 @@ clean_diamonds_data <- clean_diamonds_data %>%
          color = forcats::as_factor(color),
          clarity = forcats::as_factor(clarity))
 
-#---------------------
+#---------------------------------------------------------------------------------------------------
 # The Data Set  -->>>>
-#---------------------
+#---------------------------------------------------------------------------------------------------
 
 clean_diamonds_data
 
-#---------------------
+#---------------------------------------------------------------------------------------------------
 # The Data Set <<<---
-#---------------------
+#---------------------------------------------------------------------------------------------------
 
 
 
@@ -544,16 +544,16 @@ for (k in 1:K) {
                 control = rpart.control(minsplit = 100, minbucket = 1, cp = cp_opt[k]),
                 parms = list(split = "gini"), method = "class")
   y_train <- as.numeric(y_train)
-  y_train_tree <- as.numeric(predict(tree, newdata=X_train)[,2]>0.5)
-  y_test_tree <- as.numeric(predict(tree, newdata=X_test)[,2]>0.5)
+  y_train_est <- as.numeric(predict(tree, newdata=X_train)[,2]>0.5)
+  y_test_est <- as.numeric(predict(tree, newdata=X_test)[,2]>0.5)
   
-  Error_train_tree[k] <- sum(y_train_tree != y_train) / length(y_train)
-  Error_test_tree[k] <- sum(y_test_tree != y_test) / length(y_test)
+  Error_train_tree[k] <- sum(y_train_est != y_train) / length(y_train)
+  Error_test_tree[k] <- sum(y_test_est != y_test) / length(y_test)
   
-  if (k == 1) c_tree <- as.numeric(y_test_tree == y_test)
+  if (k == 1) mdl_tree <- tree
   if (k != 1){
     if (Error_test_tree[k] == min(Error_test_tree)){
-      c_tree <- as.numeric(y_test_tree == y_test)
+      mdl_tree <- tree
       print("tree")
     }
   }
@@ -574,10 +574,11 @@ for (k in 1:K) {
   Error_train_rlr[k] <- sum(y_train_est != y_train) / length(y_train)
   Error_test_rlr[k] <- sum(y_test_est != y_test) / length(y_test)
   
-  if (k == 1) c_lr <- as.numeric(y_test_est == y_test)
+  if (k == 1) mdl_lr <- mdl
   if (k != 1){
     if (Error_test_rlr[k] == min(Error_test_rlr)){
-      c_lr <- as.numeric(y_test_est == y_test)
+      mdl_lr <- mdl
+      y_lr <- y_test_est
       print("lr")
     }
   }
@@ -596,15 +597,17 @@ for (k in 1:K) {
   
   Error_train_nofeatures[k] <- sum(y_train != 0) / length(y_train)
   Error_test_nofeatures[k] <- sum(y_test != 0) / length(y_test)
-  
-  if (k == 1) c_base <- as.numeric(y_test == 0)
-  if (k != 1){
-    if (Error_test_nofeatures[k] == min(Error_test_nofeatures)){
-      c_base <- as.numeric(y_test == 0)
-      print("base")
-    }
-  }
 }
+
+(Results <- as.data.frame(matrix(c(1:K,
+                                   round(Error_test_nofeatures*100,digits = 2),
+                                   lambda_opt,
+                                   round(Error_test_rlr*100,digits=2),
+                                   cp_opt,
+                                   round(Error_test_tree*100,digits=2)),
+                                 nrow=K,byrow=F)))
+ind_lr <- 2
+ind_tree <- 1
 
 # EXPLANATION OF (1): Classification errors of models with and without regularization are the same
 # because the dataset has a large number of observations but the model has only 8 parameters
@@ -658,8 +661,8 @@ CV$TestSize <- c()
 Error_train2 <- matrix(rep(NA, times = T * KK), nrow = T)
 Error_test2 <- matrix(rep(NA, times = T * KK), nrow = T)
 lambda_opt_PCA <- rep(NA, K)
-mu <- matrix(rep(NA, times = M * K), nrow = K)
-sigma <- matrix(rep(NA, times = M * K), nrow = K)
+mu_PCA <- matrix(rep(NA, times = M * K), nrow = K)
+sigma_PCA <- matrix(rep(NA, times = M * K), nrow = K)
 Error_train_PCA <- rep(1, K) # Rate error of the regularized logistic regression
 Error_test_PCA <- rep(1, K)
 
@@ -717,11 +720,11 @@ for (k in 1:K) {
   # Standardize outer fold based on training set, and save the mean and standard
   # deviations since they're part of the model (they would be needed for
   # making new predictions) - for brevity we won't always store these in the scripts
-  mu[k, ] <- colMeans(X_train[,1:M])
-  sigma[k, ] <- apply(X_train[,1:M], 2, sd)
+  mu_PCA[k, ] <- colMeans(X_train[,1:M])
+  sigma_PCA[k, ] <- apply(X_train[,1:M], 2, sd)
   
-  X_train[,1:M] <- scale(X_train[,1:M], mu[k, ], sigma[k, ])
-  X_test[,1:M] <- scale(X_test[,1:M], mu[k, ], sigma[k, ])
+  X_train[,1:M] <- scale(X_train[,1:M], mu_PCA[k, ], sigma_PCA[k, ])
+  X_test[,1:M] <- scale(X_test[,1:M], mu_PCA[k, ], sigma_PCA[k, ])
   
   ### regularized logistic regression ###
   # Estimate w for the optimal value of lambda
@@ -739,10 +742,10 @@ for (k in 1:K) {
   Error_train_PCA[k] <- sum(y_train_est != y_train) / length(y_train)
   Error_test_PCA[k] <- sum(y_test_est != y_test) / length(y_test)
   
-  if (k == 1 & length(y_test_est) == round(N/K)) c_PCA <- as.numeric(y_test_est == y_test)
-  if (k != 1 & length(y_test_est) == round(N/K)){
+  if (k == 1) mdl_PCA <- mdl
+  if (k != 1) {
     if (Error_test_PCA[k] == min(Error_test_PCA)){
-      c_PCA <- as.numeric(y_test_est == y_test)
+      mdl_PCA <- mdl
       print("PCA")
     }
   }
@@ -758,13 +761,56 @@ for (k in 1:K) {
                                    cp_opt,
                                    round(Error_test_tree*100,digits=2)),
                                  nrow=K,byrow=F)))
+
+ind_PCA <- 1
 # Page 216 of the book: why we cannot average the errors
 # Use y_lr, y_tree and y_PCA, with y_base = 0, to compute statistics
 
+# Apply each model to the entire dataset:
+
+y_base <- rep(0,N)
+
+X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
+X <- as.data.frame(scale(X, mu[ind_lr, ], sigma[ind_lr, ]))
+y_lr <- as.numeric(predict(mdl_lr, newx=as.matrix(X), type = "class", s = lambda_opt[ind_lr]))
+
+X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
+X <- as.data.frame(scale(X, mu[ind_tree, ], sigma[ind_tree, ]))
+y_tree <- as.numeric(predict(mdl_tree, newdata=X)[,2]>0.5)
+
+X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
+stds <- apply(X, 2, sd)
+X <- t(apply(X, 1, "-", colMeans(X)))
+X <- t(apply(X, 1, "*", 1 / stds))
+X <- as.data.frame(X)
+S <- svd(X)
+X <- as.data.frame(S$u %*% diag(S$d))
+X <- X[,1:4]
+X <- transform(X,
+               V1_2 = V1^2,
+               V2_2 = V2^2,
+               V3_2 = V3^2,
+               V4_2 = V4^2,
+               V1_V2 = V1*V2,
+               V1_V3 = V1*V3,
+               V1_V4 = V1*V4,
+               V2_V3 = V2*V3,
+               V2_V4 = V2*V4,
+               V3_V4 = V3*V4
+)
+rm(S)
+X <- as.data.frame(scale(X, mu_PCA[ind_PCA, ], sigma_PCA[ind_PCA, ]))
+y_PCA <- as.numeric(predict(mdl_PCA, newx=as.matrix(X), type = "class", s = 1e-05))
+
 # Setup I: McNemar test
-# Get from the "for loop" the best parameters for each model.
-# Use them to predict data on the entire data-set.
-# Use prediction-vectors and true-vector to compute the McNemar test
+
+alpha <- 0.05
+rt_bl <- mcnemar(y, y_base, y_lr, alpha = alpha)
+rt_bt <- mcnemar(y, y_base, y_tree, alpha = alpha)
+rt_bp <- mcnemar(y, y_base, y_PCA, alpha = alpha)
+rt_lt <- mcnemar(y, y_lr, y_tree, alpha = alpha)
+rt_lp <- mcnemar(y, y_lr, y_PCA, alpha = alpha)
+rt_tp <- mcnemar(y, y_tree, y_PCA, alpha = alpha)
 
 
 ################################################################
