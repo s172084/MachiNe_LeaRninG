@@ -778,9 +778,9 @@ for (k in 1:K) {
                                    cp_opt,
                                    round(Error_test_tree*100,digits=2)),
                                  nrow=K,byrow=F)))
-resultNames1 <- c("i","$E_i^{test}$ [%]","$olambda_i$","$E_i^{test}$ [%]",
-                  "$olambda_i$","$E_i^{test}$ [%]","$c_{P,i}^{*}$","$E_i^{test}$ [%]")
-kable(Results, booktabs = T) %>%
+# resultNames1 <- c("i","$E_i^{test}$ [%]","$olambda_i$","$E_i^{test}$ [%]",
+#                   "$olambda_i$","$E_i^{test}$ [%]","$c_{P,i}^{*}$","$E_i^{test}$ [%]")
+kable(Results, format = "latex", booktabs = T) %>%
   add_header_above(c("Outer fold" = 1, "Base-Line" = 1, "Logistic Regression (Linear)" = 2, "Logistic Regression (Quadratic)" = 2, "Decision Tree" = 2))
 ind_PCA <- 1
 # Page 216 of the book: why we cannot average the errors

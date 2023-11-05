@@ -148,6 +148,19 @@ $$
 
 
 
+\begin{tabular}{rrrrrrrr}
+\toprule
+\multicolumn{1}{c}{Outer fold} & \multicolumn{1}{c}{Base-Line} & \multicolumn{2}{c}{Log. Regr. (Linear)} & \multicolumn{2}{c}{Log. Regr. (Quadratic)} & \multicolumn{2}{c}{Decision Tree} \\
+\cmidrule(l{3pt}r{3pt}){1-1} \cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8}
+i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$c_{P,i}$} & {$E_i^{test} [\%]$}\\
+\midrule
+1 & 39.73 & 1e-04 & 19.91 & 1e-05 & 12.47 & 0.005 & 11.41\\
+2 & 40.44 & 1e-04 & 19.81 & 1e-04 & 13.51 & 0.001 & 11.98\\
+3 & 40.36 & 1e-05 & 20.33 & 1e-05 & 12.87 & 0.001 & 11.95\\
+4 & 39.41 & 1e-04 & 20.42 & 1e-05 & 13.21 & 0.005 & 11.76\\
+\bottomrule
+\end{tabular}
+
 
 ## Question 4
 
