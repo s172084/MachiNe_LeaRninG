@@ -11,6 +11,8 @@ library(ggplot2)
 library(glmnet)
 library(caret)
 library(rpart)
+library(knitr)
+library(kableExtra)
 source("setup.R") # Contained in the R_toolbox
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
@@ -776,7 +778,10 @@ for (k in 1:K) {
                                    cp_opt,
                                    round(Error_test_tree*100,digits=2)),
                                  nrow=K,byrow=F)))
-
+resultNames1 <- c("i","$E_i^{test}$ [%]","$olambda_i$","$E_i^{test}$ [%]",
+                  "$olambda_i$","$E_i^{test}$ [%]","$c_{P,i}^{*}$","$E_i^{test}$ [%]")
+kable(Results, booktabs = T) %>%
+  add_header_above(c("Outer fold" = 1, "Base-Line" = 1, "Logistic Regression (Linear)" = 2, "Logistic Regression (Quadratic)" = 2, "Decision Tree" = 2))
 ind_PCA <- 1
 # Page 216 of the book: why we cannot average the errors
 # Use y_lr, y_tree and y_PCA, with y_base = 0, to compute statistics
@@ -796,6 +801,10 @@ y_lr <- as.numeric(predict(mdl_lr, newx=as.matrix(X), type = "class", s = lambda
 X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
 X <- as.data.frame(scale(X, mu[ind_tree, ], sigma[ind_tree, ]))
 y_tree <- as.numeric(predict(mdl_tree, newdata=X)[,2]>0.5)
+
+par(mfrow=c(1,1), xpd = NA)
+plot(mdl_tree)
+text(mdl_tree)
 
 X <- as.data.frame(clean_diamonds_data[,c(4:6,9:12)])
 stds <- apply(X, 2, sd)

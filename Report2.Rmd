@@ -118,7 +118,7 @@ In the multiple linear regression analysis, the price, table, length, width and 
 ## Question 1
 Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components. From the top figure of page 11 of Report 1, it can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 
-## Question 2
+## Question 2 & 3
 
 Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Base-Line (BL), based only on the vector "y" of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
 $$ y =
@@ -136,10 +136,20 @@ The other three models we want to analyse are:
 
 The choice of training a forth model is made because a quadratic combination of the 7 considered attributes is very hard to be trained (26 new columns representing the quadratic model would be added to the dataset, resulting in an "X" matrix of 33 columns): the computational time is too high and the process does not converge to a solution. So, by reducing the dimensions of the problem thanks to the Principal Component Analysis, we can consider a quadratic combination of the first four Principal Components (the "X" matrix turns out to have only 14 columns).
 
-The dataset consists of 53879 diamonds after the cleaning from the outliers. The large number of observations leads to choose a "light" cross-validation method, that is the K-fold partition of the dataset with a small number of folds. In particular, we choose 4 outer partitions and 6 inner folds, so that each model is trained $6\cdot4+4=28$ times. 
+Each of the three above models requires a complexity parameter managing the regularization of the model. Higher values of the complexity parameter mean that large weights are penalized and data are less important in the training of the model. On the other hand, lower values of the complexity parameters allow the model to better follow data but to be less general in case of new data. 
+
+- Logistic regression models (LRL and LRQ) are regularized by the $\lambda$ parameter, for which we do not know the value. Its value can be chosen by training the same model on the same data but with different values of $\lambda$. As the dataset consists of 53879 diamonds after the cleaning from the outliers, only four values of $lambda$ have been tempted in the training of the LRL and LRQ models. The tempted values are: $\lambda=\{10^{-5},10^{-4},10^{-3},10^{-2}\}$. We will choose the $\lambda$ associated to the lowest generalization error computed on a dataset of diamonds independent from the one used to train the model.
+- Decision Tree is regularized by the $c_P$ parameter (note that $c_P\in[0,1]$). $c_P$ close to zero means more complex decision trees and more importance of data, $c_P$ close to 1 means easier decision trees and less importance to data. The selection of the best value of $c_P$ is the same of the Logistic Regression. The tempted values are: $c_P=\{0.05,0.01,0.005,0.001\}$. In addition, DT is dependent on two more parameters, that are the minimum number of data to create a new node (question) and the minimum number of data to create a leaf. The choice have been arbitrary made by taking them respectively equal to 100 and 1.
+
+The large number of observations leads to choose a "light" cross-validation method, that is the K-fold partition of the dataset with a small number of folds. In particular, we choose 4 outer partitions and 6 inner folds. This means that each model will be trained:
+$$
+\text{Nr. of trainings} = 4 \text{ outer folds } \cdot 6 \text{ inner folds } \cdot 4 \text{ complexity parameters } + 4 \text{ re-trainings } = 100 \text{ times}
+$$
 
 
-## Question 3 
+
+
+## Question 4
 
 \newpage
 
