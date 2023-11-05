@@ -115,8 +115,30 @@ In the multiple linear regression analysis, the price, table, length, width and 
 
 
 # CLASSIFICATION
-## Question 1 
-## Question 2 
+## Question 1
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components. From the top figure of page 11 of Report 1, it can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+
+## Question 2
+
+Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Base-Line (BL), based only on the vector "y" of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
+$$ y =
+\begin{cases}
+1 & \text{if cut = "Ideal"} \\
+0 & \text{otherwise}
+\end{cases} $$
+By computing the average of "y", we obtain the value of 0.4, meaning that the dataset contains more *Non-ideal* diamonds than *Ideal* ones. According to this information, the BL model always predicts a new diamond as *Non-Ideal*, regardless its characteristics (depth, table, etc...), with a classification error of 40%.
+
+The other three models we want to analyse are:
+
+- the Logistic Regression based on a linear combination of the attributes (LRL)
+- the Decision Tree (DT)
+- the Logistic Regression based on a quadratic combination of the first four Principal Components of the dataset (LRQ)
+
+The choice of training a forth model is made because a quadratic combination of the 7 considered attributes is very hard to be trained (26 new columns representing the quadratic model would be added to the dataset, resulting in an "X" matrix of 33 columns): the computational time is too high and the process does not converge to a solution. So, by reducing the dimensions of the problem thanks to the Principal Component Analysis, we can consider a quadratic combination of the first four Principal Components (the "X" matrix turns out to have only 14 columns).
+
+The dataset consists of 53879 diamonds after the cleaning from the outliers. The large number of observations leads to choose a "light" cross-validation method, that is the K-fold partition of the dataset with a small number of folds. In particular, we choose 4 outer partitions and 6 inner folds, so that each model is trained $6\cdot4+4=28$ times. 
+
+
 ## Question 3 
 
 \newpage

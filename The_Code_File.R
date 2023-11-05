@@ -11,7 +11,7 @@ library(ggplot2)
 library(glmnet)
 library(caret)
 library(rpart)
-source("setup.R")
+source("setup.R") # Contained in the R_toolbox
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
@@ -617,6 +617,17 @@ ind_tree <- 1
 # because the dataset has a large number of observations but the model has only 8 parameters
 # to be estimated. Regularization improves the model particularly when it is overfitted, and
 # it happens when observations are few wrt parameters to be estimated
+
+plot(log(lambda_tmp), log(apply(Error_train2, 1, sum) / sum(CV2$TrainSize)),
+     xlab = "log(lambda)", ylab = "log(Error)",
+     main = paste0("Optimal lambda: 1e", log10(lambda_opt[k]))
+)
+
+lines(log(lambda_tmp), log(apply(Error_train2, 1, sum) / sum(CV2$TrainSize)))
+plot(log(lambda_tmp), log(apply(Error_test2, 1, sum) / sum(CV2$TestSize)), col = "red")
+lines(log(lambda_tmp), log(apply(Error_test2, 1, sum) / sum(CV2$TestSize)), col = "red")
+
+legend("bottomright", legend = c("Training", "Test"), col = c("black", "red"), lty = 1)
 
 #######################################################################
 # QUADRATIC MODEL APPLIED TO THE PRINCIPAL COMPONENTS #################
