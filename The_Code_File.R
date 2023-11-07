@@ -7,30 +7,16 @@ dev.off()
 library(tidyverse)
 library(magrittr)
 library(forcats)
+library(patchwork)
 library(ggplot2)
 library(glmnet)
-library(caret)
-library(rpart)
+library(caret) # Package for Cross-Validation
+library(rpart) # Package for decision tree
 library(knitr)
 library(kableExtra)
 source("setup.R") # Contained in the R_toolbox
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
-
-#---------------------
-# Load the Data 
-#---------------------
-data(diamonds)
-#?diamonds
-  
-str(diamonds)
-
-
-#---------------------
-# See the Data 
-#---------------------
-diamonds
-
 
 #---------------------
 # Functions
@@ -64,20 +50,33 @@ determine_outliers <- function(group) {
 
 
 #---------------------
+# Load the Data 
+#---------------------
+data(diamonds)
+?#diamonds
+  
+#---------------------
+# See the Data 
+#---------------------
+diamonds
+
+#---------------------
 # Transform the Data
 #---------------------
 # - price Conversion from USD($) to DKK, Euro & Pound Sterling(£)
 
 diamonds_price <- diamonds %>%  
-  mutate(priceDKK = price * 7.066874,
-         priceEuro = price * 0.949312,
-         pricePS = price * 0.824538)
+  mutate(
+    priceDKK = price * 7.066874,
+    priceEuro = round((price * 0.949312),1),
+    pricePS = round((price * 0.824538), 1))
 
 #- Remove the USD($) variable. 
 diamonds_price <- diamonds_price %>% 
   select(-price)
 
-diamonds_price
+
+#diamonds_price
 
 # - carat conversion to milligrams in weight
 diam_conv_weight <- diamonds_price %>% 
@@ -87,7 +86,7 @@ diam_conv_weight <- diamonds_price %>%
 diam_milligram <- diam_conv_weight %>% 
   select(-carat)
 
-diam_milligram
+#diam_milligram
 
 # - X,Y,Z conversion from millimeters (mm) to micrometers(µm)
 diamonds_conv <- diam_milligram %>% 
@@ -151,6 +150,7 @@ determine_outliers(new_diamonds_data$the_depth)
 #---------------------
 # View Outliers
 #---------------------
+
 # Length : 
 # The upper limit is:  9285 
 # The lower limit is:  1965 
@@ -162,16 +162,16 @@ determine_outliers(new_diamonds_data$the_depth)
 # Depth : 
 # The upper limit is:  5735 
 # The lower limit is:  1215
-new_diamonds_data
+#new_diamonds_data
 
-new_diamonds_data %>% filter (the_length > 9285)
-new_diamonds_data %>% filter (the_length < 1965)
-
-new_diamonds_data %>% filter (the_width > 9270)
-new_diamonds_data %>% filter (the_width < 1990)
-
-new_diamonds_data %>% filter (the_depth > 5735)
-new_diamonds_data %>% filter (the_depth < 1215)
+# new_diamonds_data %>% filter (the_length > 9285)
+# new_diamonds_data %>% filter (the_length < 1965)
+# 
+# new_diamonds_data %>% filter (the_width > 9270)
+# new_diamonds_data %>% filter (the_width < 1990)
+# 
+# new_diamonds_data %>% filter (the_depth > 5735)
+# new_diamonds_data %>% filter (the_depth < 1215)
 
 #---------------------
 # Remove Outliers
@@ -196,15 +196,15 @@ clean_diamonds_data <- clean_diamonds_data %>%
          color = forcats::as_factor(color),
          clarity = forcats::as_factor(clarity))
 
-#---------------------------------------------------------------------------------------------------
+#---------------------
 # The Data Set  -->>>>
-#---------------------------------------------------------------------------------------------------
+#---------------------
 
 clean_diamonds_data
 
-#---------------------------------------------------------------------------------------------------
+#---------------------
 # The Data Set <<<---
-#---------------------------------------------------------------------------------------------------
+#---------------------
 
 
 
@@ -230,7 +230,6 @@ clean_diamonds_data  %>%
     caption = "Diamonds data from Tidyverse"
   )
 
-library(patchwork)
 
 a <- clean_diamonds_data  %>% 
   ggplot(mapping = aes(x = the_length))+
@@ -290,89 +289,181 @@ c <- clean_diamonds_data  %>%
 # ------ Show Collective plots 
 a | b | c
 
-################################
-# ---- Linear Regression  -----
-################################
-
-
-################################
-# -------  Question 1 ---------
-################################
-
-# Multiple Linear Regression
-# Aim: predict the carat based on other attributes. 
-clean_diamonds_data
-
-# Get the carat column. 
-y <- clean_diamonds_data$carat_mg
-y
-
-# Get the other columns that are not categorical. 
-Xr <- clean_diamonds_data %>% 
-  select(-c(cut,color,clarity,carat_mg))
-
-head(Xr)
-
-# --- Formula
-(forMula <- as.formula(paste("y ~ ", paste(colnames(Xr), collapse = "+"))))
-
-# ----- linear model
-linear_model <- lm(forMula, data = Xr)    
-linear_model
-
-summary(linear_model)
-
-# ------- predicted vs actual values of carat
-y_est <- linear_model$fitted.values
-
-plot(y, y_est,
-     col = "darkgreen",
-     xlab = "Carat (actual)", ylab = "Carat (estimated)",
-     main = "Diamond Carats", pch = 21, 
-     family = "Avenir"
-)
-
-# Make a histogram of the residual error
-hist(y - y_est, breaks = 41,
-     main = "The Residual Error", 
-     col = "darkgreen", 
-     family = "Avenir")
-
 #---------------------
-# Prediction
+# Q1
 #---------------------
 
-# New data
-y ~ depth + table + priceEuro + pricePS + the_length + the_width + 
-  the_depth
+# Aim: predict the price based on (some) other attributes. 
 
-new_diamond <- data.frame(depth = 61.5,
-                          table = 55,
-                          priceEuro = 309, 
-                          pricePS = 269, 
-                          the_length = 3950, 
-                          the_width = 3980, 
-                          the_depth = 2430)
+clear_diamonds_data <- clean_diamonds_data %>% 
+  select(-c(cut,color,clarity,priceDKK, priceEuro, pricePS))
 
-pred <- predict(linear_model, newdata = new_diamond, se = TRUE) 
-cat("The weight of the diamond is predicted to be (mg): ")
-pred$fit
 
+clear_diamonds_data
+
+# Create a mean of 0 and sd of 1. 
+scale_diamonds_data <- scale(clear_diamonds_data, 
+                             center = TRUE, 
+                             scale = TRUE) %>% 
+  as_tibble()
+
+
+# Assuming you have two data frames: scaled_diamonds_data and clean_diamonds_data
+
+# Combine the columns from both data frames
+scaled_diamonds_data <- cbind(Price = clean_diamonds_data$pricePS, scale_diamonds_data)
+scaled_diamonds_data
 #---------------------
-# Standardisation
+# Training the Model
 #---------------------
 
-X <- scale(Xr, center = TRUE, scale = TRUE) # create a mean of 0 and sd of 1. 
-X
+# Percentage of data to allocate for training (e.g., 80%)
+train_percent <- 0.8
+
+# make the index vector for splitting the data 
+train_indices <- caret::createDataPartition(scaled_diamonds_data$Price,
+                                            p = train_percent, 
+                                            list = FALSE)
+
+# Create training and holdout (test) sets
+train_data <- scaled_diamonds_data[train_indices, ]
+test_data <- scaled_diamonds_data[-train_indices, ]
+train_data
+test_data
+
+# ----------------------------------------------------------------
+#                       Split Training and Test Data
+# ----------------------------------------------------------------
 
 
+# The Train Data Split
+X_train <- train_data %>% 
+  select(-Price)
 
+head(X_train)
+
+y_train <- train_data %>% 
+  select(Price)
+
+head(y_train)
+
+# The Test Data - split
+
+X_test <- test_data %>% 
+  select(-Price)
+head(X_test)
+
+
+y_test <- test_data %>% 
+  select(Price)
+
+head(y_test)
+
+# ----------------------------------------------------------------
+#                      The Optimal Lambda
+# ----------------------------------------------------------------
+
+# Create a matrix from your training data
+# (because it doesn't work with tibble or data frame)
+X_train_matrix <- as.matrix(X_train)
+head(X_train_matrix)
+
+y_train_matrix <- as.matrix(y_train)
+head(y_train_matrix)
+
+
+# Make a sequence of lambdas. 
+lambda_seq <- 10^(-5:10)
+lambda_seq
+
+# Fit ridge regression with cross-validation to find optimal lambda
+ridge_model <- cv.glmnet(X_train_matrix, y_train_matrix, 
+                         alpha = 0, 
+                         lambda = lambda_seq, 
+                         nfolds = 10, 
+)  # alpha = 0 for ridge
+
+# Print the cross-validation error
+cat("The cross-validation error:")
+print(ridge_model$cvm)
+
+optimal_lambda <- ridge_model$lambda.min
+cat("The optimal lambda is:", optimal_lambda)
+
+# ----------------------------------------------------------------
+#                        Visualisation
+# ----------------------------------------------------------------
+
+frame <- data.frame(broom::tidy(ridge_model))
+frame
+
+
+ggplot(data = frame, 
+       mapping = aes(x = lambda, y = estimate, col = estimate))+
+  geom_point(mapping = aes(x = log(lambda)))+
+  geom_line(mapping = aes(x = log(lambda)))+
+  labs(
+    title = "K-Fold Cross Validation (K = 10)",
+    subtitle = "Generalisation Error for different values of Lambda",
+    x = "Log \U0003bb",
+    y = "Mean Squared Error(estimate)",
+    family = "Avenir",
+    caption = "Mean Square Error | Cross-Validation Errors
+    for different values of Lambda"
+  )+
+  theme_minimal()+
+  theme(
+    panel.border = element_rect(colour = "darkblue", fill=NA, size=1)
+  )
+
+# ----------------------------------------------------------------
+#                        Predictions 
+# ----------------------------------------------------------------
+
+# Fit the model with the optimal lambda
+L2_Regularisation_Ridge_Regression_model <- glmnet(X_train_matrix, y_train_matrix, alpha = 0, lambda = optimal_lambda)
+L2_Regularisation_Ridge_Regression_model
+
+broom::glance(L2_Regularisation_Ridge_Regression_model)
+broom::tidy(L2_Regularisation_Ridge_Regression_model)
+
+# Prepare the test data
+X_test_matrix <- as.matrix(X_test)
+y_test_matrix <- as.matrix(y_test)
+
+# Use the fitted model to make predictions on the test data
+predictions <- predict(L2_Regularisation_Ridge_Regression_model, 
+                       s = optimal_lambda, 
+                       newx = X_test_matrix)
+
+# predictions are also known as *yhat
+predictions
+
+
+# Calculate RMS Error on the test data
+rmse <- sqrt(mean((predictions - y_test_matrix)^2))
+cat("RMSE on the test data:", rmse, "\n")
+
+# mean of the actual target values
+y_mean <- mean(y_test_matrix)
+y_mean
+
+# Calculate the total sum of squares (TSS)
+tss <- sum((y_test_matrix - y_mean)^2)
+tss
+
+# Calculate the residual sum of squares (RSS)
+rss <- sum((y_test_matrix - predictions)^2)
+rss
+
+# Calculate the R-squared (coefficient of determination)
+rsquared <- 1 - (rss / tss)
+cat("R-squared (Coefficient of Determination):", rsquared, "\n")
 
 ################################
 # -------  Question 2 ---------
 ################################
-
-
+# * In the report. 
 
 
 ################################
