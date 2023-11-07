@@ -1,5 +1,5 @@
-rm(list=ls())
-dev.off()
+#rm(list=ls())
+#dev.off()
 
 #---------------------
 # Access the Libraries
@@ -14,13 +14,14 @@ library(caret) # Package for Cross-Validation
 library(rpart) # Package for decision tree
 library(knitr)
 library(kableExtra)
-source("setup.R") # Contained in the R_toolbox
+#source("setup.R") # Contained in the R_toolbox
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
 #---------------------
 # Functions
 #---------------------
+
 determine_outliers <- function(group) {
   
   # ----- See 5 quantiles. 
@@ -359,6 +360,12 @@ y_test <- test_data %>%
 
 head(y_test)
 
+# Fit a model - how does it look on the ttrainign data 
+
+lm(y)
+
+
+ 
 # ----------------------------------------------------------------
 #                      The Optimal Lambda
 # ----------------------------------------------------------------
