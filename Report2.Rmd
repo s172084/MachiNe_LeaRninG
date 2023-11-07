@@ -108,10 +108,11 @@ The effect of each of the attributes on the Price is determined by the coefficie
 
 $$Price (Y) = b_{0} + ( b_{1} * depth)  + (b_{2} * table ) + (b_{3} * carat )  + (b_{4} * length ) + (b_{5} * width ) + (b_{6} * depth )$$
 
+
 The coefficients say how much each attribute contributes to the prediction of the Price.  The positive coefficients indicate a positive relationship. For example, as the carat increases the Price increases. The negative coefficients indicate a negative relationship. For example, as the width increases the Price decreases. 
 
-
 # Section B
+
 ## Question 1 
 ## Question 2 
 ## Question 3 
