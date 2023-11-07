@@ -1,6 +1,8 @@
 rm(list=ls())
 dev.off()
 
+# setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
+
 #---------------------
 # Access the Libraries
 #---------------------
@@ -15,8 +17,6 @@ library(rpart) # Package for decision tree
 library(knitr)
 library(kableExtra)
 source("setup.R") # Contained in the R_toolbox
-
-# setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
 #---------------------
 # Functions
@@ -53,7 +53,7 @@ determine_outliers <- function(group) {
 # Load the Data 
 #---------------------
 data(diamonds)
-?#diamonds
+?diamonds
   
 #---------------------
 # See the Data 
@@ -869,6 +869,8 @@ for (k in 1:K) {
                                    cp_opt,
                                    round(Error_test_tree*100,digits=2)),
                                  nrow=K,byrow=F)))
+# Consider the unbalances of the dataset
+
 # resultNames1 <- c("i","$E_i^{test}$ [%]","$olambda_i$","$E_i^{test}$ [%]",
 #                   "$olambda_i$","$E_i^{test}$ [%]","$c_{P,i}^{*}$","$E_i^{test}$ [%]")
 kable(Results, format = "latex", booktabs = T) %>%
