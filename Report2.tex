@@ -1,0 +1,639 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{Diamonds II}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{02450 Introduction to Machine Learning \& Data Mining}
+\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
+\date{From: 2023-10-20 To: 2023-10-31}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Diamonds II},
+  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newenvironment{cols}[1][]{}{}
+
+\newenvironment{col}[1]{\begin{minipage}{#1}\ignorespaces}{%
+\end{minipage}
+\ifhmode\unskip\fi
+\aftergroup\useignorespacesandallpars}
+
+\def\useignorespacesandallpars#1\ignorespaces\fi{%
+#1\fi\ignorespacesandallpars}
+
+\makeatletter
+\def\ignorespacesandallpars{%
+  \@ifnextchar\par
+    {\expandafter\ignorespacesandallpars\@gobble}%
+    {}%
+}
+\makeatother
+\usepackage{subfig}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\maketitle
+
+\begin{center}\includegraphics[width=0.3\linewidth]{Images/The_Black_Logo} \end{center}
+
+\includegraphics[width=0.37\linewidth]{Images/Space}
+
+\includegraphics[width=0.7\linewidth]{Images/Diamond3}
+\includegraphics[width=0.7\linewidth]{Images/Diamond3}
+
+\newpage
+
+\newpage
+\setcounter{tocdepth}{4}
+\tableofcontents
+
+\newpage
+
+\hypertarget{contribution-table}{%
+\section{Contribution Table}\label{contribution-table}}
+
+\begin{longtable}[]{@{}lcc@{}}
+\toprule
+Task & Oriade & Pietro \\
+\midrule
+\endhead
+\textbf{Student ID} & s172084 & s231756 \\
+--------------- & --------------- & --------------- \\
+Question A.1 & x & \\
+--------------- & --------------- & --------------- \\
+Question A.2 & x & \\
+--------------- & --------------- & --------------- \\
+Question B.1 & x & \\
+--------------- & --------------- & --------------- \\
+Question B.2 & x & \\
+--------------- & --------------- & --------------- \\
+Question B.3 & x & \\
+--------------- & --------------- & --------------- \\
+Question C.1 & & x \\
+--------------- & --------------- & --------------- \\
+Question C.2 & & x \\
+--------------- & --------------- & --------------- \\
+Question C.3 & & x \\
+--------------- & --------------- & --------------- \\
+Question C.4 & & x \\
+--------------- & --------------- & --------------- \\
+Question C.5 & & x \\
+--------------- & --------------- & --------------- \\
+Exam Problem 1 & x & \\
+--------------- & --------------- & --------------- \\
+Exam Problem 2 & & x \\
+--------------- & --------------- & --------------- \\
+Exam Problem 3 & x & \\
+--------------- & --------------- & --------------- \\
+Exam Problem 4 & & x \\
+--------------- & --------------- & --------------- \\
+Exam Problem 5 & x & \\
+--------------- & --------------- & --------------- \\
+Exam Problem 6 & & x \\
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\hypertarget{linear-regression}{%
+\section{LINEAR REGRESSION}\label{linear-regression}}
+
+\hypertarget{section-a}{%
+\section{Section A}\label{section-a}}
+
+\hypertarget{question-1}{%
+\subsection{Question 1}\label{question-1}}
+
+\textbf{Feature Transformation} Here, the price is converted from United
+States Dollars (\$) to Danish Kroner (DKK) , Euro and Pound Sterling
+(£). The length , width and depth was converted from millimetres (mm) to
+micrometers (um). In addition to this, carat was converted to milligrams
+(mg). The original columns for carat, length, width and depth were
+removed.
+
+\textbf{Outliers} The outliers are any values that lie above the upper
+boundary or below the lower boundary. There are 20 diamonds with the
+value of depth listed at 0 in the dataset. The smallest depth is 1,070
+micrometers. Two diamonds have a width of 3,730 micrometers and 7
+diamonds have the width listed as 0. There are also 8 diamonds that have
+a length of 0 in the dataset. It is important to deal with outliers
+because they may distort the statistical linear model.
+
+\textbf{Regression} The regression problem looks at the analysis of
+attributes in order to predict the price of a diamond. In the multiple
+linear regression analysis, the carat, the table, the length , the width
+and the depth of a diamond are used to estimate the price of the
+diamond.
+
+\hypertarget{question-2}{%
+\subsection{Question 2}\label{question-2}}
+
+The output variable ( y ) is the price of a diamond. The output variable
+is based on the linear model and also on the input variables
+(attributes) inside of the Matrix ( X ). The input variables are also
+called predictors.
+
+The effect of each of the attributes on the Price is determined by the
+coefficients that are associated with each of the attributes in the
+linear model. The coefficients are the estimates for each independent
+attribute term in the linear model. Th coefficients indicate how much
+the Price is changes for a 1 unit change in the attribute. In order to
+compute the Price of the diamond, the following equation can be used:
+
+\[Price (Y) = b_{0} + ( b_{1} * depth)  + (b_{2} * table ) + (b_{3} * carat )  + (b_{4} * length ) + (b_{5} * width ) + (b_{6} * depth )\]
+
+The coefficients say how much each attribute contributes to the
+prediction of the Price. The positive coefficients indicate a positive
+relationship. For example, as the carat increases the Price increases.
+The negative coefficients indicate a negative relationship. For example,
+as the width increases the Price decreases.
+
+\hypertarget{section-b}{%
+\section{Section B}\label{section-b}}
+
+\hypertarget{question-1-1}{%
+\subsection{Question 1}\label{question-1-1}}
+
+\hypertarget{question-2-1}{%
+\subsection{Question 2}\label{question-2-1}}
+
+\hypertarget{question-3}{%
+\subsection{Question 3}\label{question-3}}
+
+\hypertarget{classification}{%
+\section{CLASSIFICATION}\label{classification}}
+
+\hypertarget{question-1-2}{%
+\subsection{Question 1}\label{question-1-2}}
+
+\begin{cols}
+
+\begin{col}{0.45\textwidth}
+Regarding the classification problem, we want to train a model which
+labels whether a diamond has an \emph{Ideal cut} or not. This aim
+appears to be feasible according to the projection of data onto the
+space defined by the first three Principal Components (top figure of
+page 11 of Report 1). Figure \# represents a sample of diamonds
+projected into the space defined by the second and third Principal
+Component. It can be seen that by coloring data according to their
+\emph{cut}, they appear to be clustered, especially the \emph{Ideal}
+ones. So we aim to find a model which classifies diamonds in two binary
+classes: \emph{Ideal} and \emph{Non-Ideal} cut, according to their
+depth, table, price in DKK, carat in milligrams, length, width and depth
+in micrometers. We choose to use only continuous attributes and to
+ignore information coming from the color and clarity of diamonds.
+
+\end{col}
+
+\begin{col}{0.05\textwidth}
+~
+
+\end{col}
+
+\begin{col}{0.50\textwidth}
+\includegraphics{Images/PCA_cut.png} {Figure \#: Sample of diamonds
+projected onto the space defined by the \(2^{nd}\) and \(3^{rd}\)
+Principal component}
+
+\end{col}
+
+\end{cols}
+
+~
+
+The dataset seems to be almost balanced in the distribution of diamonds
+between the \emph{Ideal Cut} and the \emph{Non-Ideal Cut}: the number of
+\emph{Ideal} diamonds is about 21000 (corresponding to the 40 \% of the
+dataset) whereas \emph{Non-Ideal} diamonds are about 32000 (60 \% of the
+dataset). This means that there is no need to re-sample the dataset
+since the predictors have enough observations of both the possible
+outcomes.
+
+In order to give the same importance to all the attributes regardless
+the different scales of variations, each column of the dataset is
+normalized with respect to its mean and its standard deviation. By doing
+so, estimated model parameters will be comparable and will tell
+important information about which attributes most contribute to the
+\emph{Cut} behavior. The means and the standard deviations of each
+column are part of the model parameters because a new observation has to
+be normalized before the application of the classification model.
+
+\hypertarget{question-2-3}{%
+\subsection{Question 2 \& 3}\label{question-2-3}}
+
+Different models can be trained to classify diamonds in \emph{Ideal} and
+\emph{Non-Ideal} cut. The simplest one is the Baseline (BL), based only
+on the vector \textbf{y} of the outputs. In our case it is represented
+by the attribute \emph{cut} transformed as follow: \[ y =
+\begin{cases}
+1 & \text{if cut = "Ideal"} \\
+0 & \text{otherwise}
+\end{cases} \] By computing the average of \textbf{y}, we obtain the
+value of 0.4 (as we found in Question 1). According to this information,
+the BL model always predicts a new diamond as \emph{Non-Ideal},
+regardless its characteristics (depth, table, etc\ldots), with a
+classification error of 40\%.
+
+The other three models we want to analyse are:
+
+\begin{itemize}
+\tightlist
+\item
+  the Logistic Regression based on a linear combination of the
+  attributes (LRL)
+\item
+  the Classification Tree (CT)
+\item
+  the Logistic Regression based on a quadratic combination of the first
+  four Principal Components of the dataset (LRQ)
+\end{itemize}
+
+The choice of training a forth model is made because a quadratic
+combination of the 7 considered attributes is very hard to be trained
+(26 new columns representing the quadratic model would be added to the
+dataset, resulting in an \textbf{X} matrix of 33 columns): the
+computational time is too high and the process does not converge to a
+solution. So, by reducing the dimensions of the problem thanks to the
+Principal Component Analysis, we can consider a quadratic combination of
+the first four Principal Components (the \textbf{X} matrix turns out to
+have only 14 columns).
+
+Each of the three above models requires a complexity parameter managing
+the regularization of the model. Higher values of the complexity
+parameter mean that large weights are penalized and data are less
+important in the training of the model. On the other hand, lower values
+of the complexity parameters allow the model to better follow data but
+to be less general in case of new data.
+
+\begin{itemize}
+\tightlist
+\item
+  Logistic regression models (LRL and LRQ) are regularized by the
+  \(\lambda\) parameter, for which we do not know the value. Its value
+  can be chosen by training the same model on the same data but with
+  different values of \(\lambda\). As the dataset consists of 53879
+  diamonds after the cleaning from the outliers, only four values of
+  \(lambda\) have been tempted in the training of the LRL and LRQ
+  models. The tempted values are:
+  \(\lambda=\{10^{-5},10^{-4},10^{-3},10^{-2}\}\) (the choice of
+  considering so low values is discussed later). We will choose the
+  \(\lambda\) associated to the lowest generalization error computed on
+  a dataset of diamonds independent from the one used to train the
+  model.
+\item
+  Classification Tree is regularized by the \(c_P\) parameter (note that
+  \(c_P\in[0,1]\)). \(c_P\) close to zero means more complex decision
+  trees and more importance of data, \(c_P\) close to 1 means easier
+  decision trees and less importance to data. The selection of the best
+  value of \(c_P\) is the same of the Logistic Regression. The tempted
+  values are: \(c_P=\{0.05,0.01,0.005,0.001\}\). In addition, DT is
+  dependent on two more parameters, that are the minimum number of data
+  to create a new node (question) and the minimum number of data to
+  create a leaf. The choice have been arbitrary made by taking them
+  respectively equal to 100 and 1.
+\end{itemize}
+
+The large number of observations leads to choose a ``light''
+cross-validation method, that is the K-fold partition of the dataset
+with a small number of folds. In particular, we choose four outer
+partitions and six inner folds. This means that each model will be
+trained: \[
+\text{Nr. of trainings} = 4 \text{ outer folds } \cdot 6 \text{ inner folds } \cdot 4 \text{ complexity parameters } + 4 \text{ re-trainings } = 100 \text{ times}
+\] Models are trained on the training datasets selected following the
+cross-validation procedure and tested on independent datasets which have
+not used to train the models. Given that we choose four outer partition,
+we obtain four different results per each model and we choose the model
+parameter associated with the lowest error rate computed as: \[
+E_i^{test} [\%] = \frac{\text{Number of mis-classified data}}{\text{Total number of test data}} \cdot 100 \%
+\]
+
+Results of the two-level cross-validation are summarized in the Table
+\#, where in bold are highlighted the lowest error rates per each model
+and the associated best parameters.
+
+\begin{center}
+\begin{tabular}{rrrrrrrr}
+\toprule
+\multicolumn{1}{c}{Outer fold} & \multicolumn{1}{c}{Base-Line} & \multicolumn{2}{c}{Log. Regr. (Linear)} & \multicolumn{2}{c}{Log. Regr. (Quadratic)} & \multicolumn{2}{c}{Classification Tree} \\
+\cmidrule(l{3pt}r{3pt}){1-1} \cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8}
+i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$c_{P,i}$} & {$E_i^{test} [\%]$}\\
+\midrule
+1 & 39.73 & 1e-04 & 19.91 & \textbf{1e-05} & \textbf{12.47} & \textbf{0.005} & \textbf{11.41}\\
+2 & 40.44 & \textbf{1e-04} & \textbf{19.81} & 1e-04 & 13.51 & 0.001 & 11.98\\
+3 & 40.36 & 1e-05 & 20.33 & 1e-05 & 12.87 & 0.001 & 11.95\\
+4 & 39.41 & 1e-04 & 20.42 & 1e-05 & 13.21 & 0.005 & 11.76\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+\text{Table : Results of the two-level cross-validation used to compare models}
+\] As we expected, Baseline error rate is about 40 \% per each fold: it
+varies because the dataset is splitted randomly in the four outer
+partitions, so each outer fold does not contain the same amount of
+\emph{Ideal} and \emph{Non-Ideal} diamonds.
+
+Regarding the Logistic Regressions (both linear and quadratic), they
+consist of solving a linear regression and then applying a sigmoid
+function in order to project data in the range {[}0,1{]}. The linear
+regression can be solved by the means of the regularized Least
+Squares\footnote{Aster, Richard C. (2013). Parameter estimation and
+  inverse problems. -- 2nd ed., Elsevier Inc., 94-95}, minimizing both
+the data misfit and the model norm:
+
+\[
+min(||X_{train}w-y_{train}||^2_2+\lambda||w||^2_2)
+\] Where \emph{w} is the model vector containing estimated weights of
+the linear regression. Weights \emph{w} are estimated as follow: \[
+w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
+\] By increasing \(\lambda\), more importance is given to the model
+(linear model for the LRL, quadratic model for the LRQ) as the first
+term of the above equations becomes negligible with respect to the
+second one, whereas by decreasing \(\lambda\) more importance is given
+to observations (second term negligible with respect to the first one).
+The regularization parameter \(\lambda\) allows to use complex models
+even in case of small datasets without overfitting the model because it
+constrains the observations to better follow the model. But in our case,
+the dataset is very large and the model is very poor with respect to the
+whole variability of data (it consists in a hyper-plane for the LRL and
+in a hyper-paraboloid for the LRQ in the multi-dimensional space defined
+by the attributes) and it does not manage to precisely explain the
+behavior of the \emph{Cut} of diamonds based on the other attributes. We
+are somehow facing with a problem of underfitting, which cannot be
+solved because more complex models would have too many parameters to be
+estimated. This the reason why we choose to consider only small values
+of \(\lambda\) and Table \# confirms that the smallest values of
+\(\lambda\) are the ones giving the smallest error rates.
+
+Table \# shows the estimated weights of the Logistic Regression based on
+the linear combination of the attributes (LRL). It can be noticed that
+the highest weights are associated to the \emph{Table} and to the
+\emph{x dimension} of the diamonds, meaning that the LRL model bases its
+predictions of the \emph{Cut} mostly on these two variables.
+
+\begin{cols}
+
+\begin{col}{0.20\textwidth}
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule
+Attributes & Weights \\
+\midrule
+\endhead
+Intercept & -0.84 \\
+Depth & -0.84 \\
+Table & \textbf{-2.23} \\
+Price {[}DKK{]} & 0.60 \\
+Carat {[}mg{]} & -0.83 \\
+x {[}µm{]} & \textbf{-1.24} \\
+y {[}µm{]} & 0.82 \\
+z {[}µm{]} & 0.56 \\
+\bottomrule
+\end{longtable}
+
+{Table \#: estimated weights of the LRL}
+
+\end{col}
+
+\begin{col}{0.05\textwidth}
+~
+
+\end{col}
+
+\begin{col}{0.20\textwidth}
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule
+Variables & Weights \\
+\midrule
+\endhead
+Intercept & -2.31 \\
+\(PC1\) & 0.53 \\
+\(PC2\) & \textbf{-1.15} \\
+\(PC3\) & \textbf{2.59} \\
+\(PC4\) & 0.09 \\
+\(PC1^2\) & -0.13 \\
+\(PC2^2\) & \textbf{-3.15} \\
+\(PC3^2\) & \textbf{-2.54} \\
+\(PC4^2\) & -0.13 \\
+\(PC1\cdot PC2\) & 0.21 \\
+\(PC1\cdot PC3\) & -0.16 \\
+\(PC1\cdot PC4\) & -0.02 \\
+\(PC2\cdot PC3\) & \textbf{-0.89} \\
+\(PC2\cdot PC4\) & -0.06 \\
+\(PC3\cdot PC4\) & 0.11 \\
+\bottomrule
+\end{longtable}
+
+{Table \#: estimated weights of the LRQ applied to the Principal
+Components}
+
+\end{col}
+
+\begin{col}{0.05\textwidth}
+~
+
+\end{col}
+
+\begin{col}{0.50\textwidth}
+\includegraphics{Images/PC_coeff.png} {Figure \#: coefficients of the
+principal components}
+
+\end{col}
+
+\end{cols}
+
+Table \# shows the estimated weights of the Logistic Regression based on
+the quadratic combination of the first four Principal Components (LRQ).
+Figure \# represents how each of the Principal Components depends on the
+seven attributes. Looking at the weights of the Table \#, it can be
+noticed that the second and third principal components are the most
+weighted ones, both in their linear and quadratic form. These Principal
+Components are mostly determined by the \emph{Depth} and \emph{Table} of
+diamonds (green and cyan bars of Figure \#). The result agrees with the
+Figure \#\#, showing the almost clear clusters wherein data projected
+onto the space defined by the second and third Principal Components
+fall.
+
+\begin{cols}
+
+\begin{col}{0.60\textwidth}
+As for the Classification Tree, once again the best complexity
+parameters \(c_P\) are the smallest ones, meaning that trees with less
+branches predict better the \emph{Cut} than more developed trees. The
+Classification Tree associated with the lowest error rate is plotted in
+Figure \#. As the figure shows, the classification od the diamonds in
+\emph{Ideal} or \emph{Non-Ideal Cut} is based only on the \emph{Table}
+and \emph{Depth} of them, regardless all the other attributes. According
+to Table \#, even though the tree is so simple, it better classifies
+diamonds than the Logistic Regressions, which requires the knowledge of
+more variables to achieve a worse result.
+
+\end{col}
+
+\begin{col}{0.05\textwidth}
+~
+
+\end{col}
+
+\begin{col}{0.35\textwidth}
+\includegraphics{Images/Tree1.png} {Figure \#: lowest error rate
+Classification Tree }
+
+\end{col}
+
+\end{cols}
+
+\hypertarget{question-4}{%
+\subsection{Question 4}\label{question-4}}
+
+\newpage
+
+\hypertarget{exam-problems}{%
+\section{Exam Problems}\label{exam-problems}}
+
+\textbf{Question 1}
+
+The answer
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Question 2}
+
+Answer \textbf{D}: we have a dataset of \(N=135\) elements, divided in 4
+classes as follows:
+
+37-31-33-34 (R)
+
+By considering a tree made of two branches based on the value of
+\(x_7\), we obtain the two following sub-groups:
+
+\(x_7=2\) 0-1-0-0 (A) with \(N_2=1\)
+
+\(x_7 \neq 2\) 37-30-33-34 (B) with \(N_2=134\)
+
+By computing the \emph{classification error impurity measure} for each
+branch, we obtain:
+
+\(I_R=1-37/135=0.726\); \(I_A=1-1=0\); \(I_B=1-37/134=0.724\)
+
+And finally we can calculate the purity gain based on the rule
+\(x_7=2\):
+
+\(\Delta_2=0.726-\frac{134}{135}\cdot 0.724=0.0074\)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Question 3}
+
+The answer
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Question 4}
+
+Answer \textbf{D}: we concentrate on the class 4 and we notice that it
+is the only one dependent only on \(b_1\) (Fig. 4). We see from Fig. 3
+that rules A and C lead to class 4, so those rules must regard
+conditions on \(b_1\). By looking at the four possible answers, only
+answer \textbf{D} shows both A and C rules regarding \(b_1\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Question 5}
+
+The answer
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Question 6}
+
+The answer
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Aster, Richard C. (2013). Parameter estimation and inverse problems.
+  -- 2nd ed., Elsevier Inc., 94-95
+\end{enumerate}
+
+\end{document}
