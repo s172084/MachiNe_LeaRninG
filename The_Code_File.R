@@ -188,15 +188,6 @@ clean_diamonds_data <- new_diamonds_data %>%
   filter(the_depth > 1215)       # 53,879
 
 
-
-
-clean_diamonds_data
-
-clean_diamonds_data <- clean_diamonds_data %>% 
-  mutate(cut = forcats::as_factor(cut),
-         color = forcats::as_factor(color),
-         clarity = forcats::as_factor(clarity))
-
 #---------------------
 # The Data Set  -->>>>
 #---------------------
