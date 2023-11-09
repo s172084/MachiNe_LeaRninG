@@ -220,8 +220,62 @@ w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
 $$
 By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one, whereas by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This the reason why we choose to consider only small values of $\lambda$ and Table # confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
 
+Table # shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
+
 :::::: {.cols data-latex=""}
-::: {.col data-latex="{0.70\textwidth}"}
+::: {.col data-latex="{0.20\textwidth}"}
+|Attributes  | Weights|
+|:-----------|-------:|
+|Intercept   |   -0.84|
+|Depth       |   -0.84|
+|Table       |   \textbf{-2.23}|
+|Price [DKK] |    0.60|
+|Carat [mg]  |   -0.83|
+|x [µm]      |   \textbf{-1.24}|
+|y [µm]      |    0.82|
+|z [µm]      |    0.56|
+<span class="caption">Table #: estimated weights of the LRL</span>
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.20\textwidth}"}
+|Variables      | Weights|
+|:--------------|-------:|
+|Intercept      |   -2.31|
+|$PC1$          |    0.53|
+|$PC2$          |   \textbf{-1.15}|
+|$PC3$          |    \textbf{2.59}|
+|$PC4$          |    0.09|
+|$PC1^2$        |   -0.13|
+|$PC2^2$        |   \textbf{-3.15}|
+|$PC3^2$        |   \textbf{-2.54}|
+|$PC4^2$        |   -0.13|
+|$PC1\cdot PC2$ |    0.21|
+|$PC1\cdot PC3$ |   -0.16|
+|$PC1\cdot PC4$ |   -0.02|
+|$PC2\cdot PC3$ |   \textbf{-0.89}|
+|$PC2\cdot PC4$ |   -0.06|
+|$PC3\cdot PC4$ |    0.11|
+<span class="caption">Table #: estimated weights of the LRQ applied to the Principal Components</span>
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.50\textwidth}"}
+![PCA](Images/PC_coeff.png)
+<span class="caption">Figure #: coefficients of the principal components</span>
+:::
+::::::
+
+Table # shows the estimated weights of the Logistic Regression based on the quadratic combination of the first four Principal Components (LRQ). Figure # represents how each of the Principal Components depends on the seven attributes. Looking at the weights of the Table #, it can be noticed that the second and third principal components are the most weighted ones, both in their linear and quadratic form. These Principal Components are mostly determined by the *Depth* and *Table* of diamonds (green and cyan bars of Figure #). The result agrees with the Figure ##, showing the almost clear clusters wherein data projected onto the space defined by the second and third Principal Components fall.
+
+:::::: {.cols data-latex=""}
+::: {.col data-latex="{0.60\textwidth}"}
 As for the Classification Tree, once again the best complexity parameters $c_P$ are the smallest ones, meaning that trees with less branches predict better the *Cut* than more developed trees. The Classification Tree associated with the lowest error rate is plotted in Figure #. As the figure shows, the classification od the diamonds in *Ideal* or *Non-Ideal Cut* is based only on the *Table* and *Depth* of them, regardless all the other attributes. According to Table #, even though the tree is so simple, it better classifies diamonds than the Logistic Regressions, which requires the knowledge of more variables to achieve a worse result.
 :::
 
