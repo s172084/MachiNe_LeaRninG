@@ -959,6 +959,9 @@ rt_tp <- mcnemar(y, y_tree, y_PCA, alpha = alpha)
 mdl_lr$a0
 mdl_lr$beta
 
+mdl_PCA$a0
+mdl_PCA$beta
+
 # table and length have a larger weight wrt the other attributes
 
 ################################################################

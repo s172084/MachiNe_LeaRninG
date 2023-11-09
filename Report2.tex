@@ -287,17 +287,16 @@ outcomes.
 
 Different models can be trained to classify diamonds in \emph{Ideal} and
 \emph{Non-Ideal} cut. The simplest one is the Baseline (BL), based only
-on the vector ``y'' of the outputs. In our case it is represented by the
-attribute \emph{cut} transformed as follow: \[ y =
+on the vector \textbf{y} of the outputs. In our case it is represented
+by the attribute \emph{cut} transformed as follow: \[ y =
 \begin{cases}
 1 & \text{if cut = "Ideal"} \\
 0 & \text{otherwise}
-\end{cases} \] By computing the average of ``y'', we obtain the value of
-0.4, meaning that the dataset contains more \emph{Non-ideal} diamonds
-than \emph{Ideal} ones. According to this information, the BL model
-always predicts a new diamond as \emph{Non-Ideal}, regardless its
-characteristics (depth, table, etc\ldots), with a classification error
-of 40\%.
+\end{cases} \] By computing the average of \textbf{y}, we obtain the
+value of 0.4 (as we found in Question 1). According to this information,
+the BL model always predicts a new diamond as \emph{Non-Ideal},
+regardless its characteristics (depth, table, etc\ldots), with a
+classification error of 40\%.
 
 The other three models we want to analyse are:
 
@@ -307,7 +306,7 @@ The other three models we want to analyse are:
   the Logistic Regression based on a linear combination of the
   attributes (LRL)
 \item
-  the Decision Tree (DT)
+  the Classification Tree (CT)
 \item
   the Logistic Regression based on a quadratic combination of the first
   four Principal Components of the dataset (LRQ)
@@ -316,12 +315,12 @@ The other three models we want to analyse are:
 The choice of training a forth model is made because a quadratic
 combination of the 7 considered attributes is very hard to be trained
 (26 new columns representing the quadratic model would be added to the
-dataset, resulting in an ``X'' matrix of 33 columns): the computational
-time is too high and the process does not converge to a solution. So, by
-reducing the dimensions of the problem thanks to the Principal Component
-Analysis, we can consider a quadratic combination of the first four
-Principal Components (the ``X'' matrix turns out to have only 14
-columns).
+dataset, resulting in an \textbf{X} matrix of 33 columns): the
+computational time is too high and the process does not converge to a
+solution. So, by reducing the dimensions of the problem thanks to the
+Principal Component Analysis, we can consider a quadratic combination of
+the first four Principal Components (the \textbf{X} matrix turns out to
+have only 14 columns).
 
 Each of the three above models requires a complexity parameter managing
 the regularization of the model. Higher values of the complexity
@@ -340,12 +339,13 @@ to be less general in case of new data.
   diamonds after the cleaning from the outliers, only four values of
   \(lambda\) have been tempted in the training of the LRL and LRQ
   models. The tempted values are:
-  \(\lambda=\{10^{-5},10^{-4},10^{-3},10^{-2}\}\). We will choose the
+  \(\lambda=\{10^{-5},10^{-4},10^{-3},10^{-2}\}\) (the choice of
+  considering so low values is discussed later). We will choose the
   \(\lambda\) associated to the lowest generalization error computed on
   a dataset of diamonds independent from the one used to train the
   model.
 \item
-  Decision Tree is regularized by the \(c_P\) parameter (note that
+  Classification Tree is regularized by the \(c_P\) parameter (note that
   \(c_P\in[0,1]\)). \(c_P\) close to zero means more complex decision
   trees and more importance of data, \(c_P\) close to 1 means easier
   decision trees and less importance to data. The selection of the best
@@ -359,24 +359,104 @@ to be less general in case of new data.
 
 The large number of observations leads to choose a ``light''
 cross-validation method, that is the K-fold partition of the dataset
-with a small number of folds. In particular, we choose 4 outer
-partitions and 6 inner folds. This means that each model will be
+with a small number of folds. In particular, we choose four outer
+partitions and six inner folds. This means that each model will be
 trained: \[
 \text{Nr. of trainings} = 4 \text{ outer folds } \cdot 6 \text{ inner folds } \cdot 4 \text{ complexity parameters } + 4 \text{ re-trainings } = 100 \text{ times}
+\] Models are trained on the training datasets selected following the
+cross-validation procedure and tested on independent datasets which have
+not used to train the models. Given that we choose four outer partition,
+we obtain four different results per each model and we choose the model
+parameter associated with the lowest error rate computed as: \[
+E_i^{test} [\%] = \frac{\text{Number of mis-classified data}}{\text{Total number of test data}} \cdot 100 \%
 \]
 
+Results of the two-level cross-validation are summarized in the Table
+\#, where in bold are highlighted the lowest error rates per each model
+and the associated best parameters.
+
+\begin{center}
 \begin{tabular}{rrrrrrrr}
 \toprule
-\multicolumn{1}{c}{Outer fold} & \multicolumn{1}{c}{Base-Line} & \multicolumn{2}{c}{Log. Regr. (Linear)} & \multicolumn{2}{c}{Log. Regr. (Quadratic)} & \multicolumn{2}{c}{Decision Tree} \\
+\multicolumn{1}{c}{Outer fold} & \multicolumn{1}{c}{Base-Line} & \multicolumn{2}{c}{Log. Regr. (Linear)} & \multicolumn{2}{c}{Log. Regr. (Quadratic)} & \multicolumn{2}{c}{Classification Tree} \\
 \cmidrule(l{3pt}r{3pt}){1-1} \cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6} \cmidrule(l{3pt}r{3pt}){7-8}
 i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$c_{P,i}$} & {$E_i^{test} [\%]$}\\
 \midrule
-1 & 39.73 & 1e-04 & 19.91 & 1e-05 & 12.47 & 0.005 & 11.41\\
-2 & 40.44 & 1e-04 & 19.81 & 1e-04 & 13.51 & 0.001 & 11.98\\
+1 & 39.73 & 1e-04 & 19.91 & \textbf{1e-05} & \textbf{12.47} & \textbf{0.005} & \textbf{11.41}\\
+2 & 40.44 & \textbf{1e-04} & \textbf{19.81} & 1e-04 & 13.51 & 0.001 & 11.98\\
 3 & 40.36 & 1e-05 & 20.33 & 1e-05 & 12.87 & 0.001 & 11.95\\
 4 & 39.41 & 1e-04 & 20.42 & 1e-05 & 13.21 & 0.005 & 11.76\\
 \bottomrule
 \end{tabular}
+\end{center}
+
+\[
+\text{Table : Results of the two-level cross-validation used to compare models}
+\] As we expected, Baseline error rate is about 40 \% per each fold: it
+varies because the dataset is splitted randomly in the four outer
+partitions, so each outer fold does not contain the same amount of
+\emph{Ideal} and \emph{Non-Ideal} diamonds.
+
+Regarding the Logistic Regressions (both linear and quadratic), they
+consist of solving a linear regression and then applying a sigmoid
+function in order to project data in the range {[}0,1{]}. The linear
+regression can be solved by the means of the regularized Least
+Squares\footnote{Aster, Richard C. (2013). Parameter estimation and
+  inverse problems. -- 2nd ed., Elsevier Inc., 94-95}, minimizing both
+the data misfit and the model norm:
+
+\[
+min(||X_{train}w-y_{train}||^2_2+\lambda||w||^2_2)
+\] Where \emph{w} is the model vector containing estimated weights of
+the linear regression. Weights \emph{w} are estimated as follow: \[
+w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
+\] By increasing \(\lambda\), more importance is given to the model
+(linear model for the LRL, quadratic model for the LRQ) as the first
+term of the above equations becomes negligible with respect to the
+second one, whereas by decreasing \(\lambda\) more importance is given
+to observations (second term negligible with respect to the first one).
+The regularization parameter \(\lambda\) allows to use complex models
+even in case of small datasets without overfitting the model because it
+constrains the observations to better follow the model. But in our case,
+the dataset is very large and the model is very poor with respect to the
+whole variability of data (it consists in a hyper-plane for the LRL and
+in a hyper-paraboloid for the LRQ in the multi-dimensional space defined
+by the attributes) and it does not manage to precisely explain the
+behavior of the \emph{Cut} of diamonds based on the other attributes. We
+are somehow facing with a problem of underfitting, which cannot be
+solved because more complex models would have too many parameters to be
+estimated. This the reason why we choose to consider only small values
+of \(\lambda\) and Table \# confirms that the smallest values of
+\(\lambda\) are the ones giving the smallest error rates.
+
+\begin{cols}
+
+\begin{col}{0.70\textwidth}
+As for the Classification Tree, once again the best complexity
+parameters \(c_P\) are the smallest ones, meaning that trees with less
+branches predict better the \emph{Cut} than more developed trees. The
+Classification Tree associated with the lowest error rate is plotted in
+Figure \#. As the figure shows, the classification od the diamonds in
+\emph{Ideal} or \emph{Non-Ideal Cut} is based only on the \emph{Table}
+and \emph{Depth} of them, regardless all the other attributes. According
+to Table \#, even though the tree is so simple, it better classifies
+diamonds than the Logistic Regressions, which requires the knowledge of
+more variables to achieve a worse result.
+
+\end{col}
+
+\begin{col}{0.05\textwidth}
+~
+
+\end{col}
+
+\begin{col}{0.35\textwidth}
+\includegraphics{Images/Tree1.png} {Figure \#: lowest error rate
+Classification Tree }
+
+\end{col}
+
+\end{cols}
 
 \hypertarget{question-4}{%
 \subsection{Question 4}\label{question-4}}
@@ -448,5 +528,13 @@ The answer
 
 \hypertarget{references}{%
 \section{References}\label{references}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Aster, Richard C. (2013). Parameter estimation and inverse problems.
+  -- 2nd ed., Elsevier Inc., 94-95
+\end{enumerate}
 
 \end{document}
