@@ -8,7 +8,16 @@ date: "From: 2023-10-20 To: 2023-10-31"
 output:
   pdf_document:
     toc: false
-  html_document: default
+    toc_depth: 3
+    keep_tex: true
+    extra_dependencies: "subfig"
+    includes:
+      in_header: columns.tex
+  html_document:
+    toc: true
+    toc_depth: 3
+    df_print: paged
+    css: columns.css
 nocite:
 ---
 
@@ -119,9 +128,26 @@ The coefficients say how much each attribute contributes to the prediction of th
 
 
 # CLASSIFICATION
-## Question 1
-Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components. From the top figure of page 11 of Report 1, it can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 
+## Question 1
+
+:::::: {.cols data-latex=""}
+
+::: {.col data-latex="{0.45\textwidth}"}
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). From Figure #, it can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.50\textwidth}"}
+
+![PCA](Images/PCA_cut.png)
+<span class="caption">Figure #: Sample of diamonds projected onto the space defined by the 2nd and 3rd Principal component</span>
+
+:::
+::::::
 ## Question 2 & 3
 
 Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Base-Line (BL), based only on the vector "y" of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
