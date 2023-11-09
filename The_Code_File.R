@@ -16,7 +16,7 @@ library(caret) # Package for Cross-Validation
 library(rpart) # Package for decision tree
 library(knitr)
 library(kableExtra)
-#source("setup.R") # Contained in the R_toolbox
+source("setup.R") # Contained in the R_toolbox
 
 #---------------------
 # Functions
@@ -728,6 +728,14 @@ plot(log(lambda_tmp), log(apply(Error_test2, 1, sum) / sum(CV2$TestSize)), col =
 lines(log(lambda_tmp), log(apply(Error_test2, 1, sum) / sum(CV2$TestSize)), col = "red")
 
 legend("bottomright", legend = c("Training", "Test"), col = c("black", "red"), lty = 1)
+
+plot(log(cp_tmp), log(apply(Error_train2_tree, 1, sum) / sum(CV2$TrainSize)),
+     xlab = "log(lambda)", ylab = "log(Error)"
+)
+
+lines(log(cp_tmp), log(apply(Error_train2_tree, 1, sum) / sum(CV2$TrainSize)))
+plot(log(cp_tmp), log(apply(Error_test2_tree, 1, sum) / sum(CV2$TestSize)), col = "red")
+lines(log(cp_tmp), log(apply(Error_test2_tree, 1, sum) / sum(CV2$TestSize)), col = "red")
 
 #######################################################################
 # QUADRATIC MODEL APPLIED TO THE PRINCIPAL COMPONENTS #################

@@ -134,7 +134,7 @@ The coefficients say how much each attribute contributes to the prediction of th
 :::::: {.cols data-latex=""}
 
 ::: {.col data-latex="{0.45\textwidth}"}
-Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). From Figure #, it can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure # represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -144,19 +144,23 @@ Regarding the classification problem, we want to train a model which labels whet
 ::: {.col data-latex="{0.50\textwidth}"}
 
 ![PCA](Images/PCA_cut.png)
-<span class="caption">Figure #: Sample of diamonds projected onto the space defined by the 2nd and 3rd Principal component</span>
+<span class="caption">Figure #: Sample of diamonds projected onto the space defined by the $2^{nd}$ and $3^{rd}$ Principal component</span>
 
 :::
 ::::::
+\ 
+
+The dataset seems to be almost balanced in the distribution of diamonds between the *Ideal Cut* and the *Non-Ideal Cut*: the number of *Ideal* diamonds is about 21000 (corresponding to the 40 % of the dataset) whereas *Non-Ideal* diamonds are about 32000 (60 % of the dataset). This means that there is no need to re-sample the dataset since the predictors have enough observations of both the possible outcomes.
+
 ## Question 2 & 3
 
-Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Base-Line (BL), based only on the vector "y" of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
+Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Baseline (BL), based only on the vector **y** of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
 $$ y =
 \begin{cases}
 1 & \text{if cut = "Ideal"} \\
 0 & \text{otherwise}
 \end{cases} $$
-By computing the average of "y", we obtain the value of 0.4, meaning that the dataset contains more *Non-ideal* diamonds than *Ideal* ones. According to this information, the BL model always predicts a new diamond as *Non-Ideal*, regardless its characteristics (depth, table, etc...), with a classification error of 40%.
+By computing the average of **y**, we obtain the value of 0.4 (as we found in Question 1). According to this information, the BL model always predicts a new diamond as *Non-Ideal*, regardless its characteristics (depth, table, etc...), with a classification error of 40%. 
 
 The other three models we want to analyse are:
 
@@ -164,7 +168,7 @@ The other three models we want to analyse are:
 - the Decision Tree (DT)
 - the Logistic Regression based on a quadratic combination of the first four Principal Components of the dataset (LRQ)
 
-The choice of training a forth model is made because a quadratic combination of the 7 considered attributes is very hard to be trained (26 new columns representing the quadratic model would be added to the dataset, resulting in an "X" matrix of 33 columns): the computational time is too high and the process does not converge to a solution. So, by reducing the dimensions of the problem thanks to the Principal Component Analysis, we can consider a quadratic combination of the first four Principal Components (the "X" matrix turns out to have only 14 columns).
+The choice of training a forth model is made because a quadratic combination of the 7 considered attributes is very hard to be trained (26 new columns representing the quadratic model would be added to the dataset, resulting in an **X** matrix of 33 columns): the computational time is too high and the process does not converge to a solution. So, by reducing the dimensions of the problem thanks to the Principal Component Analysis, we can consider a quadratic combination of the first four Principal Components (the **X** matrix turns out to have only 14 columns).
 
 Each of the three above models requires a complexity parameter managing the regularization of the model. Higher values of the complexity parameter mean that large weights are penalized and data are less important in the training of the model. On the other hand, lower values of the complexity parameters allow the model to better follow data but to be less general in case of new data. 
 

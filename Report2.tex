@@ -246,14 +246,15 @@ Regarding the classification problem, we want to train a model which
 labels whether a diamond has an \emph{Ideal cut} or not. This aim
 appears to be feasible according to the projection of data onto the
 space defined by the first three Principal Components (top figure of
-page 11 of Report 1). From Figure \#, it can be seen that by coloring
-data according to their \emph{cut}, they appear to be clustered,
-especially the \emph{Ideal} ones. So we aim to find a model which
-classifies diamonds in two binary classes: \emph{Ideal} and
-\emph{Non-Ideal} cut, according to their depth, table, price in DKK,
-carat in milligrams, length, width and depth in micrometers. We choose
-to use only continuous attributes and to ignore information coming from
-the color and clarity of diamonds.
+page 11 of Report 1). Figure \# represents a sample of diamonds
+projected into the space defined by the second and third Principal
+Component. It can be seen that by coloring data according to their
+\emph{cut}, they appear to be clustered, especially the \emph{Ideal}
+ones. So we aim to find a model which classifies diamonds in two binary
+classes: \emph{Ideal} and \emph{Non-Ideal} cut, according to their
+depth, table, price in DKK, carat in milligrams, length, width and depth
+in micrometers. We choose to use only continuous attributes and to
+ignore information coming from the color and clarity of diamonds.
 
 \end{col}
 
@@ -264,17 +265,28 @@ the color and clarity of diamonds.
 
 \begin{col}{0.50\textwidth}
 \includegraphics{Images/PCA_cut.png} {Figure \#: Sample of diamonds
-projected onto the space defined by the 2nd and 3rd Principal component}
+projected onto the space defined by the \(2^{nd}\) and \(3^{rd}\)
+Principal component}
 
 \end{col}
 
 \end{cols}
 
+~
+
+The dataset seems to be almost balanced in the distribution of diamonds
+between the \emph{Ideal Cut} and the \emph{Non-Ideal Cut}: the number of
+\emph{Ideal} diamonds is about 21000 (corresponding to the 40 \% of the
+dataset) whereas \emph{Non-Ideal} diamonds are about 32000 (60 \% of the
+dataset). This means that there is no need to re-sample the dataset
+since the predictors have enough observations of both the possible
+outcomes.
+
 \hypertarget{question-2-3}{%
 \subsection{Question 2 \& 3}\label{question-2-3}}
 
 Different models can be trained to classify diamonds in \emph{Ideal} and
-\emph{Non-Ideal} cut. The simplest one is the Base-Line (BL), based only
+\emph{Non-Ideal} cut. The simplest one is the Baseline (BL), based only
 on the vector ``y'' of the outputs. In our case it is represented by the
 attribute \emph{cut} transformed as follow: \[ y =
 \begin{cases}
