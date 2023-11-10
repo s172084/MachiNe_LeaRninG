@@ -13,12 +13,6 @@ output:
     extra_dependencies: "subfig"
     includes:
       in_header: columns.tex
-  html_document:
-    toc: true
-    toc_depth: 3
-    df_print: paged
-    css: columns.css
-nocite:
 ---
 
 \maketitle
@@ -66,6 +60,8 @@ Question A.1   |       x       |               |
 ---------------|---------------|---------------|
 Question A.2   |       x       |               | 
 ---------------|---------------|---------------|
+Question A.3   |       x       |               | 
+---------------|---------------|---------------|
 Question B.1   |       x       |               |  
 ---------------|---------------|---------------|
 Question B.2   |       x       |               |
@@ -97,34 +93,7 @@ Exam Problem 6 |               |       x       | -------------------------------
 \newpage
 
 # LINEAR REGRESSION
-# Section A 
 
-## Question 1 
-**Feature Transformation**
-Here, the price is converted from United States Dollars ($)  to Danish Kroner (DKK) , Euro and Pound Sterling (£).  The length , width and depth was converted from millimetres  (mm) to micrometers (um).  In addition to this, carat was converted to milligrams (mg). The original columns for carat, length, width and depth were removed.
-
-**Outliers**
-The outliers are any values that lie above the upper boundary or below the lower boundary.  There are 20 diamonds with the value of depth listed at 0 in the dataset. The smallest depth is 1,070 micrometers. Two diamonds have a width of 3,730 micrometers and 7 diamonds have the width listed as 0.  There are also 8 diamonds that have a length of 0 in the dataset. It is important to deal with outliers because they may distort the statistical linear model. 
-
-**Regression**
-The regression problem looks at the analysis of attributes in order to predict the price of a diamond. In the multiple linear regression analysis, the carat,  the table,  the length , the width and the depth of a diamond are used to estimate the price of  the diamond.
-
-## Question 2 
-
-The output variable ( y )  is the price of a diamond. The output variable is based on the linear model and also on the input variables (attributes) inside of the Matrix ( X ). The input variables are also called predictors. 
-
-The effect of each of the attributes on the Price is determined by the coefficients that are associated with each of the attributes in the linear model.  The coefficients are the estimates for each independent attribute term in the linear model. Th coefficients indicate how much the Price is changes for a 1 unit change in the attribute. In order to compute the Price of the diamond, the following equation can be used: 
-
-$$Price (Y) = b_{0} + ( b_{1} * depth)  + (b_{2} * table ) + (b_{3} * carat )  + (b_{4} * length ) + (b_{5} * width ) + (b_{6} * depth )$$
-
-
-The coefficients say how much each attribute contributes to the prediction of the Price.  The positive coefficients indicate a positive relationship. For example, as the carat increases the Price increases. The negative coefficients indicate a negative relationship. For example, as the width increases the Price decreases. 
-
-# Section B
-
-## Question 1 
-## Question 2 
-## Question 3 
 
 
 # CLASSIFICATION
@@ -133,7 +102,7 @@ The coefficients say how much each attribute contributes to the prediction of th
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.45\textwidth}"}
-Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure # represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by coloring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure # represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by colouring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -154,7 +123,6 @@ The dataset seems to be almost balanced in the distribution of diamonds between 
 In order to give the same importance to all the attributes regardless the different scales of variations, each column of the dataset is normalized with respect to its mean and its standard deviation. By doing so, estimated model parameters will be comparable and will tell important information about which attributes most contribute to the *Cut* behavior. The means and the standard deviations of each column are part of the model parameters because a new observation has to be normalized before the application of the classification model.
 
 ## Question 2 & 3
-
 Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Baseline (BL), based only on the vector **y** of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
 $$ y =
 \begin{cases}

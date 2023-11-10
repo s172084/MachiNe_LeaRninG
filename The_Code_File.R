@@ -278,8 +278,6 @@ c <- clean_diamonds_data  %>%
     caption = "Diamonds data from Tidyverse"
   )
 
-# ------ Show Collective plots 
-a | b | c
 
 #---------------------
 # Q1

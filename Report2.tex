@@ -4,28 +4,20 @@
 %
 \documentclass[
 ]{article}
-\title{Diamonds II}
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-\subtitle{02450 Introduction to Machine Learning \& Data Mining}
-\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
-\date{From: 2023-10-20 To: 2023-10-31}
-
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -44,14 +36,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Diamonds II},
-  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
@@ -101,6 +85,25 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Diamonds II},
+  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Diamonds II}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{02450 Introduction to Machine Learning \& Data Mining}
+\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
+\date{From: 2023-10-20 To: 2023-10-31}
 
 \begin{document}
 \maketitle
@@ -126,15 +129,19 @@
 \section{Contribution Table}\label{contribution-table}}
 
 \begin{longtable}[]{@{}lcc@{}}
-\toprule
+\toprule\noalign{}
 Task & Oriade & Pietro \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{Student ID} & s172084 & s231756 \\
 --------------- & --------------- & --------------- \\
 Question A.1 & x & \\
 --------------- & --------------- & --------------- \\
 Question A.2 & x & \\
+--------------- & --------------- & --------------- \\
+Question A.3 & x & \\
 --------------- & --------------- & --------------- \\
 Question B.1 & x & \\
 --------------- & --------------- & --------------- \\
@@ -163,7 +170,6 @@ Exam Problem 4 & & x \\
 Exam Problem 5 & x & \\
 --------------- & --------------- & --------------- \\
 Exam Problem 6 & & x \\
-\bottomrule
 \end{longtable}
 
 \newpage
@@ -171,73 +177,11 @@ Exam Problem 6 & & x \\
 \hypertarget{linear-regression}{%
 \section{LINEAR REGRESSION}\label{linear-regression}}
 
-\hypertarget{section-a}{%
-\section{Section A}\label{section-a}}
-
-\hypertarget{question-1}{%
-\subsection{Question 1}\label{question-1}}
-
-\textbf{Feature Transformation} Here, the price is converted from United
-States Dollars (\$) to Danish Kroner (DKK) , Euro and Pound Sterling
-(£). The length , width and depth was converted from millimetres (mm) to
-micrometers (um). In addition to this, carat was converted to milligrams
-(mg). The original columns for carat, length, width and depth were
-removed.
-
-\textbf{Outliers} The outliers are any values that lie above the upper
-boundary or below the lower boundary. There are 20 diamonds with the
-value of depth listed at 0 in the dataset. The smallest depth is 1,070
-micrometers. Two diamonds have a width of 3,730 micrometers and 7
-diamonds have the width listed as 0. There are also 8 diamonds that have
-a length of 0 in the dataset. It is important to deal with outliers
-because they may distort the statistical linear model.
-
-\textbf{Regression} The regression problem looks at the analysis of
-attributes in order to predict the price of a diamond. In the multiple
-linear regression analysis, the carat, the table, the length , the width
-and the depth of a diamond are used to estimate the price of the
-diamond.
-
-\hypertarget{question-2}{%
-\subsection{Question 2}\label{question-2}}
-
-The output variable ( y ) is the price of a diamond. The output variable
-is based on the linear model and also on the input variables
-(attributes) inside of the Matrix ( X ). The input variables are also
-called predictors.
-
-The effect of each of the attributes on the Price is determined by the
-coefficients that are associated with each of the attributes in the
-linear model. The coefficients are the estimates for each independent
-attribute term in the linear model. Th coefficients indicate how much
-the Price is changes for a 1 unit change in the attribute. In order to
-compute the Price of the diamond, the following equation can be used:
-
-\[Price (Y) = b_{0} + ( b_{1} * depth)  + (b_{2} * table ) + (b_{3} * carat )  + (b_{4} * length ) + (b_{5} * width ) + (b_{6} * depth )\]
-
-The coefficients say how much each attribute contributes to the
-prediction of the Price. The positive coefficients indicate a positive
-relationship. For example, as the carat increases the Price increases.
-The negative coefficients indicate a negative relationship. For example,
-as the width increases the Price decreases.
-
-\hypertarget{section-b}{%
-\section{Section B}\label{section-b}}
-
-\hypertarget{question-1-1}{%
-\subsection{Question 1}\label{question-1-1}}
-
-\hypertarget{question-2-1}{%
-\subsection{Question 2}\label{question-2-1}}
-
-\hypertarget{question-3}{%
-\subsection{Question 3}\label{question-3}}
-
 \hypertarget{classification}{%
 \section{CLASSIFICATION}\label{classification}}
 
-\hypertarget{question-1-2}{%
-\subsection{Question 1}\label{question-1-2}}
+\hypertarget{question-1}{%
+\subsection{Question 1}\label{question-1}}
 
 \begin{cols}
 
@@ -248,7 +192,7 @@ appears to be feasible according to the projection of data onto the
 space defined by the first three Principal Components (top figure of
 page 11 of Report 1). Figure \# represents a sample of diamonds
 projected into the space defined by the second and third Principal
-Component. It can be seen that by coloring data according to their
+Component. It can be seen that by colouring data according to their
 \emph{cut}, they appear to be clustered, especially the \emph{Ideal}
 ones. So we aim to find a model which classifies diamonds in two binary
 classes: \emph{Ideal} and \emph{Non-Ideal} cut, according to their
@@ -449,10 +393,12 @@ predictions of the \emph{Cut} mostly on these two variables.
 \begin{col}{0.20\textwidth}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Attributes & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -0.84 \\
 Depth & -0.84 \\
 Table & \textbf{-2.23} \\
@@ -461,7 +407,6 @@ Carat {[}mg{]} & -0.83 \\
 x {[}µm{]} & \textbf{-1.24} \\
 y {[}µm{]} & 0.82 \\
 z {[}µm{]} & 0.56 \\
-\bottomrule
 \end{longtable}
 
 {Table \#: estimated weights of the LRL}
@@ -476,10 +421,12 @@ z {[}µm{]} & 0.56 \\
 \begin{col}{0.20\textwidth}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Variables & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -2.31 \\
 \(PC1\) & 0.53 \\
 \(PC2\) & \textbf{-1.15} \\
@@ -495,7 +442,6 @@ Intercept & -2.31 \\
 \(PC2\cdot PC3\) & \textbf{-0.89} \\
 \(PC2\cdot PC4\) & -0.06 \\
 \(PC3\cdot PC4\) & 0.11 \\
-\bottomrule
 \end{longtable}
 
 {Table \#: estimated weights of the LRQ applied to the Principal
