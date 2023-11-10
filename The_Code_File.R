@@ -260,23 +260,7 @@ b <- clean_diamonds_data  %>%
     caption = "Diamonds data from Tidyverse"
   )
 
-c <- clean_diamonds_data  %>% 
-  ggplot(mapping = aes(x = the_depth))+
-  coord_flip() + 
-  geom_boxplot(colour = "black", fill = "cyan3",alpha = 0.7)+
-  scale_fill_brewer(palette="Accent")+
-  theme(
-    legend.position = "top",
-    axis.line = element_line(colour = "darkblue"),
-    panel.grid.major.y = element_line(linetype = "dashed"),
-    axis.text.x = element_blank())+
-  labs(
-    #title = "A Box Plot",
-    subtitle = "Depth of Diamonds",
-    x = "Diamond Depth in µm",
-    y = "The Type of Cut",
-    caption = "Diamonds data from Tidyverse"
-  )
+
 
 
 #---------------------
