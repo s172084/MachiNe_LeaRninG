@@ -12,32 +12,14 @@ library(forcats)
 library(patchwork)
 library(ggplot2)
 library(glmnet)
-library(caret) # Package for Cross-Validation
-library(rpart) # Package for decision tree
 library(knitr)
 library(kableExtra)
-source("setup.R") # Contained in the R_toolbox
-
-
-
-
-
-#---------------------
-# Access the Libraries
-#---------------------
-
-library(tidyverse)
-library(magrittr)
-library(forcats)
-library(patchwork)
+source("setup.R")      # Contained in the R_toolbox
 library(rpart)         # Package for Decision trees
 library(caret)         # Package for Cross-Validation
-library(glmnet)
 library(tidyr)
 library(neuralnet)      #Package for Neural Networks. 
 library(broom)
-# Package for nested cross-validation 
-
 #---------------------
 # Functions
 #---------------------
@@ -1393,7 +1375,6 @@ neural_net_mod <- nn(hot_diamonds_data, "pricePS", c("depth", "table", "carat_mg
 
 plotnet(neural_net_mod)
 plot(neural_net_mod)
-GGally::ggnet2(neural_net_mod)
 plot(neural_net_mod, plots = "garson", custom = TRUE) + labs(title = "Garson plot")
 
 #import the function from Github
@@ -1457,6 +1438,7 @@ q  %>%
   theme_minimal()
 
 
+# Note: Check diamonds data does not contain the date. 
 
 ################################################################################
 # -----  Classification  -------------------------------------------------------
