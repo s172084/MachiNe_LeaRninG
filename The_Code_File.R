@@ -3,9 +3,7 @@
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
-#---------------------
-# Access the Libraries
-#---------------------
+
 library(tidyverse)
 library(magrittr)
 library(forcats)
