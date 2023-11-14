@@ -31,7 +31,7 @@ knitr::include_graphics(c("Images/The_Black_Logo.png"))
 knitr::include_graphics(c("Images/Space.png"))
 ```
 
-```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='70%'}
+```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='50%'}
 # Include images and pictures using .png files.
 knitr::include_graphics(c("Images/Diamond3.png","Images/Diamond3.png"))
 ```
