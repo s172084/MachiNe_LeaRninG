@@ -1639,7 +1639,7 @@ for (k in 1:K) {
   ### end of regularized logistic regression ###
   
   # Compute squared error without regularization
-
+  
   mdl <- glmnet(X_train, y_train, family = "binomial", alpha = 0,
                 lambda = 1e-10, intercept=T)
   
@@ -1896,7 +1896,27 @@ rt_bt <- mcnemar(y, y_base, y_tree, alpha = alpha)
 rt_bp <- mcnemar(y, y_base, y_PCA, alpha = alpha)
 rt_lt <- mcnemar(y, y_lr, y_tree, alpha = alpha)
 rt_lp <- mcnemar(y, y_lr, y_PCA, alpha = alpha)
-rt_tp <- mcnemar(y, y_tree, y_PCA, alpha = alpha)
+rt_tp <- mcnemar(y, y_PCA, y_tree, alpha = alpha)
+
+bar_min <- c(rt_bl$CI[1],rt_bp$CI[1],rt_bt$CI[1],rt_lt$CI[1],rt_lp$CI[1],rt_tp$CI[1])
+bar_max <- c(rt_bl$CI[2],rt_bp$CI[2],rt_bt$CI[2],rt_lt$CI[2],rt_lp$CI[2],rt_tp$CI[2])
+bar <- c(rt_bl$thetahat,rt_bp$thetahat,rt_bt$thetahat,rt_lt$thetahat,rt_lp$thetahat,rt_tp$thetahat)
+models <- c("BL > LRL","BL > LRQ","BL > CT","LRL > CT","LRL > LRQ","LRQ > CT")
+I <- as.data.frame(matrix(c(models,bar,bar_min,bar_max),ncol=4))
+I$V2 <- as.numeric(I$V2)
+I$V3 <- as.numeric(I$V3)
+I$V4 <- as.numeric(I$V4)
+
+ggplot() +
+  xlab("Compared models") + ylab("Confidence interval of theta") +
+  geom_hline(yintercept=0,color = "red") +
+  ylim(-0.3,0.05) +
+  geom_errorbar(aes(
+    x=V1,
+    ymin=V3,
+    ymax=V4,
+    width=0.5
+  ), data=I)
 
 # p-value is always 0 because the data-set is very large and p-value formula
 # has a N at the denominator. It seems that the tree and the PCA are the
@@ -1908,6 +1928,29 @@ rt_tp <- mcnemar(y, y_tree, y_PCA, alpha = alpha)
 
 mdl_lr$a0
 mdl_lr$beta
+
+Name <- c("","Depth","Table","Price","Carat","x","y","z")
+OBS <- clean_diamonds_data[1,c(4:6,9:12)]
+colnames(OBS) <- Name[2:8]
+OBS <- t(OBS)
+colnames(OBS) <- "New"
+knitr::kable(OBS,"pipe")
+
+ST <- as.data.frame(matrix(c("Mean",mu[ind_lr, ]),nrow=1))
+colnames(ST) <- Name
+ST[nrow(ST) + 1,] <- c("St. Dev.",sigma[ind_lr, ])
+ST <- t(ST)
+ST <- ST[2:8,]
+colnames(ST) <- c("Mean","St. Dev.")
+knitr::kable(ST,"pipe")
+
+Name <- c("","Depth","Table","Price","Carat","x","y","z")
+OBS <- clean_diamonds_data[1,c(4:6,9:12)]
+OBS <- as.data.frame(scale(OBS, mu[ind_lr, ], sigma[ind_lr, ]))
+colnames(OBS) <- Name[2:8]
+OBS <- t(OBS)
+colnames(OBS) <- "New"
+knitr::kable(OBS,"pipe")
 
 mdl_PCA$a0
 mdl_PCA$beta
