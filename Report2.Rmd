@@ -408,6 +408,9 @@ $$
 $$
 Being the value 0.88 greater than 0.5, we classify the new diamond as having an *Ideal Cut*.
 
+# FINAL DISCUSSION
+
+Regression of the *price* according to the diamond attributes has made us understand that the cost of diamonds mostly depends on the its *carat*, while classification has shown that the *Ideal cut* is mostly determined by the *table* of a diamond. Results of regression agree with the analysis carried out by **Kigo, S.N. et al. (2023)**: at Page 16 Figure 10.a of their paper, they show that *price* is mostly dependent on *carat* of diamonds.
 \newpage
 
 # Exam Problems
