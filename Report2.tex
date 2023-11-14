@@ -251,7 +251,7 @@ regularisation general linear model. A lambda regularisation parameter
 manages the trade off between the bias and the variance. K = 10 Cross
 Validation was used to find the optimal lambda. The graph shows a drop
 in the Mean Squared Error and then a steady increase. Lambda controls
-the amount of regularisation that is applied to the model.(see figure 1
+the amount of regularisation that is applied to the model.(see figure A
 in the Appendix)
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -304,7 +304,7 @@ Network.} \textbf{Is one model is better than the other? Is the model
 better than the baseline ?}
 
 \hypertarget{question-1-1}{%
-\subsection{Question 1}\label{question-1-1}}
+\subsubsection{Question 1}\label{question-1-1}}
 
 \textbf{Implement two level cross validation to compare the models with}
 \(K_{1} = K_{2} = 10\) \textbf{folds.For the baseline} \textbf{model,
@@ -316,7 +316,7 @@ layers in the model. Describe the range of values you will use}
 \textbf{for }\(h\) \textbf{and }\(\lambda\).
 
 \hypertarget{question-2-1}{%
-\subsection{Question 2}\label{question-2-1}}
+\subsubsection{Question 2}\label{question-2-1}}
 
 \textbf{Produce a table similar to Table 1 using two level cross
 validation.The table should show for each of the K = 10 folds}
@@ -820,7 +820,16 @@ linear model in the interval {[}0,1{]}: \[
 \] Being the value 0.88 greater than 0.5, we classify the new diamond as
 having an \emph{Ideal Cut}.
 
-\newpage
+\hypertarget{discussion}{%
+\subsubsection{Discussion}\label{discussion}}
+
+Regression of the \emph{price} according to the diamond attributes has
+made us understand that the cost of diamonds mostly depends on the its
+\emph{carat}, while classification has shown that the \emph{Ideal cut}
+is mostly determined by the \emph{table} of a diamond. Results of
+regression agree with the analysis carried out by \textbf{Kigo, S.N. et
+al.~(2023)}: at Page 16 Figure 10.a of their paper, they show that
+\emph{price} is mostly dependent on \emph{carat} of diamonds. \newpage
 
 \hypertarget{exam-problems}{%
 \section{Exam Problems}\label{exam-problems}}
@@ -885,17 +894,6 @@ The answer
 
 \newpage
 
-\hypertarget{references}{%
-\section{References}\label{references}}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\tightlist
-\item
-  Aster, Richard C. (2013). Parameter estimation and inverse problems.
-  -- 2nd ed., Elsevier Inc., 94-95
-\end{enumerate}
-
 \hypertarget{appendix}{%
 \section{Appendix}\label{appendix}}
 
@@ -909,5 +907,179 @@ The answer
 
 \includegraphics[width=0.55\linewidth]{Images/Variable_Importance}
 \includegraphics[width=0.55\linewidth]{Images/Vaariable_Importance2}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{itemize}
+\item
+  Aster, Richard C. \emph{``Parameter estimation and inverse problems''}
+  2013, 2nd ed., Elsevier Inc., 94-95
+\item
+  Finnstats in R-bloggers, \emph{``How to use the scale function in
+  R''}, December 2021,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/}
+  \end{itemize}
+\item
+  Sarah Thomas, \emph{``Calculate Outlier Formula, A Step By Step
+  Guide''}, 24 January 2022,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://articles.outlier.org/calculate-outlier-formula}
+  \end{itemize}
+\item
+  Deepika Singh, \emph{`` Linear, Lasso and Ridge Regression with R ''},
+  12 November 2019,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r}
+  \end{itemize}
+\item
+  Preshant Gupta, \emph{``Regularisation in Machine Learning''}, 15
+  November 2017,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://towardsdatascience.com/regularization-in-machine-learning-76441ddcf99a}
+  \end{itemize}
+\item
+  Claire Pixton, \emph{``Statistical Modelling and Machine Learning in
+  R''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.philchodrow.prof/cos_2017/3_modeling_and_ml/S3_R_script_1.html}
+  \end{itemize}
+\item
+  Wikipedia - The Free Encyclopaedia , \emph{``Regularisation in
+  Mathematics''}, 27 September 2023,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://en.wikipedia.org/wiki/Regularization_(mathematics)}
+  \end{itemize}
+\item
+  Adam Petrie, \emph{``Calculating the Generalisation Error on a Model
+  on a set of Data''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://search.r-project.org/CRAN/refmans/regclass/html/generalization_error.html}
+  \end{itemize}
+\item
+  Nilimesh Halder, \emph{``Decoding the Regularization Parameter in
+  Lambda in Machine Learning''}, August 2016, GoPenAI,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://blog.gopenai.com/decoding-the-regularization-parameter-lambda-in-machine-learning-an-in-depth-exploration-of-its-afbc1380a020}
+  \end{itemize}
+\item
+  Michal Oleszak, \emph{``Regularization in R Tutorial , Ridge , Lasso
+  and ElasticNet Regression'' }
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.datacamp.com/tutorial/tutorial-ridge-lasso-elastic-net}
+  \end{itemize}
+\item
+  Goldpiggy, Dive Into Deep Learning, \emph{``3.6 Generalization''},
+  June 2020,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://d2l.ai/chapter_linear-regression/generalization.html}
+  \end{itemize}
+\item
+  Artem Sobolev, Glorfindel et. al , \emph{``Why Ridge Regression
+  Minimises Test Cost When Lambda is Negative''}, 3 November 2014,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://stackoverflow.com/questions/26715247/why-ridge-regression-minimizes-test-cost-when-lambda-is-negative}
+  \end{itemize}
+\item
+  Geeks for Geeks, \emph{``Elastic Net Regression in R Programming''},
+  28 July 2020,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.geeksforgeeks.org/elastic-net-regression-in-r-programming/}
+  \end{itemize}
+\item
+  DataScience+, \emph{``Neural Net: Tain and Test Neural Networks using
+  R''}, September 2019,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://datascienceplus.com/neuralnet-train-and-test-neural-networks-using-r}
+  \end{itemize}
+\item
+  Daniel Lüdecke,~Dominique Makowski et al.~\emph{``Performance''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://easystats.github.io/performance/articles/compare.html}
+  \end{itemize}
+\item
+  Myles Lewis,\emph{``Explaining Nested CV Models''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://cran.r-project.org/web/packages/nestedcv/vignettes/nestedcv_shap.html}
+  \end{itemize}
+\item
+  Myles Lewis, \emph{``Nested Cross Validation with Feature Selection
+  Filters''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://github.com/myles-lewis/nestedcv}
+  \end{itemize}
+\item
+  GLMNETR, \emph{``Using Nested Cross Validation, Describe and Compare
+  Fits of Various Cross Validation Informed Machine Learning Models''},
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://search.r-project.org/CRAN/refmans/glmnetr/html/ann_tab_cv_best.html}
+  \end{itemize}
+\item
+  Myles J Lewis et al , \emph{``NestedCV : An R package for fast
+  implementation of nested cross validation designed for Transcriptomics
+  and High Dimensional Data''}, 13 April 2013,
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://academic.oup.com/bioinformaticsadvances/article/3/1/vbad048/7117540}
+  \end{itemize}
+\end{itemize}
 
 \end{document}
