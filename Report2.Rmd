@@ -466,6 +466,8 @@ The answer
 knitr::include_graphics(c('Images/Generalisation_Error.png'))
 ```
 
+***
+
 **Figures B & C**
 
 ```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='55%'}
