@@ -118,7 +118,7 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 
 **Introduce a lambda regularisation parameter from the lecture notes. Estimate the generalisation error for the** **different values of lambda. Choose a range of lambda where the generalisation error first drops and then** **increases. For each value, use K = 10 Fold cross-validation to estimate the generalisation error. Include a** **figure of the estimated generalisation error as a function of lambda for the report and discuss the result.**
 
-The lambda regularisation parameter was introduced into the ridge regularisation general linear model. A lambda regularisation parameter manages the trade off between the bias and the variance. K = 10 Cross Validation was used to find the optimal lambda. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model.
+The lambda regularisation parameter was introduced into the ridge regularisation general linear model. A lambda regularisation parameter manages the trade off between the bias and the variance. K = 10 Cross Validation was used to find the optimal lambda. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model.(see figure 1 in the Appendix)
 
 
 # CLASSIFICATION
@@ -348,3 +348,9 @@ The answer
 
 # Appendix
 
+**Figure A**
+
+```{r echo=FALSE, fig.align='center', out.width='80%'}
+# Include images and pictures..
+knitr::include_graphics(c('Images/Generalisation_Error.png'))
+```
