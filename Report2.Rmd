@@ -121,13 +121,14 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 The lambda regularisation parameter was introduced into the ridge regularisation general linear model. A lambda regularisation parameter manages the trade off between the bias and the variance. K = 10 Cross Validation was used to find the optimal lambda. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model.(see figure 1 in the Appendix)
 
 
+\newpage
 # CLASSIFICATION
 
 ## Question 1
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.45\textwidth}"}
-Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure # represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by colouring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure !1 represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by colouring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -137,15 +138,13 @@ Regarding the classification problem, we want to train a model which labels whet
 ::: {.col data-latex="{0.50\textwidth}"}
 
 ![PCA](Images/PCA_cut.png)
-<span class="caption">Figure #: Sample of diamonds projected onto the space defined by the $2^{nd}$ and $3^{rd}$ Principal component</span>
+<span class="caption">Figure !1: Sample of diamonds projected onto the space defined by the $2^{nd}$ and $3^{rd}$ Principal component</span>
 
 :::
 ::::::
 \ 
 
 The dataset seems to be almost balanced in the distribution of diamonds between the *Ideal Cut* and the *Non-Ideal Cut*: the number of *Ideal* diamonds is about 21000 (corresponding to the 40 % of the dataset) whereas *Non-Ideal* diamonds are about 32000 (60 % of the dataset). This means that there is no need to re-sample the dataset since the predictors have enough observations of both the possible outcomes.
-
-In order to give the same importance to all the attributes regardless the different scales of variations, each column of the dataset is normalized with respect to its mean and its standard deviation. By doing so, estimated model parameters will be comparable and will tell important information about which attributes most contribute to the *Cut* behavior. The means and the standard deviations of each column are part of the model parameters because a new observation has to be normalized before the application of the classification model.
 
 ## Question 2 & 3
 Different models can be trained to classify diamonds in *Ideal* and *Non-Ideal* cut. The simplest one is the Baseline (BL), based only on the vector **y** of the outputs. In our case it is represented by the attribute *cut* transformed as follow:
@@ -167,7 +166,7 @@ The choice of training a forth model is made because a quadratic combination of 
 Each of the three above models requires a complexity parameter managing the regularization of the model. Higher values of the complexity parameter mean that large weights are penalized and data are less important in the training of the model. On the other hand, lower values of the complexity parameters allow the model to better follow data but to be less general in case of new data. 
 
 - Logistic regression models (LRL and LRQ) are regularized by the $\lambda$ parameter, for which we do not know the value. Its value can be chosen by training the same model on the same data but with different values of $\lambda$. As the dataset consists of 53879 diamonds after the cleaning from the outliers, only four values of $lambda$ have been tempted in the training of the LRL and LRQ models. The tempted values are: $\lambda=\{10^{-5},10^{-4},10^{-3},10^{-2}\}$ (the choice of considering so low values is discussed later). We will choose the $\lambda$ associated to the lowest generalization error computed on a dataset of diamonds independent from the one used to train the model.
-- Classification Tree is regularized by the $c_P$ parameter (note that $c_P\in[0,1]$). $c_P$ close to zero means more complex decision trees and more importance of data, $c_P$ close to 1 means easier decision trees and less importance to data. The selection of the best value of $c_P$ is the same of the Logistic Regression. The tempted values are: $c_P=\{0.05,0.01,0.005,0.001\}$. In addition, DT is dependent on two more parameters, that are the minimum number of data to create a new node (question) and the minimum number of data to create a leaf. The choice have been arbitrary made by taking them respectively equal to 100 and 1.
+- Classification Tree is regularized by the $c_P$ parameter (note that $c_P\in[0,1]$). $c_P$ close to zero means more complex decision trees and more importance of data, $c_P$ close to 1 means easier decision trees and less importance to data. The selection of the best value of $c_P$ is the same of the Logistic Regression. The tempted values are: $c_P=\{0.05,0.01,0.005,0.001\}$. In addition, CT is dependent on two more parameters, that are the minimum number of data to create a new node (question) and the minimum number of data to create a leaf. The choice have been arbitrary made by taking them respectively equal to 100 and 1.
 
 The large number of observations leads to choose a "light" cross-validation method, that is the K-fold partition of the dataset with a small number of folds. In particular, we choose four outer partitions and six inner folds. This means that each model will be trained:
 $$
@@ -178,7 +177,8 @@ $$
 E_i^{test} [\%] = \frac{\text{Number of mis-classified data}}{\text{Total number of test data}} \cdot 100 \%
 $$
 
-Results of the two-level cross-validation are summarized in the Table #, where in bold are highlighted the lowest error rates per each model and the associated best parameters.
+Results of the two-level cross-validation are summarized in the Table !2, where in bold are highlighted the lowest error rates per each model and the associated best parameters.
+\begin{center} Table !2: Results of the two-level cross-validation used to compare models \end{center}
 
 \begin{center}
 \begin{tabular}{rrrrrrrr}
@@ -195,9 +195,6 @@ i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & 
 \end{tabular}
 \end{center}
 
-$$
-\text{Table : Results of the two-level cross-validation used to compare models}
-$$
 As we expected, Baseline error rate is about 40 % per each fold: it varies because the dataset is splitted randomly in the four outer partitions, so each outer fold does not contain the same amount of *Ideal* and *Non-Ideal* diamonds.
 
 Regarding the Logistic Regressions (both linear and quadratic), they consist of solving a linear regression and then applying a sigmoid function in order to project data in the range [0,1]. The linear regression can be solved by the means of the regularized Least Squares[^1], minimizing both the data misfit and the model norm:
@@ -211,12 +208,14 @@ Where *w* is the model vector containing estimated weights of the linear regress
 $$
 w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
 $$
-By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one, whereas by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This the reason why we choose to consider only small values of $\lambda$ and Table # confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
+By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one. On the other hand, by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This is the reason why we choose to consider only small values of $\lambda$ and Table !2 confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
 
-Table # shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
+Table !3 shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.20\textwidth}"}
+<span class="caption">Table !3: estimated weights of the LRL</span>
+
 |Attributes  | Weights|
 |:-----------|-------:|
 |Intercept   |   -0.84|
@@ -227,7 +226,6 @@ Table # shows the estimated weights of the Logistic Regression based on the line
 |x [µm]      |   \textbf{-1.24}|
 |y [µm]      |    0.82|
 |z [µm]      |    0.56|
-<span class="caption">Table #: estimated weights of the LRL</span>
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -235,6 +233,8 @@ Table # shows the estimated weights of the Logistic Regression based on the line
 :::
 
 ::: {.col data-latex="{0.20\textwidth}"}
+<span class="caption">Table !4: estimated weights of the LRQ applied to the Principal Components</span>
+
 |Variables      | Weights|
 |:--------------|-------:|
 |Intercept      |   -2.31|
@@ -252,7 +252,6 @@ Table # shows the estimated weights of the Logistic Regression based on the line
 |$PC2\cdot PC3$ |   \textbf{-0.89}|
 |$PC2\cdot PC4$ |   -0.06|
 |$PC3\cdot PC4$ |    0.11|
-<span class="caption">Table #: estimated weights of the LRQ applied to the Principal Components</span>
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -261,15 +260,15 @@ Table # shows the estimated weights of the Logistic Regression based on the line
 
 ::: {.col data-latex="{0.50\textwidth}"}
 ![PCA](Images/PC_coeff.png)
-<span class="caption">Figure #: coefficients of the principal components</span>
+<span class="caption">Figure !5: coefficients of the principal components</span>
 :::
 ::::::
 
-Table # shows the estimated weights of the Logistic Regression based on the quadratic combination of the first four Principal Components (LRQ). Figure # represents how each of the Principal Components depends on the seven attributes. Looking at the weights of the Table #, it can be noticed that the second and third principal components are the most weighted ones, both in their linear and quadratic form. These Principal Components are mostly determined by the *Depth* and *Table* of diamonds (green and cyan bars of Figure #). The result agrees with the Figure ##, showing the almost clear clusters wherein data projected onto the space defined by the second and third Principal Components fall.
+Table !4 shows the estimated weights of the Logistic Regression based on the quadratic combination of the first four Principal Components (LRQ). Figure !5 represents how each of the Principal Components depends on the seven attributes. Looking at the weights of the Table !4, it can be noticed that the second and third principal components are the most weighted ones, both in their linear and quadratic form. These Principal Components are mostly determined by the *Depth* and *Table* of diamonds (green and cyan bars of Figure !5). The result agrees with the Figure !1, showing the almost clear clusters wherein data projected onto the space defined by the second and third Principal Components fall.
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.60\textwidth}"}
-As for the Classification Tree, once again the best complexity parameters $c_P$ are the smallest ones, meaning that trees with less branches predict better the *Cut* than more developed trees. The Classification Tree associated with the lowest error rate is plotted in Figure #. As the figure shows, the classification od the diamonds in *Ideal* or *Non-Ideal Cut* is based only on the *Table* and *Depth* of them, regardless all the other attributes. According to Table #, even though the tree is so simple, it better classifies diamonds than the Logistic Regressions, which requires the knowledge of more variables to achieve a worse result.
+As for the Classification Tree, once again the best complexity parameters $c_P$ are the smallest ones, meaning that trees with less branches predict better the *Cut* than more developed trees. The Classification Tree associated with the lowest error rate is plotted in Figure !6. As the figure shows, the classification of the diamonds in *Ideal* or *Non-Ideal Cut* is based only on the *Table* and *Depth* of them, regardless all the other attributes. According to Table !2, even though the tree is so simple, it better classifies diamonds than the Logistic Regressions, which requires the knowledge of more variables to achieve a worse result.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -278,11 +277,101 @@ As for the Classification Tree, once again the best complexity parameters $c_P$ 
 
 ::: {.col data-latex="{0.35\textwidth}"}
 ![PCA](Images/Tree1.png)
-<span class="caption">Figure #: lowest error rate Classification Tree </span>
+<span class="caption">Figure !6: lowest error rate Classification Tree </span>
 :::
 ::::::
 
 ## Question 4
+
+:::::: {.cols data-latex=""}
+::: {.col data-latex="{0.50\textwidth}"}
+In order to get a quantification of model performance which takes uncertainty into account, we perform a statistical evaluation of the four models pairwise. To do so, we choose to use McNemar test on the difference of performance between two models. Results from this test are valid only for conclusion about our diamond dataset and cannot be generalized to other diamond datasets. McNemar test estimates the difference in accuracy of model A and model B computing the statistic $\hat{\theta}$ as follows:
+$$
+\hat{\theta}=\frac{n_{12}-n_{21}}{N}
+$$
+Where:
+
+- $n_{12}$: Nr. of times A predicts correctly and B wrongly
+- $n_{21}$: Nr. of times B predicts correctly and A wrongly
+- $N$: Size of the sample
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.45\textwidth}"}
+![PCA](Images/McNemar.png)
+<span class="caption">Figure !7: Confidence intervals of the difference in accuracy of models</span>
+:::
+::::::
+
+So, according to the last definition, for a specific sample, if $\hat{\theta} > 0$ model A has predicted more observations correctly than model B and vice versa. We apply the LRL model of Table !3, the LRQ model of Table !4 and the CT model of Figure !5 to the whole dataset of diamonds and we compare prediction vectors pairwise based on the vector of the true outcomes. By setting a significance level of 5 %, we compute the confidence intervals of each difference in accuracy between models, shown in Figure !7. All the confidence intervals results to be negative, meaning that in all pairs of models, the second one has a better performance than the first one. Looking at the first three intervals on the left, we see that the three models (LRL, LRQ, CT) perform much better than the baseline (BL). The Logistic Regression based on the linear combination of the attributes (LRL) predicts worse than the Logistic Regression based on the quadratic combination of the Principal Components (LRQ) and the Classification Tree (CT). The furthest to the right interval tells that the LRQ and the CT are the most similar models, since their difference in performance is very close to zero. However, the CT seems to perform better than the LRQ and, considering that it requires only two attributes (*Table* and *Depth*) for the prediction, it should be the recommended model to be used, according to the analysis carried out in this report. If we compute the *p-values* of the $\hat{\theta}$s, we get numbers smaller than the zero-machine. This means that there is a very strong evidence from data that no model is identical to the others. The almost zero values come from a division for the size of the sample, that in our case is more than 53000.
+
+## Question 5
+
+Now we want to explain how the Logistic Regression model (LRL) makes a prediction. Assume that we want to determine whether the new diamond of Table !8 has an *Ideal Cut* or not. We firstly standardize the new diamond according to standardization parameters of Table !9, coming from the sample of the cross-validation which gave the best generalization error. Here is an example of how we standardize *Depth*, getting the standardized diamond of Table !0:
+$$
+\text{Standardized Depth}=\frac{\text{Depth}-\mu_{Depth}}{\sigma_{Depth}}=\frac{61.5-61.7}{1.43}=-0.17
+$$
+
+:::::: {.cols data-latex=""}
+::: {.col data-latex="{0.25\textwidth}"}
+Table !8: New diamond to be classified
+
+|      |      New|
+|:-----|--------:|
+|Depth |   61.5|
+|Table |   55.0|
+|Price | 2303.8|
+|Carat |   46.0|
+|x     | 3950.0|
+|y     | 3980.0|
+|z     | 2430.0|
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.40\textwidth}"}
+Table !9: Parameters of the standardization
+
+|      |Mean             |St. Dev.         |
+|:-----|:----------------|:----------------|
+|Depth |61.7 |1.43 |
+|Table |57.4 |2.23 |
+|Price |27698.1 |28186.59 |
+|Carat |159.0 |94.10 |
+|x     |5726.0 |1118.19 |
+|y     |5727.9 |1110.16 |
+|z     |3536.3 |690.66  |
+:::
+
+::: {.col data-latex="{0.05\textwidth}"}
+\ 
+:::
+
+::: {.col data-latex="{0.25\textwidth}"}
+Table !0: Standardized new diamond
+
+|      |        New|
+|:-----|----------:|
+|Depth | -0.17|
+|Table | -1.09|
+|Price | -0.90|
+|Carat | -1.20|
+|x     | -1.58|
+|y     | -1.57|
+|z     | -1.60|
+:::
+::::::
+\ 
+Now we apply the logistic function to the linear combination of the weights of the model of Table ## multiplied to the attributes of the new standardized diamond of Table #, so that we map the output of the linear model in the interval [0,1]:
+$$
+\text{Ideal Cut}=\frac{1}{1+e^{-0.84-0.84\cdot(-0.17)-2.23\cdot(-1.09)+0.60\cdot(-0.90)-0.83\cdot(-1.20)-1.24\cdot(-1.58)+0.82\cdot(-1.57)+0.56\cdot(-1.60)}}=0.88
+$$
+Being the value 0.88 greater than 0.5, we classify the new diamond as having an *Ideal Cut*.
 
 \newpage
 
