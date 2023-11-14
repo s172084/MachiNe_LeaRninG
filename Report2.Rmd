@@ -142,6 +142,19 @@ So, in summary, the coefficients explain how much each attribute contributes to 
 In Ridge Regression, it is possible to calculate y using the coefficients $\hat{\beta}$ and the lambda regularisation parameter.Lambda is used to shrink the coefficients in order avoid over-fitting the model. 
 The Figure B and Figure C show that the carat is the attribute with the  highest "variable importance". (see figures B & C in the Appendix)
 
+## Section B
+**In this section is a comparison of 3 models : A baseline model , A regularised linear** **regression model and an Artificial Neural Network.**
+**Is one model is better than the other? Is the model better than the baseline ?**
+
+## Question 1
+**Implement two level cross validation to compare the models with** $K_{1} = K_{2} = 10$ **folds.For the baseline** **model, apply linear regression with no features. Compute the mean of **$ y $ **on the training data and use this** **value to predict** $y$ **on the test data. Fit an Artificial Neural Network model to the data. Select a** **reasonable range of values for (h) hidden layers in the model. Describe the range of values you will use**
+**for **$h$ **and **$\lambda$.
+
+
+## Question 2 
+**Produce a table similar to Table 1 using two level cross validation.The table should show for each of the K = 10 folds** **the optimal value of the number of hidden units and the regularisation strength** $h_{i}^*%$ **and** $\lambda_{i}^*$ **respectively as found after each inner loop, as well as the estimated generalisation errors by evaluating on the test** **data. It should include the baseline test error, evaluated on the test data. Re-use the train test splits for all 3** **methods to allow statistical comparison. The error measure is the squared loss per observation.**
+**Include a Table in the report and briefly discuss what it tells you at a glance.**
+
 
 \newpage
 # CLASSIFICATION
