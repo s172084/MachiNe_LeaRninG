@@ -120,6 +120,28 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 
 The lambda regularisation parameter was introduced into the ridge regularisation general linear model. A lambda regularisation parameter manages the trade off between the bias and the variance. K = 10 Cross Validation was used to find the optimal lambda. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model.(see figure 1 in the Appendix)
 
+***
+
+### Question 3
+**Explain how the output (y) from the linear model with the smallest generalisation**
+**error is computed using X. What is the effect of an individual attribute x on the** 
+**output y of the linear model? Does the effect of the individual attribute make sense**
+**based on your understanding of the problem?**
+
+The output variable ( Y )  is the Price of  the diamond. This is based on the linear model and also on the input variables (attributes) inside of the Matrix X. To compute the Price of the diamond, the following equation can be used: 
+
+$$\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i}$$
+
+The input variables are also called predictors. The effect of each of the attributes on the Price is determined by the coefficients associated with each of the attributes in the linear model. 
+The coefficients indicate how much each attribute contributes to the prediction of the diamond Price. 
+To compute the Price of the diamond the following equation can be used: 
+
+$$ Price = \beta_{0} + (\beta_{1} * depth) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth )$$
+So, in summary, the coefficients explain how much each attribute contributes to the prediction of the Price.  The positive coefficients indicate a positive relationship and the negative coefficients indicate a negative relationship.  For example, as the carat increases so too does the Price of the diamond . As the length increases, the Price of the diamond decreases. The table must be less than the width of the diamond in a premium cut diamond. 
+
+In Ridge Regression, it is possible to calculate y using the coefficients $\hat{\beta}$ and the lambda regularisation parameter.Lambda is used to shrink the coefficients in order avoid over-fitting the model. 
+The Figure B and Figure C show that the carat is the attribute with the  highest "variable importance". (see figures B & C in the Appendix)
+
 
 \newpage
 # CLASSIFICATION
@@ -442,4 +464,12 @@ The answer
 ```{r echo=FALSE, fig.align='center', out.width='80%'}
 # Include images and pictures..
 knitr::include_graphics(c('Images/Generalisation_Error.png'))
+```
+
+**Figures B & C**
+
+```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='55%'}
+
+# Include images and pictures..
+knitr::include_graphics(c('Images/Variable_Importance.png','Images/Vaariable_Importance2.png'))
 ```

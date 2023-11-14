@@ -4,28 +4,20 @@
 %
 \documentclass[
 ]{article}
-\title{Diamonds II}
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-\subtitle{02450 Introduction to Machine Learning \& Data Mining}
-\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
-\date{From: 2023-10-20 To: November 15, 2023}
-
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -44,14 +36,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Diamonds II},
-  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
@@ -101,6 +85,25 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Diamonds II},
+  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Diamonds II}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{02450 Introduction to Machine Learning \& Data Mining}
+\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
+\date{From: 2023-10-20 To: November 15, 2023}
 
 \begin{document}
 \maketitle
@@ -126,10 +129,12 @@
 \section{Contribution Table}\label{contribution-table}}
 
 \begin{longtable}[]{@{}lcc@{}}
-\toprule
+\toprule\noalign{}
 Task & Oriade & Pietro \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{Student ID} & s172084 & s231756 \\
 --------------- & --------------- & --------------- \\
 Question A.1 & x & \\
@@ -165,7 +170,6 @@ Exam Problem 4 & & x \\
 Exam Problem 5 & x & \\
 --------------- & --------------- & --------------- \\
 Exam Problem 6 & & x \\
-\bottomrule
 \end{longtable}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -249,6 +253,47 @@ Validation was used to find the optimal lambda. The graph shows a drop
 in the Mean Squared Error and then a steady increase. Lambda controls
 the amount of regularisation that is applied to the model.(see figure 1
 in the Appendix)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{question-3}{%
+\subsubsection{Question 3}\label{question-3}}
+
+\textbf{Explain how the output (y) from the linear model with the
+smallest generalisation} \textbf{error is computed using X. What is the
+effect of an individual attribute x on the} \textbf{output y of the
+linear model? Does the effect of the individual attribute make sense}
+\textbf{based on your understanding of the problem?}
+
+The output variable ( Y ) is the Price of the diamond. This is based on
+the linear model and also on the input variables (attributes) inside of
+the Matrix X. To compute the Price of the diamond, the following
+equation can be used:
+
+\[\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i}\]
+
+The input variables are also called predictors. The effect of each of
+the attributes on the Price is determined by the coefficients associated
+with each of the attributes in the linear model. The coefficients
+indicate how much each attribute contributes to the prediction of the
+diamond Price. To compute the Price of the diamond the following
+equation can be used:
+
+\[ Price = \beta_{0} + (\beta_{1} * depth) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth )\]
+So, in summary, the coefficients explain how much each attribute
+contributes to the prediction of the Price. The positive coefficients
+indicate a positive relationship and the negative coefficients indicate
+a negative relationship. For example, as the carat increases so too does
+the Price of the diamond . As the length increases, the Price of the
+diamond decreases. The table must be less than the width of the diamond
+in a premium cut diamond.
+
+In Ridge Regression, it is possible to calculate y using the
+coefficients \(\hat{\beta}\) and the lambda regularisation
+parameter.Lambda is used to shrink the coefficients in order avoid
+over-fitting the model. The Figure B and Figure C show that the carat is
+the attribute with the highest ``variable importance''. (see figures B
+\& C in the Appendix)
 
 \newpage
 
@@ -462,10 +507,12 @@ predictions of the \emph{Cut} mostly on these two variables.
 {Table !3: estimated weights of the LRL}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Attributes & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -0.84 \\
 Depth & -0.84 \\
 Table & \textbf{-2.23} \\
@@ -474,7 +521,6 @@ Carat {[}mg{]} & -0.83 \\
 x {[}µm{]} & \textbf{-1.24} \\
 y {[}µm{]} & 0.82 \\
 z {[}µm{]} & 0.56 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -490,10 +536,12 @@ z {[}µm{]} & 0.56 \\
 Components}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Variables & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -2.31 \\
 \(PC1\) & 0.53 \\
 \(PC2\) & \textbf{-1.15} \\
@@ -509,7 +557,6 @@ Intercept & -2.31 \\
 \(PC2\cdot PC3\) & \textbf{-0.89} \\
 \(PC2\cdot PC4\) & -0.06 \\
 \(PC3\cdot PC4\) & 0.11 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -657,10 +704,12 @@ the standardized diamond of Table !0: \[
 Table !8: New diamond to be classified
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 & New \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{61.5} \\
 Table & 55.0 \\
 Price & 2303.8 \\
@@ -668,7 +717,6 @@ Carat & 46.0 \\
 x & 3950.0 \\
 y & 3980.0 \\
 z & 2430.0 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -683,10 +731,12 @@ z & 2430.0 \\
 Table !9: Parameters of the standardization
 
 \begin{longtable}[]{@{}lll@{}}
-\toprule
+\toprule\noalign{}
 & Mean & St.~Dev. \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{61.7} & \textbf{1.43} \\
 Table & 57.4 & 2.23 \\
 Price & 27698.1 & 28186.59 \\
@@ -694,7 +744,6 @@ Carat & 159.0 & 94.10 \\
 x & 5726.0 & 1118.19 \\
 y & 5727.9 & 1110.16 \\
 z & 3536.3 & 690.66 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -709,10 +758,12 @@ z & 3536.3 & 690.66 \\
 Table !0: Standardized new diamond
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 & New \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{-0.17} \\
 Table & -1.09 \\
 Price & -0.90 \\
@@ -720,7 +771,6 @@ Carat & -1.20 \\
 x & -1.58 \\
 y & -1.57 \\
 z & -1.60 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -817,5 +867,10 @@ The answer
 \textbf{Figure A}
 
 \begin{center}\includegraphics[width=0.8\linewidth]{Images/Generalisation_Error} \end{center}
+
+\textbf{Figures B \& C}
+
+\includegraphics[width=0.55\linewidth]{Images/Variable_Importance}
+\includegraphics[width=0.55\linewidth]{Images/Vaariable_Importance2}
 
 \end{document}
