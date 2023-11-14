@@ -2,9 +2,9 @@
 title: "Diamonds II"
 subtitle: "02450 Introduction to Machine Learning & Data Mining"
 author:
- - "Oriade Simpson (s172084)"
- - "Pietro Lombardo (s231756)"
-date: "From: 2023-10-20 To: 2023-10-31"
+- "Oriade Simpson (s172084)"
+- "Pietro Lombardo (s231756)"
+date: "From: 2023-10-20 To: November 15, 2023"
 output:
   pdf_document:
     toc: false
@@ -12,7 +12,7 @@ output:
     keep_tex: true
     extra_dependencies: "subfig"
     includes:
-      in_header: columns.tex
+       in_header: columns.tex
 ---
 
 \maketitle
@@ -21,19 +21,15 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
 ```{r echo=FALSE, fig.align='center', out.width='30%'}
 # Include images and pictures using .png files.
 knitr::include_graphics(c("Images/The_Black_Logo.png"))
 ```
 
-
 ```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='37%'}
 # Include images and pictures using .png files.
 knitr::include_graphics(c("Images/Space.png"))
 ```
-
 
 ```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='70%'}
 # Include images and pictures using .png files.
@@ -90,11 +86,34 @@ Exam Problem 5 |       x       |               |
 ---------------|---------------|---------------|
 Exam Problem 6 |               |       x       | 
 ------------------------------------------------
+                    - https://github.com/s172084/MachiNe_LeaRninG/tree/main
+
 
 \newpage
 
 # LINEAR REGRESSION
+## Section A
+### Question 1
 
+**Explain what is predicted based on which other variables, and what you hope to accomplish by the regression.**
+**Mention your feature transformation choices such as 1 out of K coding.**
+**Apply a feature transformation to your data matrix X, such that each column has a mean of 0 and a standard deviation of 1**
+
+This project uses the Diamonds Dataset from The Grammar of Graphics (**ggplot2**) package, which is part of the TidyVerse package. The Diamonds Dataset contains the Prices and other attributes of over 50,000 round cut diamonds. The package was created by Hadley Wickham and other data scientists to be used with the statistical programming language called R .
+
+Multiple Linear Regression is performed in order to predict the Price of a Diamond based on the other attributes. In this section,  the subgroup of diamonds under analysis come from the **Premium Group** in the colour category **D**. 
+This subgroup of diamonds have a varied clarity. 
+
+The continuous attributes such as the carat, the table, the length, the width and the depth of a diamond are used to estimate the price of the diamond. The **“SLM Calculate a prediction”** function takes new observation of a diamond that is 142 mg in weight and predicts that the price of that diamond is £2,909 or approximately DKK 24,830 . 
+
+In terms of feature transformations, the price of a diamond is converted from United States Dollars ($) to Danish Kroner (DKK) , (€) Euro and (£) Pound Sterling. The categorical discrete attributes of diamond colour, diamond clarity and diamond cut have either been removed or one hot encoded for linear regression. This is due to issues with multicollinearity of the dummy variables. 
+
+The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, the, values that lie outside of the upper boundary and lower boundaries, were removed. 
+
+In the dataset there are diamonds with a length, width or depth of 0.0 . The smallest measured depth is 1,070 µm and exactly two diamonds have a width of 3,730 µm. The “determine outliers”  function was used to estimate the upper and lower limits to be able to deal with outliers. It was important to deal with outliers, by removing them, due to the fact that these measurements may distort the statistical linear model. 
+
+
+***
 
 
 # CLASSIFICATION
