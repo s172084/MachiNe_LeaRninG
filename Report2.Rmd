@@ -140,7 +140,7 @@ The output variable $Y$ is the Price of  the diamond. To compute the Price of th
 
 $$\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon $$
 Or 
-$$ Price = \beta_{0} + ( \beta_{1} * depth) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth )$$
+$$ Price = \beta_{0} + ( \beta_{1} * total.depth.percentage) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth)$$
 $\hat{y}$ is based on a linear model and also on the input variables (attributes) inside of the Matrix X. The effect of each of the attributes on the Price is determined by the coefficients associated with each of the attributes in the linear model. The coefficients indicate how much each attribute contributes to the prediction of the diamond Price. The positive coefficients indicate a positive relationship and the negative coefficients indicate a negative relationship.  For example, as the carat increases so too does the Price of the diamond . As the length increases, the Price of the diamond decreases.
 
 
