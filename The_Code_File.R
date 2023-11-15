@@ -3,7 +3,9 @@
 
 # setwd("C:/Users/Alessandro/Desktop/PIETRO/Università/3_Machine Learning and Data Mining/Exercises/02450Toolbox_R")
 
-
+#---------------------
+# Access the Libraries
+#---------------------
 library(tidyverse)
 library(magrittr)
 library(forcats)
@@ -18,6 +20,11 @@ library(caret)         # Package for Cross-Validation
 library(tidyr)
 library(neuralnet)      #Package for Neural Networks. 
 library(broom)
+
+################################################################################
+# ----- Regression  -------------------------------------------------------
+################################################################################
+
 #---------------------
 # Functions
 #---------------------
@@ -25,7 +32,6 @@ source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R
 source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R/Tools/forwardSelection.R")
 source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R/Tools/bmplot.R")
 source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R/Tools/train_neural_network.R")
-source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R/Tools/plot.nnet.R") #doesn't work
 source("/Users/m.o.l.s/Desktop/Machine Learning /7. All Toolboxes/02450Toolbox_R/Tools/statistics.R")
 
 SLM_make_linear_model <- function(x, y) {
@@ -165,6 +171,7 @@ data(diamonds)
 #---------------------
 diamonds
 colnames(diamonds)
+summary(diamonds)
 
 #---------------------
 # Transform the Data
@@ -226,7 +233,7 @@ boxplot(data.frame(x= new_diamonds_data$the_length,
                    y= new_diamonds_data$the_width,
                    z= new_diamonds_data$the_depth),
         col = viridisLite::viridis(3), 
-        main = "x , y and z Attributes of Diamonds", 
+        main = "x , y and z \nAttributes of Diamonds", 
         family = "Avenir")
 #---------------------
 
@@ -270,7 +277,7 @@ clean_diamonds_data  %>%
   coord_flip() + 
   geom_boxplot(colour = "black", alpha = 0.7)+
   scale_fill_brewer(palette="Accent")+
-  #facet_wrap(~ cut)+
+  facet_wrap(~ cut)+
   theme(
     legend.position = "top",
     axis.line = element_line(colour = "darkblue"),
@@ -284,9 +291,6 @@ clean_diamonds_data  %>%
     caption = "Diamonds data from Tidyverse"
   )
 
-#---------------------
-# Q1
-#---------------------
 
 # Aim: Predict the price of Premium diamonds
 # with colour of D
@@ -305,7 +309,6 @@ filt_diamonds_data
 # The Data Set <<<---
 #---------------------
 
-
 # Remove the categories (and some others.. )
 clear_diamonds_data <- filt_diamonds_data %>% 
   select(-c(cut,color,clarity,priceDKK, priceEuro, pricePS))
@@ -315,11 +318,18 @@ clear_diamonds_data
 # Scale : A mean of 0 and standard deviation of 1
 # --------------------------------------------------
 # The categorical ones cant be scaled, just X, and not y
+clear_diamonds_data
+
+# Remove Date from Radiant.model library
+if ("date" %in% colnames(clear_diamonds_data)) {
+  clear_diamonds_data <- clear_diamonds_data %>%
+    select(-date)
+}
+
 scale_diamonds_data <- scale(clear_diamonds_data, 
                              center = TRUE, 
                              scale = TRUE) %>% 
   as_tibble()
-
 
 scale_diamonds_data
 
@@ -330,26 +340,28 @@ scaled_diamonds_data <- cbind(Price = filt_diamonds_data$pricePS,
 head(scaled_diamonds_data)
 
 
-# --------------------------------------------------
-# Question 1(a)
-# --------------------------------------------------
-# linear regression
+###################################
+# -------  Question 1(a) ---------
+###################################
+
+###################################
+# --- Simple Linear Regression ---
+###################################
 
 
-# non-scaled : carat(x) versus price (y)
-SLM_make_linear_model(x = filt_diamonds_data$carat_mg,
-                      y = filt_diamonds_data$pricePS)
-
+head(scaled_diamonds_data)
 # scaled
 SLM_make_linear_model(x = scaled_diamonds_data$carat_mg,
                       y = scaled_diamonds_data$Price)
 
 # predict the price, based on the carat of 142. 
-SLM_calculate_a_prediction(y = filt_diamonds_data$pricePS,
-                           x = filt_diamonds_data$carat_mg,
+SLM_calculate_a_prediction(y = scaled_diamonds_data$Price,
+                           x = scaled_diamonds_data$carat_mg,
                            new_observation = 142)
-head(scaled_diamonds_data)
 
+###################################
+# -- Multiple Linear Regression --
+###################################
 # Multiple Linear Regression 
 # --* Parameter Estimation *----
 multiple_linear_model <- lm(Price ~ depth +
@@ -363,7 +375,6 @@ multiple_linear_model <- lm(Price ~ depth +
 broom::tidy(multiple_linear_model)
 
 
-
 # Prediction of a new diamond price, based on multiple linear regression
 new_diamond <- data.frame(depth = 40.5, 
                           table =  60, 
@@ -374,64 +385,47 @@ new_diamond <- data.frame(depth = 40.5,
 
 new_diamond
 
-## Calculate confidence and prediction intervals based on the model. 
+## Calculate confidence intervals based on the model. 
 CI <- predict(multiple_linear_model, 
               newdata = new_diamond, 
               interval="confidence", 
               level=0.95)
 CI
 
+## Calculate prediction intervals based on the model. 
 PI <- predict(multiple_linear_model,
               newdata = new_diamond,
               interval="prediction",
               level=0.95)
 PI
-# --------------------------------------------------
-# Question 2(a)
-# --------------------------------------------------
-filt_diamonds_data
-clear_diamonds_data
-head(scaled_diamonds_data)
 
-#------------------------------------------------------------------
-# One Hot Encoded : Multicollinearity...
-#------------------------------------------------------------------
-# Dummy Variables = M-1 (subtract cut)
 
-# filt_diamonds_data <-one_hot(filt_diamonds_data)
-# filt_diamonds_data
+# One Hot Encoded : Multicollinearity
+head(nestedcv::one_hot(filt_diamonds_data))
 
-# One-Hot Encoded Diamonds Data
-# hot_diamonds_data <- filt_diamonds_data %>% 
-#   
-#   # One-Hot Encode Categorical Variables (not necessary)
-#   mutate(cut = as.numeric(as.factor(cut)) - 1 ,
-#     color = as.numeric(as.factor(color)) - 1 , 
-#     clarity = as.numeric(as.factor(clarity)) - 1) %>% 
-#   
-#   # Remove price in euros and DKK for now. 
-#   select(-c(priceDKK,priceEuro))
-#     
-# 
-# hot_diamonds_data 
-# 
-# # Put the price first. 
-# hot_diamonds_data <- hot_diamonds_data %>% 
-#   select(pricePS, everything()) %>% 
-#      # removing the categorical variables (is it necessary?)
-#    select(-c(cut, color, clarity))
-# 
-# head(hot_diamonds_data)
+# alternative...
+# One-Hot Encode Categorical Variables
+# Remove price in euros and DKK for now. 
 
-hot_diamonds_data <- scaled_diamonds_data
+hot_diamonds_data <- filt_diamonds_data %>% 
+  mutate(cut = as.numeric(as.factor(cut)) - 1 ,
+         color = as.numeric(as.factor(color)) - 1 ,
+         clarity = as.numeric(as.factor(clarity)) - 1)
+#select(-c(priceDKK,priceEuro)) %>% 
+#select(pricePS, everything()) %>%
+#select(-c(cut, color, clarity)) %>% 
+#scale(center = TRUE, scale = FALSE) %>% as.matrix()
 
-hot_diamonds_data <- hot_diamonds_data %>% 
-  rename(pricePS = Price)
 
 head(hot_diamonds_data)
-# ----------------------------------------------------
-# Training and Test Data Split. 
-# ----------------------------------------------------
+###################################
+# -------  Question 2(a) ---------
+###################################
+head(scaled_diamonds_data)
+
+###################################
+# -Training and Test Data Split. -
+###################################
 
 set.seed(123)
 
@@ -439,104 +433,98 @@ set.seed(123)
 train_percent <- 0.7
 
 # make the index vector for splitting the data 
-train_indices <- caret::createDataPartition(hot_diamonds_data$pricePS,
+train_indices <- caret::createDataPartition(scaled_diamonds_data$Price,
                                             p = train_percent, 
                                             list = FALSE)
 
 # Create training and holdout (test) sets
-diamonds_train_data <- hot_diamonds_data[train_indices, ]
-diamonds_test_data <- hot_diamonds_data[-train_indices, ]
+diamonds_train_data <- scaled_diamonds_data[train_indices, ]
+diamonds_test_data <- scaled_diamonds_data[-train_indices, ]
 
-
-dim(diamonds_train_data)
-dim(diamonds_test_data)
-
-# ----------------------------------------------------
-# Training X y  = Sparkle. 
-# ----------------------------------------------------
+###################################
+# -Training Data X y  = Sparkle.. -
+###################################
 
 sparkle_X <-diamonds_train_data %>%
-  select(-pricePS)%>% as.matrix()
+  select(-Price)%>% as.matrix()
 
-sparkle_X
-
+head(sparkle_X)
 
 sparkle_y <- diamonds_train_data %>% 
-  select(pricePS) %>% as.matrix()
+  select(Price) %>% as.matrix()
 
-sparkle_y
+head(sparkle_y)
 
-# Training Data is Sparkle.
+###################################
+# -- Test Data X y  = Glitter. --
+###################################
 
-# ----------------------------------------------------
-# The data is already scaled... 
-# sparkle_X <- diamonds_train_data %>% 
-#   select(-pricePS) %>% 
-#   scale(center = TRUE, scale = FALSE) %>% as.matrix()
-# ----------------------------------------------------
-
-# ----------------------------------------------------
-# Test X y  = Glitter
-# ----------------------------------------------------
 glitter_X <- diamonds_test_data %>% 
-  select(-pricePS) %>% as.matrix()
+  select(-Price) %>% as.matrix()
 
-glitter_X
+head(glitter_X)
 
-glitter_y <- diamonds_test_data %>% select(pricePS)  %>% as.matrix()
-glitter_y
+glitter_y <- diamonds_test_data %>% 
+  select(Price) %>% as.matrix()
 
+head(glitter_y)
+length(glitter_y)
+dim(glitter_X)
 # -----------------------------------------------------------------------
 #   
 #     Perform 10 Fold Cross Validation to Select the optimal Lambda 
-#     Ridge Regularisation. 
+#     Ridge Regularisation
 #
 # -----------------------------------------------------------------------
+###############################################
+# -- Introduce a Regularisation Parameter. --
+###############################################
 
 # Make a sequence of lambdas. 
 lambda_seq <- 10^seq(-1, 13, length.out = 100)
 lambda_seq
 
+# Information on K Fold Cross Validation 
+?cv.glmnet
 
 set.seed(123)
+
 # Ridge regression model with cross-validation to find optimal lambda
 ridge_model <- cv.glmnet(sparkle_X, sparkle_y, 
                          alpha = 0,  # Ridge == 0
                          lambda = lambda_seq, 
                          standardize = TRUE,
                          nfolds = 10, 
-                         type.measure = "mse") 
+                         type.measure = "mse", 
+                         trace.it=1) 
 
-# ----------------------
-# Error
-# ----------------------
-
-cat("The cross-validation Error:")
+# The cross-validation Error
 plot(ridge_model$cvm) 
 plot(ridge_model)
 mean(ridge_model$cvm) # Red line is the mean
 
-# ----------------------
-# Optimal Lambda
-# ----------------------
+###################################
+# -- Optimal Lambda --
+###################################
 cat("The optimal lambda is:")
+
+set.seed(123)
 optimal_lambda <- ridge_model$lambda.min
 optimal_lambda 
 
-# -----------------------------------------
-# K = 10 Fold Cross Validation Results 
-# -----------------------------------------
 
+###################################
+# ------   Visualisation   --------
+###################################
 cvresults <- data.frame(broom::tidy(ridge_model)) %>% 
-  arrange(lambda) %>% 
-  head(n = 10)
+  arrange(lambda)
 
-# ----------------------
-# Results
-# ----------------------
+
+# >>>>>>>>>>>>>>>>>>>>>
+
 cvresults
 
-
+# <<<<<<<<<<<<<<<<<<<<<<
 
 fig1 <- ggplot(data = cvresults, 
                mapping = aes(x = lambda,y = estimate,
@@ -556,51 +544,85 @@ fig1 <- ggplot(data = cvresults,
 
 fig1 
 
-
 ggsave("Images/figure1.png",
        fig1,
        width = 5,
        height = 5)
-
-
 plot.new()
 
-# --------------------------------------------------
-# Question 3(a)
-# --------------------------------------------------
+###################################
+# --Ridge Model : Regularised  ---
+###################################
 
-# --------------------------------------------------
-#   
-#     Regularised Linear Model : Ridge
-#
-# --------------------------------------------------
-
-# Fit final model using the training data. 
-# Get its sum of squared residuals and multiple R-squared
 final_ridge_model <- glmnet(sparkle_X, sparkle_y, 
                             alpha = 0,
                             lambda = optimal_lambda,
                             standardize = TRUE)
 
 final_ridge_model
-
 broom::tidy(final_ridge_model)
-broom::glance(final_ridge_model)
 
-# --------------------------------------------------
+
+# evaluate the results. 
+eval_results <- function(true, predicted, df) {
+  residuals <- true- predicted
+  MSE <- mean(residuals^2)
+  SSE <- sum((predicted - true)^2)
+  SST <- sum((true - mean(true))^2)
+  R_square <- 1 - SSE / SST
+  Mult_Rsq <- cor(true, predicted)^2
+  RMSE = sqrt(SSE/nrow(df))
+  RSS <- sum(residuals^2)
+  
+  
+  # Model performance metrics
+  data.frame(
+    RMSE = RMSE,
+    Rsquare = R_square,
+    Mult_Rsq  = Mult_Rsq,
+    MSE = MSE, 
+    RSS = RSS
+  )
+  
+}
+
+
+# Prediction and evaluation on train data
+#model         #lambda           # training data 
+predictions_train <- predict(final_ridge_model, s = optimal_lambda, newx = sparkle_X)
+eval_results(sparkle_y, predictions_train, sparkle_X)
+
+# Prediction and evaluation on test data: Use the fitted model to make predictions on the test data
+
+#model         #lambda           # test data
+predictions_test <- predict(final_ridge_model, s = optimal_lambda, newx = glitter_X)
+eval_results(glitter_y, predictions_test, glitter_X)
+
+
+# RMSE
+ModelMetrics::rmse(glitter_y,
+                   predicted = predictions_test,
+                   final_ridge_model)
+
+# Mean Absolute Error using the test data. 
+ModelMetrics::mae(glitter_y, 
+                  predicted = predictions_test, 
+                  final_ridge_model)
+
+# Jeffreys Confidence interval: 
+calculate_jeffrey_interval(glitter_y, predictions_test)
+
+
+###################################
+# --Ridge Model Visualisation  ---
+###################################
 # Prepare the test data. 
 # Use the fitted model to make predictions on the test data
 diamonds_yhat <- predict(final_ridge_model, 
                          s = optimal_lambda, 
                          newx = glitter_X)
 
-# predictions are also known as yhat
-diamonds_yhat
-plot(diamonds_yhat)
 
-
-
-# Scatter plot of actual price against estimated price.
 ggplot(
   mapping=aes(x = glitter_y ,
               y = diamonds_yhat)) +
@@ -615,8 +637,6 @@ ggplot(
   theme_minimal() +
   theme(text = element_text(family = "Avenir"))
 
-# --------------------------------------------------
-# Multiple R squared is: 
 # Calculate the residuals using the test data and predicted data. 
 residuals <- glitter_y - diamonds_yhat
 
@@ -626,62 +646,150 @@ hist(glitter_y - diamonds_yhat, breaks = 41,
      col = "darkgreen", 
      family = "Avenir")
 
-# Calculate the training error (MSE)
-mse <- mean(residuals^2)
-cat("The MSE is: ", mse)
-
-# Calculate the RSS (sum of squared residuals)
-rss <- sum(residuals^2)
-cat("The sum of squared residuals is: ", rss)
-
-# Multiple R-squared 
-rsq <- cor(glitter_X, diamonds_yhat)^2 
-rsq 
-plot(rsq)
-
-#RMSE (could have square rooted mse.. but.)
-ModelMetrics::rmse(glitter_y, predicted = diamonds_yhat, final_ridge_model)
-
-# Mean Absolute Error using the test data. 
-ModelMetrics::mae(glitter_y, predicted = diamonds_yhat, final_ridge_model)
-
-# Jeffreys Confidence interval: 
-calculate_jeffrey_interval(glitter_y, diamonds_yhat)
+###################################
+# -------- SECTION B  -------------
+###################################
 
 
-
-# --------------------------------------------------
-# Question 1(b)
-# --------------------------------------------------
+###################################
+# -------- Question 1(b) ----------
+###################################
 ## Question 1 
 # Compare 3 models:
 #   - A baseline linear regression model with no features
 #   - A regularised linear model 
 #   - An Artificial Neural Network 
-#   
-#   - Use 2 level cross validation to compare the models
-#   - with k1 = 10 folds
-#    and  k2 = 10 folds 
+#   - Use Two Level Cross Validation to compare the models
+#   - with k1 = 10 folds and  k2 = 10 folds 
 #   
 #   -Compare the mean of y on the training data
 #   -Use this value to predict y on the test data
 #   
 #   -Is one model is better than the other ? 
-#   
 #   -Is the model better than the baseline ?
 #
 #   -Fit an Artificial Neural Network to the data and select a reasonable
 #   -range of values for h
 #   
 #   -Describe the range of values you will use for h and lambda
+################################################################
+# - Two Level Cross Validation: Artificial Neural Network
+################################################################
+
+############################################
+# - Artificial Neural Network :Neural Net --
+############################################
+
+set.seed(123)
+
+library(neuralnet)
+library(NeuralNetTools)
+
+nn <- neuralnet(formula <-Price ~ depth + table + carat_mg + the_length + the_width + the_depth, 
+                data= cbind(sparkle_X, sparkle_y), 
+                hidden=c(3,3),
+                linear.output=TRUE)
+
+nn$result.matrix
+plot(nn)
+
+###################################
+# -Neural Network Visualisation --
+###################################
+plot.new()
+plotnet(nn)
 
 
-# -----------------------------------------------------------------------
-#   
-#     Elastic Net Regression
-#
-# -----------------------------------------------------------------------
+################################################################
+# - Two Level Cross Validation: Ridge Regression Model. 
+################################################################
+library(nestedcv)
+?nestedcv::nestcv.glmnet
 
+set.seed(123)
+nested_model <-nestedcv::nestcv.glmnet(sparkle_y,sparkle_X,
+                                       family="gaussian",
+                                       n_outer_folds = 10,      # 10 Fold Outer Loop. 
+                                       n_inner_folds = 10       # 10 Fold for Inner Loop. 
+) 
+
+###################################
+# ---------- Results  -------------
+###################################
+
+summary(nested_model)        # Actual Wanted Output with Folds. 
+#nested_model$output         # The entire output
+nested_model$final_coef      # The coefficients
+#nested_model$outer_folds    # The Outer Folds
+nested_model$dimx            # The dimensions. 
+nested_model$final_fit       # MSE and lambda
+nested_model$summary         # The Model Summary. 
+
+# outer results 
+nested_model$outer_result[[1]]$cvafit
+nested_model$outer_result[[1]]$cvafit$fits[[8]]
+nested_model$outer_result[[1]]$cvafit$which_alpha
+
+# MSE
+nested_model$outer_result[[1]]$cvafit$alpha_cvm %>% as_tibble()
+###################################
+# ----- Visualisation  ------------
+###################################
+
+# Alphas: plot
+pl <- plot(nested_model$outer_result[[1]]$cvafit)
+pl
+
+# Variable Importance Plot. 
+plot_var_stability(nested_model)
+
+# labdas
+plot_lambdas(nested_model,
+             showLegend="bottomright")
+
+# Variable Importance
+p1 <- plot_var_stability(nested_model, final = FALSE, direction = 1)
+p1 + scale_fill_manual(values=c("orange", "green3"))
+
+# Directionality forVariable Importance
+p2 <- plot_var_stability(nested_model, final = FALSE, percent = F)
+p2
+
+###################################
+# -Baseline Model  --
+###################################
+set.seed(123)
+
+# Fit a baseline linear regression model with no features
+baseline_model <- lm(sparkle_y ~ 1)  
+# '1' represents the intercept term
+
+summary(baseline_model)
+broom::tidy(baseline_model)
+
+# Prediction and evaluation on train data
+#model         #lambda           # training data 
+base_predictions_train <- predict(baseline_model, data.frame(sparkle_X))
+eval_results(sparkle_y, base_predictions_train, sparkle_X)
+
+# Prediction and evaluation on test data: Use the fitted model to make predictions on the test data
+#model                # test data
+b_predictions_test <- predict(baseline_model, data.frame(glitter_X))
+b_predictions_test
+
+# Find the dimensions: weird... 
+this_much <- dim(glitter_X)[1]
+this_much
+
+dim(glitter_y)
+base_predz <- b_predictions_test[1:this_much] # not sure why so many predictions... 
+eval_results(glitter_y,base_predz, glitter_X)
+
+
+###################################
+# --- Elastic Net Regression ----- * not required. 
+###################################
+?trainControl
 # X and Y datasets 
 X <- sparkle_X
 Y <- sparkle_y
@@ -696,151 +804,66 @@ control <- trainControl(method = "repeatedcv",
                         verboseIter = FALSE) 
 
 # Training ELastic Net Regression model 
-elastic_model <- train(pricePS ~ ., 
-                       data = cbind(X, Y), 
-                       method = "glmnet", 
-                       preProcess = c("center", "scale"), 
-                       tuneLength = 25, 
-                       trControl = control, 
-                       verboseIter = FALSE) 
-
-elasticated <- plot(elastic_model)
-elasticated
-
+elastic_model <- caret::train(Price ~ ., 
+                              data = cbind(X, Y), 
+                              method = "glmnet", 
+                              preProcess = c("center", "scale"), 
+                              tuneLength = 10, 
+                              trControl = control, 
+                              verboseIter = FALSE) 
+plot.new()
+plot(elastic_model)
 # save image. 
+
 jpeg("Images/elasticated_plot.jpeg", width = 800, 
      height = 600, units = "px", pointsize = 12)
 
+# >>>>>>>>>>>>>>>>>>>>
 
-
-# RESULTS>>
 elastic_model$results
 
-# Model Prediction 
+# <<<<<<<<<<<<<<<<<<<<<
+
+
+# Prediction and evaluation on train data
+# model  and  test data
+epredictions_train <- predict(elastic_model, sparkle_X)
+eval_results(sparkle_y, epredictions_train, sparkle_X)
+
+# Prediction and evaluation on test data: Use the fitted model to make predictions on the test data
+# model  and  test data
+epredictions_test <- predict(elastic_model,  glitter_X)
+eval_results(glitter_y,epredictions_test, glitter_X)
+
+
+# (All)Model Prediction 
 x_hat_pre <- predict(elastic_model, glitter_X) 
 x_hat_pre 
 
-# Multiple R-squared on the test data and predictions. 
+# Multiple R-squared on the test data for each attribute. 
 rsq <- cor(glitter_X, x_hat_pre)^2 
 rsq 
 
-#RMSE (could have square rooted mse.. but.)
-ModelMetrics::rmse(glitter_y, predicted = x_hat_pre, elastic_model)
+# RMSE using the test data.
+ModelMetrics::rmse(glitter_y, 
+                   predicted = x_hat_pre, 
+                   elastic_model)
 
 # Mean Absolute Error using the test data. 
-ModelMetrics::mae(glitter_y, predicted = x_hat_pre, elastic_model)
+ModelMetrics::mae(glitter_y,
+                  predicted = x_hat_pre,
+                  elastic_model)
 
-ModelMetrics::mse(glitter_y, predicted = x_hat_pre, elastic_model)
-
-
-
-# -----------------------------------------------------------------------
-#   
-#     Artificial Neural Network : NeuralNet
-#
-# -----------------------------------------------------------------------
-
-# Preprocess the data
-set.seed(123)
-
-diamonds_train_data <- diamonds_train_data %>%  as.data.frame()  # Training Set
-diamonds_test_data <- diamonds_train_data %>% as.data.frame()   # Test Set
-
-library(neuralnet)
-library(NeuralNetTools) # Visualisation of nn. 
-
-# Define the formula for the neural network
-formula <- pricePS ~ depth + table  + carat_mg + the_length + the_width +the_depth
+#MSE using test data. 
+ModelMetrics::mse(glitter_y,
+                  predicted = x_hat_pre,
+                  elastic_model)
 
 
-?neuralnet
-# Create and train the neural network
-nn_diamonds_model <- neuralnet(formula,
-                               data = diamonds_train_data, 
-                               hidden = c(1), 
-                               linear.output = TRUE)
-
-print(nn_diamonds_model)
-plot(nn_diamonds_model)
-n <- plotnet(nn_diamonds_model)
-n
-diamonds_test_data
-
-predictions <- predict(nn_diamonds_model, newdata = diamonds_test_data)
-predictions
-
-# Compare predicted and actual diamond price # [,1] means pricePS
-comparison <- data.frame(Actual = diamonds_test_data$pricePS,
-                         Predicted = predictions)
-print(head(comparison))
-
-
-# Calculate the test error
-# Calculate Root Mean Squared Error (RMSE) for the test set
-rmse <- sqrt(mean((predictions - diamonds_test_data$pricePS)^2))
-cat("Root Mean Squared Error (RMSE) on the test set:", rmse, "\n")
-
-mse <- mean((predictions - diamonds_test_data$pricePS)^2)
-cat("Mean Squared Error (MSE) on the test set:", rmse, "\n")
-
-# mean of the actual target values (ytest matrix)
-y_mean <- mean(diamonds_test_data$pricePS)
-y_mean
-
-# Calculate the total sum of squares (TSS)
-tss <- sum((diamonds_test_data$pricePS - y_mean)^2)
-tss
-
-# Calculate the residual sum of squares (RSS)
-rss <- sum((diamonds_test_data$pricePS - predictions)^2)
-rss
-
-# Calculate the R-squared (coefficient of determination)
-rsquared <- 1 - (rss / tss)
-rsquared
-
-#calculate_jeffrey_interval(diamonds_test_data$pricePS, predictions)
-
-# -----------------------------------------------------------------------
-#   
-#     Baseline Model 
-#
-# -----------------------------------------------------------------------
-# Baseline Model 
-set.seed(123)
-
-# Fit a baseline linear regression model with no features
-baseline_model <- lm(sparkle_y ~ 1)  # '1' represents the intercept term
-
-
-# Summarize the model
-summary(baseline_model)
-broom::tidy(baseline_model)
-
-# Turn test data into a dataframe
-glit <- glitter_X %>% 
-  as_tibble()
-
-# Model Prediction 
-diamond_pre <- predict(baseline_model, glit) 
-head(diamond_pre)
-
-# Calculate the test error
-# Calculate Root Mean Squared Error (RMSE) for the test set
-rmse <- sqrt(mean((diamond_pre - glitter_y)^2))
-cat("Root Mean Squared Error (RMSE) on the test set:", rmse, "\n")
-
-rmse*rmse
-
-# -----------------------------------------------------------------------
-#   
-#     Two Level Cross Validation with K = 10
-#
-# -----------------------------------------------------------------------
-
-# The X data frame
-# The y vector 
-
+#########################################
+# - Classroom Code : Machine Learning 
+##########################################
+# Two Level Cross Validation with K = 10
 # Number of Rows (N) and Columns (M)
 M <- dim(sparkle_X)[2]
 N <- dim(sparkle_X)[1]
@@ -849,16 +872,6 @@ N <- dim(sparkle_X)[1]
 attributeNames <- make.names(unlist(colnames(sparkle_X)))
 attributeNames
 
-sparkle_X
-glitter_X
-
-head(glitter_y)
-head(sparkle_y)
-
-# ****** DONT CHANGE******** 
-# ------------------------------
-#      Cross validation
-# ------------------------------
 # Number of folds for k-fold cross-validation
 K<-10
 
@@ -887,11 +900,8 @@ for (k in 1:K) {
   # Extract training and test set
   X_train <- sparkle_X[(CV$which != k), ]
   y_train <- sparkle_y[(CV$which != k)]
-  
-  
   X_test <- sparkle_X[(CV$which == k), ]
   y_test <- sparkle_y[(CV$which == k)]
-  
   CV$TrainSize[k] <- length(y_train)
   CV$TestSize[k] <- length(y_test)
   
@@ -907,7 +917,6 @@ for (k in 1:K) {
   
   # Save the selected features
   Features[k, ] <- fsres$binaryFeatsIncluded
-  
   cat("features", selected.features, "\n")
   
   # Compute squared error without feature subset selection
@@ -922,7 +931,6 @@ for (k in 1:K) {
   cat("Feature selection", k)
   I <- length(fsres$costs) # Number of iterations
 }
-
 
 par(mfrow = c(1, 1))
 
@@ -944,8 +952,6 @@ plot(fsres$costs,
 # Plot feature selection sequence
 fig2 <-bmplot(attributeNames, 1:I,
               fsres$binaryFeatsIncludedMatrix)
-
-
 
 # --------------------------------
 # Error Criterion Plot (ggplot)
@@ -973,9 +979,6 @@ p  %>%
   )+
   theme_minimal()
 
-
-
-
 # Display results
 print(paste("Linear regression without feature selection:"))
 print(paste("Training error:", sum(Error_train) / sum(CV$TrainSize)))
@@ -998,7 +1001,6 @@ frame <- data.frame(
   Test = colSums(Error_test_fs) / sum(CV$TestSize)
 )
 
-
 frame <- pivot_longer(frame, 
                       cols = 2:3, 
                       names_to = "Data",
@@ -1017,14 +1019,14 @@ ggplot(frame,
     y = "Classification Error")
 
 # There is a gap between training and test data, which may signal overfitting.  
-# ****** DONT CHANGE******** 
+# -------------- END---------------------
 
-# -----------------------------------------------------------------------
-#   
-#     Model Comparison 
-#
-# -----------------------------------------------------------------------
-
+###################################
+# -- Model Comparison : SETUP I -- 
+###################################
+###################################
+# ------ Model Comparison   ------
+###################################
 library(performance)
 
 # Look at the performance of the baseline model. 
@@ -1034,65 +1036,30 @@ model_performance(baseline_model)
 model_performance(multiple_linear_model)
 
 # Look at the performance of the ridge model
-#model_performance(ridge_model)
-glmnet::assess.glmnet(ridge_model, glitter_X, glitter_y)
+glmnet::assess.glmnet(ridge_model, sparkle_X, sparkle_y) #Train Error
+glmnet::assess.glmnet(ridge_model, glitter_X, glitter_y) #Test Error
 
-# Look at the performance of the neural network.  
-model_performance(nn_diamonds_model)
+# Look at the performance of the neural network. 
+summary(neural_net_moz)
 
 # Look at the performance of the elastic model
-model_performance(elastic_model)
+summary(elastic_model)
 
-
-# -----------------------------------------------------------------------
-#   
-#     Model Comparison : SETUP I 
-#
-# -----------------------------------------------------------------------
-
-X <- hot_diamonds_data
-N <- nrow(X)
-M <- ncol(X)
-
-
-attributeNames <- colnames(X)
-
-## Set the seed to make your partition reproducible
-set.seed(1234)
-
-# -----------------------------------------------
-# Partition the Data into Training and Test Sets
-# ------------------------------------------------
-train_ind <- caret::createDataPartition(X$pricePS,
-                                        p = 0.8,
-                                        list = FALSE)
-
-# Generate the training and test split
-X_train <- X[train_ind, ]
-X_test <- X[-train_ind, ]
-
-#---------------------------------------
-# Create a Formula for Linear Regression
-#---------------------------------------
-# Where attributeNames 11 is the target variable:price.
-
-fmla <- pricePS ~ depth + table + carat_mg + the_length +
-  the_width + the_depth
-
-#fmla <- pricePS ~ cut + color + clarity + depth + table + carat_mg + the_length +
-#  the_width + the_depth
-
-#---------------------
-# Make a Regression Tree
-#---------------------
+formula<- Price ~ depth + table + carat_mg + the_length + the_width + the_depth
+fmla <- Price ~ depth + table + carat_mg + the_length + the_width + the_depth
+###################################
+# ------ Make a Regression Tree ---
+###################################
+#-------------------------
 mytree <- rpart(fmla,
-                data = X_train,
+                data = diamonds_train_data,
                 method = "anova")
-
 mytree
-#---------------------------
-#  Advanced Visualisation
-#---------------------------
+
+###################################
+# ----- Visualisation  ------------
+###################################
+
 library(rpart.plot)
 
 prp(mytree,
@@ -1106,315 +1073,52 @@ prp(mytree,
     main = "The Regression Tree",
     family = "Avenir")
 
-# ---------------------------------------------------
-#yhatA <- predict(mytree, newdata = X_train, type = "vector")
-#yhatA <- as.matrix(yhatA)
-
-
-#---------------------
-# Make a Linear Model
-#---------------------
-linearMod <- lm(fmla,
-                data = X_train)
-
-#---------------------
-# Make a Neural Network
-#---------------------
-model_performance(linearMod)
-
-# A vector of nodes in hidden layers
-# hidden_layers <- c(1, 2, 3)
-# hidden_layers = c(1),
-
-hidden_layers = c(3, 3)
-
-the_neural_network <- neuralnet::neuralnet(formula,
-                                           data = X_train,
-                                           #hidden = c(1),
-                                           hidden = hidden_layers,
-                                           linear.output = TRUE)
-plot(the_neural_network)
-
-#---------------------
-# Make a baseline Model
-#---------------------
-bline_model <- lm(pricePS  ~  1,
-                  data = X_train)
-
-
-#-------------------------
-# Make a Regularised Model
-#-------------------------
-# lambda = optimal_lambda
-lambda = lambda_seq
-
-regularised_model <- glmnet(x = as.matrix(X_train[,2:7]),
-                            y = as.matrix(X_train[,1]),
-                            alpha = 0,
-                            lambda = lambda_seq, # or optimal_lambda ??
-                            standardize = TRUE)
-
-# ----- Make predictions for both models using the test data
-yhatA <- predict(linearMod, X_test)
-yhatA
-
-yhatB <- predict(mytree, X_test)
-yhatB
-
-yhatC <- predict(the_neural_network, X_test)
-
-yhatD <- predict(bline_model, X_test)
-
-yhatE <- predict(regularised_model, as.matrix(X_test[ ,2:7]))
-yhatE
-
-# ----------------------------------
-y_test <- X_test[attributeNames[1]]
-head(y_test)
-
-# --------------------------------------------
-# Perform statistical comparison of the models
-# --------------------------------------------
-zA <- abs(y_test - yhatA)^2 # linear model
-zB <- abs(y_test - yhatB)^2 # Tree
-#zC <- abs(y_test - yhatC)^2 # neural network
-zD <- abs(y_test - yhatD)^2 # baseline
-zE <- abs(y_test - yhatE)^2 # regularised
-
-
-# Model Performance
-ModelMetrics::rmse(as.matrix(y_test), predicted = as.matrix(yhatE), regularised_model)
-ModelMetrics::rmse(as.matrix(y_test), predicted = as.matrix(yhatD), bline_model)
-#ModelMetrics::rmse(as.matrix(y_test), predicted = as.matrix(yhatC), the_neural_network)
-
-ModelMetrics::mae(as.matrix(y_test), predicted = as.matrix(yhatE), regularised_model)
-ModelMetrics::mae(as.matrix(y_test), predicted = as.matrix(yhatD), bline_model)
-#ModelMetrics::mae(as.matrix(y_test), predicted = as.matrix(yhatC), the_neural_network)
-
-
-AllZeds <- data.frame(zA = zA, 
-                      zB = zB, 
-                      #zC = zC, 
-                      zD = zD, 
-                      zE = zE)
-
-# Look at the means... 
-#plot(colMeans(AllZeds))
-
-colMeans(AllZeds)
-
-calculate_squared_error <- function(the_test, the_pred) {
-  z <- abs(the_test - the_pred)**2
-  # cat("The squared error for the model is:" z
-  # Confidence interval from t-test for model
-  res <- t.test(z, alternative = "two.sided", alpha = 0.05)
-  #res <- t.test(the_test, the_pred, paired = TRUE, mu = 0)
-  
-  CIA <- c(res$conf.int[1], res$conf.int[2])
-  return(res)
-}
-
-# cat("--Linear Model--", "\n\n")
-calculate_squared_error(y_test, yhatA) #zA
-
-cat("-- Regression Tree --", "\n")
-calculate_squared_error(y_test, yhatB) #zB
-
-cat("-- Neural Network --", "\n")
-#calculate_squared_error(y_test, yhatC) #zC
-
-cat("-- Baseline --", "\n")
-calculate_squared_error(y_test, yhatD) #zD
-
-cat("-- Regularised --", "\n")
-calculate_squared_error(y_test, yhatE) #zE
-
-
-#---------------------------
-# Model Comparison
-#---------------------------
-
-# Compute the Difference In the Squared Error between model A and B
-model_comparison <- function(model1, model2) {
-  cat("--Model Comparison--", "\n")
-  z <- model1 - model2
-  cat("The Difference in Squared Error between the Model1 and Model2 is z", "\n")
-  
-  rezult <- t.test(z,alternative = "two.sided", alpha = 0.05)
-  
-  cat("The Confidence Interval of z = model1 - model2 is ")
-  cat(rezult$conf.int[1], "and",  rezult$conf.int[2], "\n")
-  
-  cat("The p-value is:", rezult$p.value)
-}
-
-
-cat("-- Neural Network -- and -- Baseline --", "\n")
-model_comparison(zC, zD)
-
-
-cat("-- Regularised -- and -- Baseline --", "\n")
-model_comparison(zD, zE)
-
-
-cat("-- Regularised -- and -- Neural Network--", "\n")
-model_comparison(zE, zC)
-
-# The confidence interval provides a range of values
-# where the true mean squared error may lie,
-# and the p-value indicates whether the difference in
-# mean squared errors between the models
-# is statistically significant.
-
-# Set up the control parameters for cross-validation
-# ctrl <- trainControl(method = "cv", number = 5)
-# 
-# tune.grid.neuralnet <- expand.grid(
-#   layer1 = 1,
-#   layer2 = 5,
-#   layer3 = 5
-# )
-# 
-# model.neuralnet.caret <- caret::train(
-#   formula,
-#   data = cbind(sparkle_X, sparkle_y) ,
-#   method = "neuralnet",
-#   linear.output = TRUE, 
-#   tuneGrid = tune.grid.neuralnet,
-#   metric = "RMSE",
-#   trControl = trainControl(method = "none"))
-# 
-# sqrt(min(model.neuralnet.caret$results$RMSE))  
-# model.neuralnet.caret$bestTune
-
-# -----------------------------------------------------------------------
-#   
-#     Perform (Two Layer) Nested Cross Validation
-#
-# -----------------------------------------------------------------------
-
-library(nestedcv)
-?nestedcv::nestcv.glmnet
-set.seed(123)
-nested_model <-nestedcv::nestcv.glmnet(sparkle_y,sparkle_X,
-                                       family="gaussian",
-                                       # alphaSet = 0 or 1 ,    # Not sure about this one. 
-                                       n_outer_folds = 10,      # 5 Fold For Outer Loop # Note: Did you ask for 10? 
-                                       n_inner_folds = 10       # 10 Fold for Inner Loop. 
-) 
-
-summary(nested_model)        # Actual Wanted Output with Folds. 
-#nested_model$output         # The entire output
-nested_model$final_coef      # The coefficients
-#nested_model$outer_folds    # The Outer Folds
-nested_model$dimx            # The dimensions. 
-nested_model$final_fit       # MSE and lambda
-nested_model$summary         # The Model Summary. 
-
-# ------------------------------
-# Visualisation
-# ------------------------------
-
-pl <- plot(nested_model$outer_result[[1]]$cvafit)
-pl
-
-plot_var_stability(nested_model)
-
-nested_model$outer_result[[1]]$cvafit
-
-
-nested_model$outer_result[[1]]$cvafit$fits
-nested_model$outer_result[[1]]$cvafit$which_alpha
-
-
-plot_lambdas(nested_model,
-             showLegend="bottomright")
-nested_model
-
-# overlay directionality using colour
-p1 <- plot_var_stability(nested_model, final = FALSE, direction = 1)
-p1 + scale_fill_manual(values=c("orange", "green3"))
-
-# show directionality with the sign of the variable importance
-p2 <- plot_var_stability(nested_model, final = FALSE, percent = F)
-p2
-
-# one hot encoding of the dataset (kind of done)
-diamonds
-one_hot(diamonds)
-
-
-#library(glmnetr)
-# nested.glmnetr.fit = nested.glmnetr(sparkle_X, y_ = sparkle_y,
-#                                     family="gaussian", 
-#                                     folds_n=10, 
-#                                     doann = 1)
-# plot(nested.glmnetr.fit) 
-# plot(nested.glmnetr.fit, coefs=TRUE) 
-# 
-# summary(nested.glmnetr.fit) 
-# summary(nested.glmnetr.fit, cvfit=TRUE) 
-
-# -----------------------------------------------------------------------
-#   
-#    Cross Validation for a Neural Network from Radiant Model
-#
-# -----------------------------------------------------------------------
-# https://radiant-rstats.github.io/radiant.model/reference/cv.nn.html
-#install.packages("radiant", repos = "https://radiant-rstats.github.io/minicran/")
-#radiant::radiant()
-hot_diamonds_data
-
+###################################
+# -- Building a Neural Network----
+###################################
+# Building a Neural Network ***LAST** (because its messy)
 library(radiant.model)
 
-# Building a Neural Network 
-neural_net_mod <- nn(hot_diamonds_data, "pricePS", c("depth", "table", "carat_mg", "the_length", "the_width",  "the_depth"), 
+neural_net_moz <- nn(scaled_diamonds_data, "Price", c("depth", "table", "carat_mg", "the_length", "the_width",  "the_depth"), 
                      type = "regression")
 
-plotnet(neural_net_mod)
-plot(neural_net_mod)
-plot(neural_net_mod, plots = "garson", custom = TRUE) + labs(title = "Garson plot")
 
-#import the function from Github
-# library(devtools)
-#source_url('https://gist.github.com/fawda123/7471137/raw/cd6e6a0b0bdb4e065c597e52165e5ac887f5fe95/nnet_plot_update.r')
-
-#plot each model
-#plot.nnet(neural_net_mod)
+neural_net_moz
+# Permutation Importance. 
+#plot(neural_net_moz)
 
 
 # Cross Validation of the Network. 
-cv_radiant_result <- radiant.model::cv.nn(
-  neural_net_mod,
+cv_radiant_resul <- radiant.model::cv.nn(
+  neural_net_moz,
   K = 10,                    # number of cross validation passes to use
   repeats = 2,               # repeated cross validation 
-  decay = seq(0, 1, 0.2),    # parameter decay : L2 regularisation strength Lambda 
-  size = 1:3,                # number of units (nodes) in the hidden layer. 
+  decay = seq(0, 1, 0.2),    # parameter decay : L2 regularisation strength Lambda (h)
+  size = 1:2,                  # number of units (nodes) in the hidden layer. 
   seed = 1234,
   trace = TRUE,
-  # fun = Rsq                # calculates the r-squared. 
   fun = RMSE                 # calculates the RMSE
 ) 
 
-?cv.nn # What? 
+# >>>>>>>>>>>>>>>>>>>>>
 
-# ------------------------------
-# Results
-# ------------------------------
-cv_radiant_result
+cv_radiant_resul %>% 
+  as_tibble() %>% 
+  rename(RMSE = `RMSE (mean)`) %>% 
+  mutate(MSE = RMSE^2) %>% 
+  select(decay, MSE, RMSE)
 
-# ------------------------------
-# Visualisation
-# ------------------------------
-q <- data.frame(cv_radiant_result)
-q
+# <<<<<<<<<<<<<<<<<<<<<
 
+###################################
+# ------   Visualisation  ---------
+###################################
 
-q<- q %>% 
+q <- data.frame(cv_radiant_resul) %>% 
   mutate(MSE = RMSE..mean.^2) %>% 
   mutate(The_Index = 1:length(RMSE..mean.))
 
-head(q, n = 10)
+q
 
 q  %>% 
   ggplot(mapping = aes(The_Index, MSE))+
@@ -1436,7 +1140,114 @@ q  %>%
   theme_minimal()
 
 
-# Note: Check diamonds data does not contain the date. 
+#scaled_diamonds_data <- scaled_diamonds_data %>% 
+#  as.matrix()
+
+# Prediction and evaluation on train data
+# model             # training data 
+#net_predictions_train <- predict(neural_net_moz, scaled_diamonds_data)
+#net_predictions_train
+
+#eval_results(as.matrix(scaled_diamonds_data$Price),net_predictions_train, scaled_diamonds_data) %>% 
+#  as_tibble()
+
+# Create some Validation Data. 
+validation_data <- clean_diamonds_data %>% 
+  filter(cut == "Ideal") %>% 
+  filter(color == "D") %>% 
+  select(-c(priceDKK, priceEuro, cut, color, clarity)) %>% 
+  select(pricePS, everything()) %>% 
+  rename("Price" = "pricePS")
+
+
+vprice <- validation_data$Price
+# Without the actual price
+validation_data_nop <- validation_data %>% 
+  select(-Price)
+
+# Prediction and evaluation on test data: Use the fitted model to make predictions on the test data
+#net_predictions_test <- predict(neural_net_moz,validation_data_nop)
+#net_predictions_test #predictions in last column. 
+
+#eval_results(vprice, net_predictions_test, validation_data_nop) %>% 
+#  as_data_frame()
+
+###################################
+# --       Predictions          ----
+###################################
+# ----- Make predictions for both models using the training and test data
+
+#------ Neural Network ------------
+# Training Data : Neural Network. 
+net_predictions_train <- predict(neural_net_moz$model, sparkle_X)  # 1. 
+net_predictions_train
+# Evaluate results. 
+eval_results(sparkle_y, net_predictions_train, sparkle_X)
+
+# Test Data:Neural Network
+net_predictions_test <- predict(neural_net_moz$model,glitter_X) # 2. 
+net_predictions_test
+# Evaluate results.     
+eval_results(glitter_y,net_predictions_test, glitter_X)
+
+#------BASELINE---------------
+# Training Data : Baseline 
+base_predictions_train <- predict(baseline_model, data.frame(sparkle_X)) # 2. 
+base_predictions_train
+# Evaluate results.     
+eval_results(sparkle_y, base_predictions_train, sparkle_X)
+
+# Test Data : Baseline 
+base_predictions_test <- predict(baseline_model, data.frame(glitter_X)) # 2. 
+base_predictions_test
+# Evaluate results.     
+eval_results(glitter_y, base_predictions_test, glitter_X)
+#------Regularised--------------
+
+# Training Data : Regularised
+reg_predictions_train <- predict(nested_model, sparkle_X)
+reg_predictions_train
+# Evaluate results.     
+eval_results(sparkle_y,reg_predictions_train, sparkle_X)
+
+# Test Data : Regularised
+reg_predictions_test <- predict(nested_model, glitter_X) # 2. 
+reg_predictions_test
+# Evaluate results.     
+eval_results(glitter_y, reg_predictions_test, glitter_X)
+
+
+the_model_comparison <- function(model1, model2) {
+  res <- t.test(model1, model2,  paired = TRUE, mu = 0)
+  cat("The p-value is:", res$p.value , "\n")
+  if( res$p.value <= 0.01){
+    cat("There is strong evidence against the null hypothesis\n")
+    cat("There is a statistical difference between the groups\n")
+    if(res$p.value > 0.1){
+      cat("There is no evidence against the null hypothesis and \n")
+      cat("no statistical difference between the groups\n")
+    }
+  }
+  cat("The Confidence Intervals:", res$conf.int[1], "up to", res$conf.int[2], "\n")
+  return(res)
+}
+
+# ------Neural Network  vs. Baseline
+the_model_comparison(net_predictions_train, base_predictions_train)
+
+# ------Regularised     vs. Baseline
+the_model_comparison(reg_predictions_train, base_predictions_train)
+
+# ------Neural Network  vs. Regularised
+the_model_comparison(net_predictions_train, reg_predictions_train)
+
+# Aim: Is the mean difference between two sets of observations 0??
+# The null hypothesis is that the mean difference is 0. 
+# The alternative hypothesis is that the mean difference is not 0. 
+
+# The confidence interval provides a range of values where the true mean squared error may lie,
+# and the p-value indicates whether the difference in mean squared errors between the models
+# is statistically significant.
 
 ################################################################################
 # -----  Classification  -------------------------------------------------------
