@@ -157,11 +157,25 @@ The lowest Mean Squared Error Value indicates a better model performance. The mo
 The range of values for $h$ indicate the number of hidden layers in the Neural Network. 
 The vector of [1] indicates 1 hidden layer, with 1 node in the Neural Network (see Figure D in the Appendix) . The vector of [3, 3] indicates 2 hidden layers with 3 nodes in each respective layer of this Artificial Neural Network (see figure E in the Appendix) . 
 
-The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from $10^{-0.5}$ to $10^1$. 
+The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from $10^{-0.5}$ to $10^{1}$. 
 
 ### Question 2 
 **Produce a table similar to Table 1 using two level cross validation.The table should show for each of the K = 10 folds** **the optimal value of the number of hidden units and the regularisation strength** $h_{i}^*%$ **and** $\lambda_{i}^*$ **respectively as found after each inner loop, as well as the estimated generalisation errors by evaluating on the test** **data. It should include the baseline test error, evaluated on the test data. Re-use the train test splits for all 3** **methods to allow statistical comparison. The error measure is the squared loss per observation.**
 **Include a Table in the report and briefly discuss what it tells you at a glance.**
+
+
+### Question 3 
+**Statistically Evaluate if there is a significant performance difference between the fitted ANN, linear **
+**regression model and baseline, using the methods in Chapter 11.**
+**These comparisons are to be made pairwise:**
+  - **ANN vs. Linear Regression**
+  - **ANN vs Baseline**
+  - **Linear Regression vs. Baseline**
+**Choose Setup 1 Section (11.3) and use the paired t-test described in box 11.34**
+**Include Confidence intervals and P-values and for the three pairwise tests in the report and conclude the results. **
+**Is one model better than the other? Are the two models better than the baseline?**
+**Are some of the models identical? **
+**What recommendations would you make based on what you've learned? **
 
 
 \newpage
