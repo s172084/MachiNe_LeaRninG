@@ -155,9 +155,9 @@ $\hat{y}$ is based on a linear model and also on the input variables (attributes
 The lowest Mean Squared Error Value indicates a better model performance. The model with the lowest Mean Squared Error is considered the best model in terms of prediction accuracy on the diamonds dataset. If the difference in Mean Squared Error between to models is negligible then statistical tests can be performed to see if there is a statistically significant difference between the Price predictions. 
 
 The range of values for $h$ indicate the number of hidden layers in the Neural Network. 
-The vector of c (1) indicates 1 hidden layer, with 1 node in the Neural Network (see Figure D in the Appendix) . The vector of c(3, 3) indicates 2 hidden layers with 3 nodes in each respective layer of this Artificial Neural Network (see figure E in the Appendix) . 
+The vector of [1] indicates 1 hidden layer, with 1 node in the Neural Network (see Figure D in the Appendix) . The vector of [3, 3] indicates 2 hidden layers with 3 nodes in each respective layer of this Artificial Neural Network (see figure E in the Appendix) . 
 
-The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from $10^-0.5$ to $10^1$. 
+The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from $10^{-0.5}$ to $10^1$. 
 
 ### Question 2 
 **Produce a table similar to Table 1 using two level cross validation.The table should show for each of the K = 10 folds** **the optimal value of the number of hidden units and the regularisation strength** $h_{i}^*%$ **and** $\lambda_{i}^*$ **respectively as found after each inner loop, as well as the estimated generalisation errors by evaluating on the test** **data. It should include the baseline test error, evaluated on the test data. Re-use the train test splits for all 3** **methods to allow statistical comparison. The error measure is the squared loss per observation.**
