@@ -161,8 +161,24 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
 
 ### Question 2 
 **Produce a table similar to Table 1 using two level cross validation.The table should show for each of the K = 10 folds** **the optimal value of the number of hidden units and the regularisation strength** $h_{i}^*%$ **and** $\lambda_{i}^*$ **respectively as found after each inner loop, as well as the estimated generalisation errors by evaluating on the test** **data. It should include the baseline test error, evaluated on the test data. Re-use the train test splits for all 3** **methods to allow statistical comparison. The error measure is the squared loss per observation.**
+
 **Include a Table in the report and briefly discuss what it tells you at a glance.**
 
+ **Neural Network**         **Ridge Regression Model**         **Baseline**
+
+
+ | Outer Fold  |  decay  |    MSE   |  alpha  |  lambda  |    MSE  |        MSE    |
+ |:-----------:|:-------:|:--------:|:-------:|:--------:|:-------:|:-------------:|
+ | Fold 1      |     0   | 1270785  |  0.8    | 1.509    | 1386461 |    9060134.   |
+ | Fold 2      |   0.4   | 1289627  |  1.0    | 1.522    | 1385472 |    9060134    |
+ | Fold 3      |   0.2   | 1292015  |  0.7    | 1.530    | 1384592 |    9060134.   |
+ | Fold 4      |     1   | 1301900  |  0.8    | 1.514    | 1384023 |    9060134.   |
+ | Fold 5      |   0.6   | 1302977  |  0.9    | 1.515    | 1383483 |    9060134.   |
+ | Fold 6      |   0.2   | 1305577  |  0.9    | 1.518    | 1382991 |    9060134.   |
+ | Fold 7      |   0     | 1308757  |  0.7    | 1.510    | 1382800 |    9060134.   |
+ | Fold 8      |   0.4   | 1317249  |  0.8    | 1.517    | 1382791 |    9060134.   |
+ | Fold 9      |   0.6   | 1326146  |  1.0    | 1.462    | 1382797 |    9060134.   |
+ | Fold 10     |   0.8   | 1332439  |  0.9    | 1.484    | 1382814 |    9060134.   |
 
 ### Question 3 
 **Statistically Evaluate if there is a significant performance difference between the fitted ANN, linear **
@@ -176,6 +192,7 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
 **Is one model better than the other? Are the two models better than the baseline?**
 **Are some of the models identical? **
 **What recommendations would you make based on what you've learned? **
+
 
 
 \newpage

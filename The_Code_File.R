@@ -14,7 +14,7 @@ library(ggplot2)
 library(glmnet)
 library(knitr)
 library(kableExtra)
-source("setup.R")      # Contained in the R_toolbox
+#source("setup.R")      # Contained in the R_toolbox
 library(rpart)         # Package for Decision trees
 library(caret)         # Package for Cross-Validation
 library(tidyr)
@@ -775,7 +775,7 @@ eval_results(sparkle_y, base_predictions_train, sparkle_X)
 # Prediction and evaluation on test data: Use the fitted model to make predictions on the test data
 #model                # test data
 b_predictions_test <- predict(baseline_model, data.frame(glitter_X))
-b_predictions_test
+#head(b_predictions_test) * head(b_predictions_test)
 
 # Find the dimensions: weird... 
 this_much <- dim(glitter_X)[1]
@@ -1040,10 +1040,10 @@ glmnet::assess.glmnet(ridge_model, sparkle_X, sparkle_y) #Train Error
 glmnet::assess.glmnet(ridge_model, glitter_X, glitter_y) #Test Error
 
 # Look at the performance of the neural network. 
-summary(neural_net_moz)
+#summary(neural_net_moz)
 
 # Look at the performance of the elastic model
-summary(elastic_model)
+#summary(elastic_model)
 
 formula<- Price ~ depth + table + carat_mg + the_length + the_width + the_depth
 fmla <- Price ~ depth + table + carat_mg + the_length + the_width + the_depth
