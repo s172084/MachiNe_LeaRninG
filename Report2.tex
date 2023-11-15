@@ -4,20 +4,28 @@
 %
 \documentclass[
 ]{article}
+\title{Diamonds II}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{02450 Introduction to Machine Learning \& Data Mining}
+\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
+\date{From: 2023-10-20 To: November 15, 2023}
+
 \usepackage{amsmath,amssymb}
+\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -36,6 +44,14 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Diamonds II},
+  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
@@ -85,25 +101,6 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={Diamonds II},
-  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-
-\title{Diamonds II}
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-\subtitle{02450 Introduction to Machine Learning \& Data Mining}
-\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
-\date{From: 2023-10-20 To: November 15, 2023}
 
 \begin{document}
 \maketitle
@@ -129,12 +126,10 @@
 \section{Contribution Table}\label{contribution-table}}
 
 \begin{longtable}[]{@{}lcc@{}}
-\toprule\noalign{}
+\toprule
 Task & Oriade & Pietro \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 \textbf{Student ID} & s172084 & s231756 \\
 --------------- & --------------- & --------------- \\
 Question A.1 & x & \\
@@ -170,6 +165,7 @@ Exam Problem 4 & & x \\
 Exam Problem 5 & x & \\
 --------------- & --------------- & --------------- \\
 Exam Problem 6 & & x \\
+\bottomrule
 \end{longtable}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -195,12 +191,15 @@ other variables, and what you hope to accomplish by the regression.}
 coding.} \textbf{Apply a feature transformation to your data matrix X,
 such that each column has a mean of 0 and a standard deviation of 1}
 
-This project uses the Diamonds Dataset from The Grammar of Graphics
-(\textbf{ggplot2}) package, which is part of the TidyVerse package. The
-Diamonds Dataset contains the Prices and other attributes of over 50,000
-round cut diamonds. The package was created by Hadley Wickham and other
-data scientists to be used with the statistical programming language
-called R .
+This project uses the Diamonds Dataset\footnote{Agrawal, S. Analyze
+  diamonds by their cut, color, clarity, price, and other attributes.
+  Diamond Competition, 2017 (accessed 14 November 2023).
+  \url{https://www.kaggle.com/datasets/shivam2503/diamonds/data}} from
+The Grammar of Graphics (\textbf{ggplot2}) package, which is part of the
+TidyVerse package. The Diamonds Dataset contains the Prices and other
+attributes of over 50,000 round cut diamonds. The package was created by
+Hadley Wickham and other data scientists to be used with the statistical
+programming language called R .
 
 Multiple Linear Regression is performed in order to predict the Price of
 a Diamond based on the other attributes. In this section, the subgroup
@@ -357,34 +356,11 @@ you at a glance.}
 \textbf{Neural Network} \textbf{Ridge Regression Model}
 \textbf{Baseline}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1733}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1333}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
-  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-Outer Fold
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-decay
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-MSE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-alpha
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-lambda
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-MSE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-MSE
-\end{minipage} \\
-\midrule\noalign{}
+\begin{longtable}[]{@{}ccccccc@{}}
+\toprule
+Outer Fold & decay & MSE & alpha & lambda & MSE & MSE \\
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Fold 1 & 0 & 1270785 & 0.8 & 1.509 & 1386461 & 9060134. \\
 Fold 2 & 0.4 & 1289627 & 1.0 & 1.522 & 1385472 & 9060134 \\
 Fold 3 & 0.2 & 1292015 & 0.7 & 1.530 & 1384592 & 9060134. \\
@@ -395,6 +371,7 @@ Fold 7 & 0 & 1308757 & 0.7 & 1.510 & 1382800 & 9060134. \\
 Fold 8 & 0.4 & 1317249 & 0.8 & 1.517 & 1382791 & 9060134. \\
 Fold 9 & 0.6 & 1326146 & 1.0 & 1.462 & 1382797 & 9060134. \\
 Fold 10 & 0.8 & 1332439 & 0.9 & 1.484 & 1382814 & 9060134. \\
+\bottomrule
 \end{longtable}
 
 \hypertarget{question-3-1}{%
@@ -428,15 +405,15 @@ Regarding the classification problem, we want to train a model which
 labels whether a diamond has an \emph{Ideal cut} or not. This aim
 appears to be feasible according to the projection of data onto the
 space defined by the first three Principal Components (top figure of
-page 11 of Report 1). Figure !1 represents a sample of diamonds
-projected into the space defined by the second and third Principal
-Component. It can be seen that by colouring data according to their
-\emph{cut}, they appear to be clustered, especially the \emph{Ideal}
-ones. So we aim to find a model which classifies diamonds in two binary
-classes: \emph{Ideal} and \emph{Non-Ideal} cut, according to their
-depth, table, price in DKK, carat in milligrams, length, width and depth
-in micrometers. We choose to use only continuous attributes and to
-ignore information coming from the color and clarity of diamonds.
+page 11 of Report 1). Figure L represents a sample of diamonds projected
+into the space defined by the second and third Principal Component. It
+can be seen that by colouring data according to their \emph{cut}, they
+appear to be clustered, especially the \emph{Ideal} ones. So we aim to
+find a model which classifies diamonds in two binary classes:
+\emph{Ideal} and \emph{Non-Ideal} cut, according to their depth, table,
+price in DKK, carat in milligrams, length, width and depth in
+micrometers. We choose to use only continuous attributes and to ignore
+information coming from the color and clarity of diamonds.
 
 \end{col}
 
@@ -446,7 +423,7 @@ ignore information coming from the color and clarity of diamonds.
 \end{col}
 
 \begin{col}{0.50\textwidth}
-\includegraphics{Images/PCA_cut.png} {Figure !1: Sample of diamonds
+\includegraphics{Images/PCA_cut.png} {Figure L: Sample of diamonds
 projected onto the space defined by the \(2^{nd}\) and \(3^{rd}\)
 Principal component}
 
@@ -553,11 +530,11 @@ parameter associated with the lowest error rate computed as: \[
 E_i^{test} [\%] = \frac{\text{Number of mis-classified data}}{\text{Total number of test data}} \cdot 100 \%
 \]
 
-Results of the two-level cross-validation are summarized in the Table
-!2, where in bold are highlighted the lowest error rates per each model
-and the associated best parameters.
+Results of the two-level cross-validation are summarized in the Table 1,
+where in bold are highlighted the lowest error rates per each model and
+the associated best parameters.
 
-\begin{center} Table !2: Results of the two-level cross-validation used to compare models \end{center}
+\begin{center} Table 1: Results of the two-level cross-validation used to compare models \end{center}
 
 \begin{center}
 \begin{tabular}{rrrrrrrr}
@@ -573,6 +550,8 @@ i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & 
 \bottomrule
 \end{tabular}
 \end{center}
+
+\newpage
 
 As we expected, Baseline error rate is about 40 \% per each fold: it
 varies because the dataset is splitted randomly in the four outer
@@ -608,11 +587,11 @@ manage to precisely explain the behavior of the \emph{Cut} of diamonds
 based on the other attributes. We are somehow facing with a problem of
 underfitting, which cannot be solved because more complex models would
 have too many parameters to be estimated. This is the reason why we
-choose to consider only small values of \(\lambda\) and Table !2
-confirms that the smallest values of \(\lambda\) are the ones giving the
-smallest error rates.
+choose to consider only small values of \(\lambda\) and Table 1 confirms
+that the smallest values of \(\lambda\) are the ones giving the smallest
+error rates.
 
-Table !3 shows the estimated weights of the Logistic Regression based on
+Table 2 shows the estimated weights of the Logistic Regression based on
 the linear combination of the attributes (LRL). It can be noticed that
 the highest weights are associated to the \emph{Table} and to the
 \emph{x dimension} of the diamonds, meaning that the LRL model bases its
@@ -622,15 +601,13 @@ predictions of the \emph{Cut} mostly on these two variables.
 
 \begin{col}{0.20\textwidth}
 
-{Table !3: estimated weights of the LRL}
+{Table 2: estimated weights of the LRL}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule\noalign{}
+\toprule
 Attributes & Weights \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Intercept & -0.84 \\
 Depth & -0.84 \\
 Table & \textbf{-2.23} \\
@@ -639,6 +616,7 @@ Carat {[}mg{]} & -0.83 \\
 x {[}µm{]} & \textbf{-1.24} \\
 y {[}µm{]} & 0.82 \\
 z {[}µm{]} & 0.56 \\
+\bottomrule
 \end{longtable}
 
 \end{col}
@@ -650,16 +628,14 @@ z {[}µm{]} & 0.56 \\
 
 \begin{col}{0.20\textwidth}
 
-{Table !4: estimated weights of the LRQ applied to the Principal
+{Table 3: estimated weights of the LRQ applied to the Principal
 Components}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule\noalign{}
+\toprule
 Variables & Weights \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Intercept & -2.31 \\
 \(PC1\) & 0.53 \\
 \(PC2\) & \textbf{-1.15} \\
@@ -675,6 +651,7 @@ Intercept & -2.31 \\
 \(PC2\cdot PC3\) & \textbf{-0.89} \\
 \(PC2\cdot PC4\) & -0.06 \\
 \(PC3\cdot PC4\) & 0.11 \\
+\bottomrule
 \end{longtable}
 
 \end{col}
@@ -685,22 +662,24 @@ Intercept & -2.31 \\
 \end{col}
 
 \begin{col}{0.50\textwidth}
-\includegraphics{Images/PC_coeff.png} {Figure !5: coefficients of the
+\includegraphics{Images/PC_coeff.png} {Figure M: coefficients of the
 principal components}
 
 \end{col}
 
 \end{cols}
 
-Table !4 shows the estimated weights of the Logistic Regression based on
+\newpage
+
+Table 3 shows the estimated weights of the Logistic Regression based on
 the quadratic combination of the first four Principal Components (LRQ).
-Figure !5 represents how each of the Principal Components depends on the
-seven attributes. Looking at the weights of the Table !4, it can be
+Figure M represents how each of the Principal Components depends on the
+seven attributes. Looking at the weights of the Table 3, it can be
 noticed that the second and third principal components are the most
 weighted ones, both in their linear and quadratic form. These Principal
 Components are mostly determined by the \emph{Depth} and \emph{Table} of
-diamonds (green and cyan bars of Figure !5). The result agrees with the
-Figure !1, showing the almost clear clusters wherein data projected onto
+diamonds (green and cyan bars of Figure M). The result agrees with the
+Figure L, showing the almost clear clusters wherein data projected onto
 the space defined by the second and third Principal Components fall.
 
 \begin{cols}
@@ -710,10 +689,10 @@ As for the Classification Tree, once again the best complexity
 parameters \(c_P\) are the smallest ones, meaning that trees with less
 branches predict better the \emph{Cut} than more developed trees. The
 Classification Tree associated with the lowest error rate is plotted in
-Figure !6. As the figure shows, the classification of the diamonds in
+Figure N. As the figure shows, the classification of the diamonds in
 \emph{Ideal} or \emph{Non-Ideal Cut} is based only on the \emph{Table}
 and \emph{Depth} of them, regardless all the other attributes. According
-to Table !2, even though the tree is so simple, it better classifies
+to Table 1, even though the tree is so simple, it better classifies
 diamonds than the Logistic Regressions, which requires the knowledge of
 more variables to achieve a worse result.
 
@@ -725,7 +704,7 @@ more variables to achieve a worse result.
 \end{col}
 
 \begin{col}{0.35\textwidth}
-\includegraphics{Images/Tree1.png} {Figure !6: lowest error rate
+\includegraphics{Images/Tree1.png} {Figure N: lowest error rate
 Classification Tree }
 
 \end{col}
@@ -768,7 +747,7 @@ difference in accuracy of model A and model B computing the statistic
 \end{col}
 
 \begin{col}{0.45\textwidth}
-\includegraphics{Images/McNemar.png} {Figure !7: Confidence intervals of
+\includegraphics{Images/McNemar.png} {Figure P: Confidence intervals of
 the difference in accuracy of models}
 
 \end{col}
@@ -777,12 +756,12 @@ the difference in accuracy of models}
 
 So, according to the last definition, for a specific sample, if
 \(\hat{\theta} > 0\) model A has predicted more observations correctly
-than model B and vice versa. We apply the LRL model of Table !3, the LRQ
-model of Table !4 and the CT model of Figure !5 to the whole dataset of
+than model B and vice versa. We apply the LRL model of Table 2, the LRQ
+model of Table 3 and the CT model of Figure M to the whole dataset of
 diamonds and we compare prediction vectors pairwise based on the vector
 of the true outcomes. By setting a significance level of 5 \%, we
 compute the confidence intervals of each difference in accuracy between
-models, shown in Figure !7. All the confidence intervals results to be
+models, shown in Figure P. All the confidence intervals results to be
 negative, meaning that in all pairs of models, the second one has a
 better performance than the first one. Looking at the first three
 intervals on the left, we see that the three models (LRL, LRQ, CT)
@@ -807,11 +786,11 @@ case is more than 53000.
 
 Now we want to explain how the Logistic Regression model (LRL) makes a
 prediction. Assume that we want to determine whether the new diamond of
-Table !8 has an \emph{Ideal Cut} or not. We firstly standardize the new
-diamond according to standardization parameters of Table !9, coming from
+Table 4 has an \emph{Ideal Cut} or not. We firstly standardize the new
+diamond according to standardization parameters of Table 5, coming from
 the sample of the cross-validation which gave the best generalization
 error. Here is an example of how we standardize \emph{Depth}, getting
-the standardized diamond of Table !0: \[
+the standardized diamond of Table 6: \[
 \text{Standardized Depth}=\frac{\text{Depth}-\mu_{Depth}}{\sigma_{Depth}}=\frac{61.5-61.7}{1.43}=-0.17
 \]
 
@@ -819,15 +798,13 @@ the standardized diamond of Table !0: \[
 
 \begin{col}{0.25\textwidth}
 
-Table !8: New diamond to be classified
+Table 4: New diamond to be classified
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule\noalign{}
+\toprule
 & New \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Depth & \textbf{61.5} \\
 Table & 55.0 \\
 Price & 2303.8 \\
@@ -835,6 +812,7 @@ Carat & 46.0 \\
 x & 3950.0 \\
 y & 3980.0 \\
 z & 2430.0 \\
+\bottomrule
 \end{longtable}
 
 \end{col}
@@ -846,15 +824,13 @@ z & 2430.0 \\
 
 \begin{col}{0.40\textwidth}
 
-Table !9: Parameters of the standardization
+Table 5: Parameters of the standardization
 
 \begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\toprule
 & Mean & St.~Dev. \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Depth & \textbf{61.7} & \textbf{1.43} \\
 Table & 57.4 & 2.23 \\
 Price & 27698.1 & 28186.59 \\
@@ -862,6 +838,7 @@ Carat & 159.0 & 94.10 \\
 x & 5726.0 & 1118.19 \\
 y & 5727.9 & 1110.16 \\
 z & 3536.3 & 690.66 \\
+\bottomrule
 \end{longtable}
 
 \end{col}
@@ -873,15 +850,13 @@ z & 3536.3 & 690.66 \\
 
 \begin{col}{0.25\textwidth}
 
-Table !0: Standardized new diamond
+Table 6: Standardized new diamond
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule\noalign{}
+\toprule
 & New \\
-\midrule\noalign{}
+\midrule
 \endhead
-\bottomrule\noalign{}
-\endlastfoot
 Depth & \textbf{-0.17} \\
 Table & -1.09 \\
 Price & -0.90 \\
@@ -889,6 +864,7 @@ Carat & -1.20 \\
 x & -1.58 \\
 y & -1.57 \\
 z & -1.60 \\
+\bottomrule
 \end{longtable}
 
 \end{col}
@@ -896,30 +872,37 @@ z & -1.60 \\
 \end{cols}
 
 ~ Now we apply the logistic function to the linear combination of the
-weights of the model of Table !3 multiplied to the attributes of the new
-standardized diamond of Table !0, so that we map the output of the
-linear model in the interval {[}0,1{]}: \[
+weights of the model of Table 2 multiplied to the attributes of the new
+standardized diamond of Table 6, so that we map the output of the linear
+model in the interval {[}0,1{]}: \[
 \text{Ideal Cut}=\frac{1}{1+e^{-0.84-0.84\cdot(-0.17)-2.23\cdot(-1.09)+0.60\cdot(-0.90)-0.83\cdot(-1.20)-1.24\cdot(-1.58)+0.82\cdot(-1.57)+0.56\cdot(-1.60)}}=0.88
 \] Being the value 0.88 greater than 0.5, we classify the new diamond as
 having an \emph{Ideal Cut}.
 
 \hypertarget{discussion}{%
-\subsubsection{Discussion}\label{discussion}}
+\section{Discussion}\label{discussion}}
 
 Regression of the \emph{price} according to the diamond attributes has
 made us understand that the cost of diamonds mostly depends on the its
 \emph{carat}, while classification has shown that the \emph{Ideal cut}
 is mostly determined by the \emph{table} of a diamond. Results of
-regression agree with the analysis carried out by \textbf{Kigo, S.N. et
-al.~(2023)}: at Page 16 Figure 10.a of their paper, they show that
-\emph{price} is mostly dependent on \emph{carat} of diamonds. \newpage
+regression agree with the analysis carried out by Kigo, S.N. et
+al.~(2023)\footnote{Kigo, S.N., Omondi, E.O. \& Omolo, B.O. Assessing
+  predictive performance of supervised machine learning algorithms for a
+  diamond pricing model. Sci Rep 13, 17315 (2023).
+  \url{https://doi.org/10.1038/s41598-023-44326-w}}: at Page 16 Figure
+10.a of their paper, they show that \emph{price} is mostly dependent on
+\emph{carat} of diamonds.
+
+\newpage
 
 \hypertarget{exam-problems}{%
 \section{Exam Problems}\label{exam-problems}}
 
 \textbf{Question 1}
 
-The answer
+Answer \textbf{B}: points are grouped in pairs and the graph shows 4
+angles, corresponding to the four pairs
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -951,7 +934,11 @@ And finally we can calculate the purity gain based on the rule
 
 \textbf{Question 3}
 
-The answer
+Answer \textbf{D}: 7 parameters came from the attributes (one per each),
+plus 1 parameter that is the intercept. We multiply these 8 parameters
+for the number of hidden units (10), getting 80. We add an extra
+parameter per each unit connected to the activation function. At the end
+we have to estimate 88 parameters.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -967,13 +954,29 @@ answer \textbf{D} shows both A and C rules regarding \(b_1\).
 
 \textbf{Question 5}
 
-The answer
+Answer \textbf{C}: training and testing of the two models are inserted
+inside a for-loop of 5 cycles (outer fold), a for-loop of 4 cycles
+(inner fold) and a for-loop of 5 cycles (complexity parameters, in our
+case fortunately they are in the same number). So we get:
+
+\(((20+5)+(8+1))\cdot5\cdot4\cdot5=3400 \text{ ms}\)
+
+Then we have to add the extra training and testing of the outer fold:
+
+\(((20+5)+(8+1))\cdot5=170 \text{ ms}\)
+
+And eventually: \(\text{computational time}=3400+170=3570\text{ ms}\)
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \textbf{Question 6}
 
-The answer
+Answer \textbf{B}: we aim to find three \(\hat{y}_k\) as negative as
+possible, so that the per-class probability have a numerator smaller
+than one for \(k\geq 3\). Observation B is the only one giving negative
+values for all the three \(\hat{y}_k\). These values are exponentially
+transformed in values smaller than one, so that at the end the numerator
+of \(k=4\) results to be the greatest among them.
 
 \newpage
 
@@ -1017,8 +1020,28 @@ The answer
 
 \begin{itemize}
 \item
+  Agrawal, S. Analyze diamonds by their cut, color, clarity, price, and
+  other attributes. Diamond Competition, 2017 (accessed 14 November
+  2023),
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://www.kaggle.com/datasets/shivam2503/diamonds/data}
+  \end{itemize}
+\item
   Aster, Richard C. \emph{``Parameter estimation and inverse problems''}
   2013, 2nd ed., Elsevier Inc., 94-95
+\item
+  Kigo, S.N., Omondi, E.O. \& Omolo, B.O. Assessing predictive
+  performance of supervised machine learning algorithms for a diamond
+  pricing model. Sci Rep 13, 17315 (2023),
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://doi.org/10.1038/s41598-023-44326-w}
+  \end{itemize}
 \item
   Finnstats in R-bloggers, \emph{``How to use the scale function in
   R''}, December 2021,

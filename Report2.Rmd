@@ -99,7 +99,10 @@ Exam Problem 6 |               |       x       |
 **Mention your feature transformation choices such as 1 out of K coding.**
 **Apply a feature transformation to your data matrix X, such that each column has a mean of 0 and a standard deviation of 1**
 
-This project uses the Diamonds Dataset from The Grammar of Graphics (**ggplot2**) package, which is part of the TidyVerse package. The Diamonds Dataset contains the Prices and other attributes of over 50,000 round cut diamonds. The package was created by Hadley Wickham and other data scientists to be used with the statistical programming language called R .
+This project uses the Diamonds Dataset[^1] from The Grammar of Graphics (**ggplot2**) package, which is part of the TidyVerse package. The Diamonds Dataset contains the Prices and other attributes of over 50,000 round cut diamonds. The package was created by Hadley Wickham and other data scientists to be used with the statistical programming language called R .
+
+[^1]: Agrawal, S. Analyze diamonds by their cut, color, clarity, price, and other attributes. Diamond Competition, 2017 (accessed 14 November
+2023). https://www.kaggle.com/datasets/shivam2503/diamonds/data
 
 Multiple Linear Regression is performed in order to predict the Price of a Diamond based on the other attributes. In this section,  the subgroup of diamonds under analysis come from the **Premium Group** in the colour category **D**. 
 This subgroup of diamonds have a varied clarity. 
@@ -202,7 +205,7 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.45\textwidth}"}
-Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure !1 represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by colouring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
+Regarding the classification problem, we want to train a model which labels whether a diamond has an *Ideal cut* or not. This aim appears to be feasible according to the projection of data onto the space defined by the first three Principal Components (top figure of page 11 of Report 1). Figure L represents a sample of diamonds projected into the space defined by the second and third Principal Component. It can be seen that by colouring data according to their *cut*, they appear to be clustered, especially the *Ideal* ones. So we aim to find a model which classifies diamonds in two binary classes: *Ideal* and *Non-Ideal* cut, according to their depth, table, price in DKK, carat in milligrams, length, width and depth in micrometers. We choose to use only continuous attributes and to ignore information coming from the color and clarity of diamonds.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -212,7 +215,7 @@ Regarding the classification problem, we want to train a model which labels whet
 ::: {.col data-latex="{0.50\textwidth}"}
 
 ![PCA](Images/PCA_cut.png)
-<span class="caption">Figure !1: Sample of diamonds projected onto the space defined by the $2^{nd}$ and $3^{rd}$ Principal component</span>
+<span class="caption">Figure L: Sample of diamonds projected onto the space defined by the $2^{nd}$ and $3^{rd}$ Principal component</span>
 
 :::
 ::::::
@@ -251,8 +254,8 @@ $$
 E_i^{test} [\%] = \frac{\text{Number of mis-classified data}}{\text{Total number of test data}} \cdot 100 \%
 $$
 
-Results of the two-level cross-validation are summarized in the Table !2, where in bold are highlighted the lowest error rates per each model and the associated best parameters.
-\begin{center} Table !2: Results of the two-level cross-validation used to compare models \end{center}
+Results of the two-level cross-validation are summarized in the Table 1, where in bold are highlighted the lowest error rates per each model and the associated best parameters.
+\begin{center} Table 1: Results of the two-level cross-validation used to compare models \end{center}
 
 \begin{center}
 \begin{tabular}{rrrrrrrr}
@@ -269,11 +272,13 @@ i & {$E_i^{test} [\%]$} & {$\lambda_i$} & {$E_i^{test} [\%]$} & {$\lambda_i$} & 
 \end{tabular}
 \end{center}
 
+\newpage
+
 As we expected, Baseline error rate is about 40 % per each fold: it varies because the dataset is splitted randomly in the four outer partitions, so each outer fold does not contain the same amount of *Ideal* and *Non-Ideal* diamonds.
 
-Regarding the Logistic Regressions (both linear and quadratic), they consist of solving a linear regression and then applying a sigmoid function in order to project data in the range [0,1]. The linear regression can be solved by the means of the regularized Least Squares[^1], minimizing both the data misfit and the model norm:
+Regarding the Logistic Regressions (both linear and quadratic), they consist of solving a linear regression and then applying a sigmoid function in order to project data in the range [0,1]. The linear regression can be solved by the means of the regularized Least Squares[^2], minimizing both the data misfit and the model norm:
 
-[^1]: Aster, Richard C. (2013). Parameter estimation and inverse problems. – 2nd ed., Elsevier Inc., 94-95
+[^2]: Aster, Richard C. (2013). Parameter estimation and inverse problems. – 2nd ed., Elsevier Inc., 94-95
 
 $$
 min(||X_{train}w-y_{train}||^2_2+\lambda||w||^2_2)
@@ -282,13 +287,13 @@ Where *w* is the model vector containing estimated weights of the linear regress
 $$
 w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
 $$
-By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one. On the other hand, by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This is the reason why we choose to consider only small values of $\lambda$ and Table !2 confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
+By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one. On the other hand, by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This is the reason why we choose to consider only small values of $\lambda$ and Table 1 confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
 
-Table !3 shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
+Table 2 shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.20\textwidth}"}
-<span class="caption">Table !3: estimated weights of the LRL</span>
+<span class="caption">Table 2: estimated weights of the LRL</span>
 
 |Attributes  | Weights|
 |:-----------|-------:|
@@ -307,7 +312,7 @@ Table !3 shows the estimated weights of the Logistic Regression based on the lin
 :::
 
 ::: {.col data-latex="{0.20\textwidth}"}
-<span class="caption">Table !4: estimated weights of the LRQ applied to the Principal Components</span>
+<span class="caption">Table 3: estimated weights of the LRQ applied to the Principal Components</span>
 
 |Variables      | Weights|
 |:--------------|-------:|
@@ -334,15 +339,16 @@ Table !3 shows the estimated weights of the Logistic Regression based on the lin
 
 ::: {.col data-latex="{0.50\textwidth}"}
 ![PCA](Images/PC_coeff.png)
-<span class="caption">Figure !5: coefficients of the principal components</span>
+<span class="caption">Figure M: coefficients of the principal components</span>
 :::
 ::::::
 
-Table !4 shows the estimated weights of the Logistic Regression based on the quadratic combination of the first four Principal Components (LRQ). Figure !5 represents how each of the Principal Components depends on the seven attributes. Looking at the weights of the Table !4, it can be noticed that the second and third principal components are the most weighted ones, both in their linear and quadratic form. These Principal Components are mostly determined by the *Depth* and *Table* of diamonds (green and cyan bars of Figure !5). The result agrees with the Figure !1, showing the almost clear clusters wherein data projected onto the space defined by the second and third Principal Components fall.
+\newpage
+Table 3 shows the estimated weights of the Logistic Regression based on the quadratic combination of the first four Principal Components (LRQ). Figure M represents how each of the Principal Components depends on the seven attributes. Looking at the weights of the Table 3, it can be noticed that the second and third principal components are the most weighted ones, both in their linear and quadratic form. These Principal Components are mostly determined by the *Depth* and *Table* of diamonds (green and cyan bars of Figure M). The result agrees with the Figure L, showing the almost clear clusters wherein data projected onto the space defined by the second and third Principal Components fall.
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.60\textwidth}"}
-As for the Classification Tree, once again the best complexity parameters $c_P$ are the smallest ones, meaning that trees with less branches predict better the *Cut* than more developed trees. The Classification Tree associated with the lowest error rate is plotted in Figure !6. As the figure shows, the classification of the diamonds in *Ideal* or *Non-Ideal Cut* is based only on the *Table* and *Depth* of them, regardless all the other attributes. According to Table !2, even though the tree is so simple, it better classifies diamonds than the Logistic Regressions, which requires the knowledge of more variables to achieve a worse result.
+As for the Classification Tree, once again the best complexity parameters $c_P$ are the smallest ones, meaning that trees with less branches predict better the *Cut* than more developed trees. The Classification Tree associated with the lowest error rate is plotted in Figure N. As the figure shows, the classification of the diamonds in *Ideal* or *Non-Ideal Cut* is based only on the *Table* and *Depth* of them, regardless all the other attributes. According to Table 1, even though the tree is so simple, it better classifies diamonds than the Logistic Regressions, which requires the knowledge of more variables to achieve a worse result.
 :::
 
 ::: {.col data-latex="{0.05\textwidth}"}
@@ -351,7 +357,7 @@ As for the Classification Tree, once again the best complexity parameters $c_P$ 
 
 ::: {.col data-latex="{0.35\textwidth}"}
 ![PCA](Images/Tree1.png)
-<span class="caption">Figure !6: lowest error rate Classification Tree </span>
+<span class="caption">Figure N: lowest error rate Classification Tree </span>
 :::
 ::::::
 
@@ -376,22 +382,22 @@ Where:
 
 ::: {.col data-latex="{0.45\textwidth}"}
 ![PCA](Images/McNemar.png)
-<span class="caption">Figure !7: Confidence intervals of the difference in accuracy of models</span>
+<span class="caption">Figure P: Confidence intervals of the difference in accuracy of models</span>
 :::
 ::::::
 
-So, according to the last definition, for a specific sample, if $\hat{\theta} > 0$ model A has predicted more observations correctly than model B and vice versa. We apply the LRL model of Table !3, the LRQ model of Table !4 and the CT model of Figure !5 to the whole dataset of diamonds and we compare prediction vectors pairwise based on the vector of the true outcomes. By setting a significance level of 5 %, we compute the confidence intervals of each difference in accuracy between models, shown in Figure !7. All the confidence intervals results to be negative, meaning that in all pairs of models, the second one has a better performance than the first one. Looking at the first three intervals on the left, we see that the three models (LRL, LRQ, CT) perform much better than the baseline (BL). The Logistic Regression based on the linear combination of the attributes (LRL) predicts worse than the Logistic Regression based on the quadratic combination of the Principal Components (LRQ) and the Classification Tree (CT). The furthest to the right interval tells that the LRQ and the CT are the most similar models, since their difference in performance is very close to zero. However, the CT seems to perform better than the LRQ and, considering that it requires only two attributes (*Table* and *Depth*) for the prediction, it should be the recommended model to be used, according to the analysis carried out in this report. If we compute the *p-values* of the $\hat{\theta}$s, we get numbers smaller than the zero-machine. This means that there is a very strong evidence from data that no model is identical to the others. The almost zero values come from a division for the size of the sample, that in our case is more than 53000.
+So, according to the last definition, for a specific sample, if $\hat{\theta} > 0$ model A has predicted more observations correctly than model B and vice versa. We apply the LRL model of Table 2, the LRQ model of Table 3 and the CT model of Figure M to the whole dataset of diamonds and we compare prediction vectors pairwise based on the vector of the true outcomes. By setting a significance level of 5 %, we compute the confidence intervals of each difference in accuracy between models, shown in Figure P. All the confidence intervals results to be negative, meaning that in all pairs of models, the second one has a better performance than the first one. Looking at the first three intervals on the left, we see that the three models (LRL, LRQ, CT) perform much better than the baseline (BL). The Logistic Regression based on the linear combination of the attributes (LRL) predicts worse than the Logistic Regression based on the quadratic combination of the Principal Components (LRQ) and the Classification Tree (CT). The furthest to the right interval tells that the LRQ and the CT are the most similar models, since their difference in performance is very close to zero. However, the CT seems to perform better than the LRQ and, considering that it requires only two attributes (*Table* and *Depth*) for the prediction, it should be the recommended model to be used, according to the analysis carried out in this report. If we compute the *p-values* of the $\hat{\theta}$s, we get numbers smaller than the zero-machine. This means that there is a very strong evidence from data that no model is identical to the others. The almost zero values come from a division for the size of the sample, that in our case is more than 53000.
 
 ## Question 5
 
-Now we want to explain how the Logistic Regression model (LRL) makes a prediction. Assume that we want to determine whether the new diamond of Table !8 has an *Ideal Cut* or not. We firstly standardize the new diamond according to standardization parameters of Table !9, coming from the sample of the cross-validation which gave the best generalization error. Here is an example of how we standardize *Depth*, getting the standardized diamond of Table !0:
+Now we want to explain how the Logistic Regression model (LRL) makes a prediction. Assume that we want to determine whether the new diamond of Table 4 has an *Ideal Cut* or not. We firstly standardize the new diamond according to standardization parameters of Table 5, coming from the sample of the cross-validation which gave the best generalization error. Here is an example of how we standardize *Depth*, getting the standardized diamond of Table 6:
 $$
 \text{Standardized Depth}=\frac{\text{Depth}-\mu_{Depth}}{\sigma_{Depth}}=\frac{61.5-61.7}{1.43}=-0.17
 $$
 
 :::::: {.cols data-latex=""}
 ::: {.col data-latex="{0.25\textwidth}"}
-Table !8: New diamond to be classified
+Table 4: New diamond to be classified
 
 |      |      New|
 |:-----|--------:|
@@ -409,7 +415,7 @@ Table !8: New diamond to be classified
 :::
 
 ::: {.col data-latex="{0.40\textwidth}"}
-Table !9: Parameters of the standardization
+Table 5: Parameters of the standardization
 
 |      |Mean             |St. Dev.         |
 |:-----|:----------------|:----------------|
@@ -427,7 +433,7 @@ Table !9: Parameters of the standardization
 :::
 
 ::: {.col data-latex="{0.25\textwidth}"}
-Table !0: Standardized new diamond
+Table 6: Standardized new diamond
 
 |      |        New|
 |:-----|----------:|
@@ -441,22 +447,25 @@ Table !0: Standardized new diamond
 :::
 ::::::
 \ 
-Now we apply the logistic function to the linear combination of the weights of the model of Table !3 multiplied to the attributes of the new standardized diamond of Table !0, so that we map the output of the linear model in the interval [0,1]:
+Now we apply the logistic function to the linear combination of the weights of the model of Table 2 multiplied to the attributes of the new standardized diamond of Table 6, so that we map the output of the linear model in the interval [0,1]:
 $$
 \text{Ideal Cut}=\frac{1}{1+e^{-0.84-0.84\cdot(-0.17)-2.23\cdot(-1.09)+0.60\cdot(-0.90)-0.83\cdot(-1.20)-1.24\cdot(-1.58)+0.82\cdot(-1.57)+0.56\cdot(-1.60)}}=0.88
 $$
 Being the value 0.88 greater than 0.5, we classify the new diamond as having an *Ideal Cut*.
 
-### Discussion
+# Discussion
 
-Regression of the *price* according to the diamond attributes has made us understand that the cost of diamonds mostly depends on the its *carat*, while classification has shown that the *Ideal cut* is mostly determined by the *table* of a diamond. Results of regression agree with the analysis carried out by **Kigo, S.N. et al. (2023)**: at Page 16 Figure 10.a of their paper, they show that *price* is mostly dependent on *carat* of diamonds.
+Regression of the *price* according to the diamond attributes has made us understand that the cost of diamonds mostly depends on the its *carat*, while classification has shown that the *Ideal cut* is mostly determined by the *table* of a diamond. Results of regression agree with the analysis carried out by Kigo, S.N. et al. (2023)[^3]: at Page 16 Figure 10.a of their paper, they show that *price* is mostly dependent on *carat* of diamonds.
+
+[^3]: Kigo, S.N., Omondi, E.O. & Omolo, B.O. Assessing predictive performance of supervised machine learning algorithms for a diamond pricing model. Sci Rep 13, 17315 (2023). https://doi.org/10.1038/s41598-023-44326-w
+
 \newpage
 
 # Exam Problems
 
 **Question 1**
 
-The answer
+Answer **B**: points are grouped in pairs and the graph shows 4 angles, corresponding to the four pairs
 
 *** 
 
@@ -484,7 +493,7 @@ $\Delta_2=0.726-\frac{134}{135}\cdot 0.724=0.0074$
 
 **Question 3**
 
-The answer
+Answer **D**: 7 parameters came from the attributes (one per each), plus 1 parameter that is the intercept. We multiply these 8 parameters for the number of hidden units (10), getting 80. We add an extra parameter per each unit connected to the activation function. At the end we have to estimate 88 parameters.
 
 *** 
 
@@ -498,13 +507,21 @@ the four possible answers, only answer **D** shows both A and C rules regarding 
 
 **Question 5**
 
-The answer
+Answer **C**: training and testing of the two models are inserted inside a for-loop of 5 cycles (outer fold), a for-loop of 4 cycles (inner fold) and a for-loop of 5 cycles (complexity parameters, in our case fortunately they are in the same number). So we get:
+
+$((20+5)+(8+1))\cdot5\cdot4\cdot5=3400 \text{ ms}$
+
+Then we have to add the extra training and testing of the outer fold:
+
+$((20+5)+(8+1))\cdot5=170 \text{ ms}$
+
+And eventually: $\text{computational time}=3400+170=3570\text{ ms}$
 
 *** 
 
 **Question 6**
 
-The answer
+Answer **B**: we aim to find three $\hat{y}_k$ as negative as possible, so that the per-class probability have a numerator smaller than one for $k\geq 3$. Observation B is the only one giving negative values for all the three $\hat{y}_k$. These values are exponentially transformed in values smaller than one, so that at the end the numerator of $k=4$ results to be the greatest among them.
 
 \newpage
 
@@ -546,7 +563,13 @@ knitr::include_graphics('Images/Neural_Netowork_2HL_3Nodes.png')
 
 # References
 
+* Agrawal, S. Analyze diamonds by their cut, color, clarity, price, and other attributes. Diamond Competition, 2017 (accessed 14 November 2023), 
+  - https://www.kaggle.com/datasets/shivam2503/diamonds/data
+
 * Aster, Richard C. *"Parameter estimation and inverse problems"* 2013, 2nd ed., Elsevier Inc., 94-95
+
+* Kigo, S.N., Omondi, E.O. & Omolo, B.O. Assessing predictive performance of supervised machine learning algorithms for a diamond pricing model. Sci Rep 13, 17315 (2023), 
+  - https://doi.org/10.1038/s41598-023-44326-w
 
 * Finnstats in R-bloggers, *“How to use the scale function in R”*, December 2021,
   - https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/
@@ -601,5 +624,7 @@ knitr::include_graphics('Images/Neural_Netowork_2HL_3Nodes.png')
 
 * Myles J Lewis et al , *“NestedCV : An R package for fast implementation of nested cross validation designed for Transcriptomics and High Dimensional Data”*, 13 April 2013,
    - https://academic.oup.com/bioinformaticsadvances/article/3/1/vbad048/7117540
+
+
 
 
