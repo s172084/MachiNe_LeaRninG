@@ -33,14 +33,14 @@ knitr::include_graphics(c("Images/Space.png"))
 
 ```{r echo=FALSE,  fig.alt='left', fig.show='asis', out.width='50%'}
 # Include images and pictures using .png files.
-knitr::include_graphics(c("Images/Diamond3.png","Images/Diamond3.png"))
+knitr::include_graphics(c("Images/Diamond3.png", "Images/Diamond3.png"))
 ```
 
 \newpage
 
 ```{=latex}
 \newpage
-\setcounter{tocdepth}{4}
+\setcounter{tocdepth}{3}
 \tableofcontents
 ```
 
@@ -116,7 +116,6 @@ The measurements of diamond length, width and depth were converted from millimet
 In the dataset there are diamonds with a length, width or depth of 0.0 . The smallest measured depth is 1,070 µm and exactly two diamonds have a width of 3,730 µm. The “determine outliers”  function was used to estimate the upper and lower limits to be able to deal with outliers. It was important to deal with outliers, by removing them, due to the fact that these measurements may distort the statistical linear model. 
 
 
-***
 ### Question 2
 
 **Introduce a lambda regularisation parameter from the lecture notes. Estimate the generalisation error for the** **different values of lambda. Choose a range of lambda where the generalisation error first drops and then** **increases. For each value, use K = 10 Fold cross-validation to estimate the generalisation error. Include a** **figure of the estimated generalisation error as a function of lambda for the report and discuss the result.**
@@ -124,8 +123,6 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 The lambda regularisation hyper-parameter was introduced. L2 Regularisation was performed using a general linear model from the glmnet package. The lambda regularisation parameter manages the trade off between the bias and the variance as large coefficients are penalised. 
 K = 10 Cross Validation was used to find the optimal lambda. This optimal lambda can then be used downstream in a ridge regression model. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model. The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from 
 $10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A in the Appendix)
-
-***
 
 ### Question 3
 **Explain how the output (y) from the linear model with the smallest generalisation**
@@ -167,38 +164,43 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
 
 **Include a Table in the report and briefly discuss what it tells you at a glance.**
 
- **Neural Network**         **Ridge Regression Model**         **Baseline**
 
-
- | Outer Fold  |  decay  |    MSE   |  alpha  |  lambda  |    MSE  |        MSE    |
- |:-----------:|:-------:|:--------:|:-------:|:--------:|:-------:|:-------------:|
- | Fold 1      |     0   | 1270785  |  0.8    | 1.509    | 1386461 |    9060134.   |
- | Fold 2      |   0.4   | 1289627  |  1.0    | 1.522    | 1385472 |    9060134    |
- | Fold 3      |   0.2   | 1292015  |  0.7    | 1.530    | 1384592 |    9060134.   |
- | Fold 4      |     1   | 1301900  |  0.8    | 1.514    | 1384023 |    9060134.   |
- | Fold 5      |   0.6   | 1302977  |  0.9    | 1.515    | 1383483 |    9060134.   |
- | Fold 6      |   0.2   | 1305577  |  0.9    | 1.518    | 1382991 |    9060134.   |
- | Fold 7      |   0     | 1308757  |  0.7    | 1.510    | 1382800 |    9060134.   |
- | Fold 8      |   0.4   | 1317249  |  0.8    | 1.517    | 1382791 |    9060134.   |
- | Fold 9      |   0.6   | 1326146  |  1.0    | 1.462    | 1382797 |    9060134.   |
- | Fold 10     |   0.8   | 1332439  |  0.9    | 1.484    | 1382814 |    9060134.   |
+ |             | Neural Network     |                    |Ridge Regression  |                    |                 | Baseline         |
+ |-------------|:-------------------|------------------- |------------------|--------------------|-----------------|------------------|
+ |             |                    |                    |                  |                    |                 |                  |
+ | Outer Fold  | decay $h_{i}^{*}$  | MSE $E_i^{test}$   |  alpha $\alpha$  |  lambda $\lambda_i^{*}$|MSE $E_i^{test}$ | MSE $E_i^{test}$ | 
+ |_____________|____________________|____________________|__________________|____________________|_________________|------------------|
+ | Fold 1      |                0   | 1270785            |  0.8             | 1.509              | 1386461         |    9060134.      |
+ | Fold 2      |              0.4   | 1289627            |  1.0             | 1.522              | 1385472         |    9060134       |
+ | Fold 3      |              0.2   | 1292015            |  0.7             | 1.530              | 1384592         |    9060134.      |
+ | Fold 4      |                1   | 1301900            |  0.8             | 1.514              | 1384023         |    9060134.      |
+ | Fold 5      |              0.6   | 1302977            |  0.9             | 1.515              | 1383483         |    9060134.      |
+ | Fold 6      |              0.2   | 1305577            |  0.9             | 1.518              | 1382991         |    9060134.      |
+ | Fold 7      |              0     | 1308757            |  0.7             | 1.510              | 1382800         |    9060134.      |
+ | Fold 8      |              0.4   | 1317249            |  0.8             | 1.517              | 1382791         |    9060134.      |
+ | Fold 9      |              0.6   | 1326146            |  1.0             | 1.462              | 1382797         |    9060134.      |
+ | Fold 10     |              0.8   | 1332439            |  0.9             | 1.484              | 1382814         |    9060134.      |
 
 ### Question 3 
-**Statistically Evaluate if there is a significant performance difference between the fitted ANN, linear **
-**regression model and baseline, using the methods in Chapter 11.**
+**Statistically Evaluate if there is a significant performance difference between the fitted ANN, linear regression model and baseline, using the methods in Chapter 11.**
 **These comparisons are to be made pairwise:**
   - **ANN vs. Linear Regression**
   - **ANN vs Baseline**
   - **Linear Regression vs. Baseline**
 **Choose Setup 1 Section (11.3) and use the paired t-test described in box 11.34**
-**Include Confidence intervals and P-values and for the three pairwise tests in the report and conclude the results. **
+**Include Confidence intervals and P-values and for the three pairwise tests in the report and conclude the results.**
 **Is one model better than the other? Are the two models better than the baseline?**
-**Are some of the models identical? **
-**What recommendations would you make based on what you've learned? **
+**Are some of the models identical? ****What recommendations would you make based on what you've learned? **
 
+The paired t-test is used to determine if the mean difference between two sets of observations is zero. The differences have a Normal  Distribution. The Null Hypothesis $H_{0}$ is that the mean of the differences is 0, whereas the alternative hypotheses $H_{1}$ is that the mean of the differences is not 0. The p-value indicates whether the difference in mean squared errors between the models is statistically significant.
 
+Evaluation of the values from the Artificial Neural Network against the values from the Baseline show that the p-value is less than 2.2e-16 and the confidence interval is  - 3009.865 up to - 3009.776 . This indicates that the null hypothesis can be rejected. 
 
-\newpage
+Evaluation of the values from the Regularised Linear Regression against values from the Baseline, 
+Show that the p-value is 1 and the confidence interval is - 166 up to 166 . This indicates that the null hypothesis can be accepted. 
+
+Evaluation of the values from the Artificial Neural Network against the Regularised Linear Regression, show that p-value is 2.2e-16 and the confidence interval is - 3176.502 up to - 2843.138. This indicates that the null hypothesis can be rejected.
+
 # CLASSIFICATION
 
 ## Question 1

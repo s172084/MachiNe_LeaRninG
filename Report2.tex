@@ -4,28 +4,20 @@
 %
 \documentclass[
 ]{article}
-\title{Diamonds II}
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-\subtitle{02450 Introduction to Machine Learning \& Data Mining}
-\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
-\date{From: 2023-10-20 To: November 15, 2023}
-
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -44,14 +36,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Diamonds II},
-  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
@@ -101,6 +85,25 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Diamonds II},
+  pdfauthor={Oriade Simpson (s172084); Pietro Lombardo (s231756)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Diamonds II}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{02450 Introduction to Machine Learning \& Data Mining}
+\author{Oriade Simpson (s172084) \and Pietro Lombardo (s231756)}
+\date{From: 2023-10-20 To: November 15, 2023}
 
 \begin{document}
 \maketitle
@@ -117,7 +120,7 @@
 \newpage
 
 \newpage
-\setcounter{tocdepth}{4}
+\setcounter{tocdepth}{3}
 \tableofcontents
 
 \newpage
@@ -126,10 +129,12 @@
 \section{Contribution Table}\label{contribution-table}}
 
 \begin{longtable}[]{@{}lcc@{}}
-\toprule
+\toprule\noalign{}
 Task & Oriade & Pietro \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 \textbf{Student ID} & s172084 & s231756 \\
 --------------- & --------------- & --------------- \\
 Question A.1 & x & \\
@@ -165,7 +170,6 @@ Exam Problem 4 & & x \\
 Exam Problem 5 & x & \\
 --------------- & --------------- & --------------- \\
 Exam Problem 6 & & x \\
-\bottomrule
 \end{longtable}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
@@ -234,8 +238,6 @@ estimate the upper and lower limits to be able to deal with outliers. It
 was important to deal with outliers, by removing them, due to the fact
 that these measurements may distort the statistical linear model.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 \hypertarget{question-2}{%
 \subsubsection{Question 2}\label{question-2}}
 
@@ -259,8 +261,6 @@ applied to the model. The lambda that was used for regularisation is the
 optimal lambda obtained from cross validation based on the range of
 lambdas from \(10 ^{-0.5}\) to \(10^1\) . The optimal lambda is
 1.353.(see figure A in the Appendix)
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \hypertarget{question-3}{%
 \subsubsection{Question 3}\label{question-3}}
@@ -353,14 +353,38 @@ measure is the squared loss per observation.}
 \textbf{Include a Table in the report and briefly discuss what it tells
 you at a glance.}
 
-\textbf{Neural Network} \textbf{Ridge Regression Model}
-\textbf{Baseline}
-
-\begin{longtable}[]{@{}ccccccc@{}}
-\toprule
-Outer Fold & decay & MSE & alpha & lambda & MSE & MSE \\
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1040}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1520}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1440}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1360}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1440}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Neural Network
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ridge Regression
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Baseline
+\end{minipage} \\
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
+& & & & & & \\
+Outer Fold & decay \(h_{i}^{*}\) & MSE \(E_i^{test}\) & alpha \(\alpha\)
+& lambda \(\lambda_i^{*}\) & MSE \(E_i^{test}\) & MSE \(E_i^{test}\) \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_ & \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ &
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ &
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ &
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ &
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & ------------------ \\
 Fold 1 & 0 & 1270785 & 0.8 & 1.509 & 1386461 & 9060134. \\
 Fold 2 & 0.4 & 1289627 & 1.0 & 1.522 & 1385472 & 9060134 \\
 Fold 3 & 0.2 & 1292015 & 0.7 & 1.530 & 1384592 & 9060134. \\
@@ -371,26 +395,45 @@ Fold 7 & 0 & 1308757 & 0.7 & 1.510 & 1382800 & 9060134. \\
 Fold 8 & 0.4 & 1317249 & 0.8 & 1.517 & 1382791 & 9060134. \\
 Fold 9 & 0.6 & 1326146 & 1.0 & 1.462 & 1382797 & 9060134. \\
 Fold 10 & 0.8 & 1332439 & 0.9 & 1.484 & 1382814 & 9060134. \\
-\bottomrule
 \end{longtable}
 
 \hypertarget{question-3-1}{%
 \subsubsection{Question 3}\label{question-3-1}}
 
 \textbf{Statistically Evaluate if there is a significant performance
-difference between the fitted ANN, linear } \textbf{regression model and
-baseline, using the methods in Chapter 11.} \textbf{These comparisons
-are to be made pairwise:} - \textbf{ANN vs.~Linear Regression} -
-\textbf{ANN vs Baseline} - \textbf{Linear Regression vs.~Baseline}
-\textbf{Choose Setup 1 Section (11.3) and use the paired t-test
-described in box 11.34} \textbf{Include Confidence intervals and
-P-values and for the three pairwise tests in the report and conclude the
-results. } \textbf{Is one model better than the other? Are the two
-models better than the baseline?} \textbf{Are some of the models
-identical? } \textbf{What recommendations would you make based on what
-you've learned? }
+difference between the fitted ANN, linear regression model and baseline,
+using the methods in Chapter 11.} \textbf{These comparisons are to be
+made pairwise:} - \textbf{ANN vs.~Linear Regression} - \textbf{ANN vs
+Baseline} - \textbf{Linear Regression vs.~Baseline} \textbf{Choose Setup
+1 Section (11.3) and use the paired t-test described in box 11.34}
+\textbf{Include Confidence intervals and P-values and for the three
+pairwise tests in the report and conclude the results.} \textbf{Is one
+model better than the other? Are the two models better than the
+baseline?} \textbf{Are some of the models identical? What
+recommendations would you make based on what you've learned? }
 
-\newpage
+The paired t-test is used to determine if the mean difference between
+two sets of observations is zero. The differences have a Normal
+Distribution. The Null Hypothesis \(H_{0}\) is that the mean of the
+differences is 0, whereas the alternative hypotheses \(H_{1}\) is that
+the mean of the differences is not 0. The p-value indicates whether the
+difference in mean squared errors between the models is statistically
+significant.
+
+Evaluation of the values from the Artificial Neural Network against the
+values from the Baseline show that the p-value is less than 2.2e-16 and
+the confidence interval is - 3009.865 up to - 3009.776 . This indicates
+that the null hypothesis can be rejected.
+
+Evaluation of the values from the Regularised Linear Regression against
+values from the Baseline, Show that the p-value is 1 and the confidence
+interval is - 166 up to 166 . This indicates that the null hypothesis
+can be accepted.
+
+Evaluation of the values from the Artificial Neural Network against the
+Regularised Linear Regression, show that p-value is 2.2e-16 and the
+confidence interval is - 3176.502 up to - 2843.138. This indicates that
+the null hypothesis can be rejected.
 
 \hypertarget{classification}{%
 \section{CLASSIFICATION}\label{classification}}
@@ -604,10 +647,12 @@ predictions of the \emph{Cut} mostly on these two variables.
 {Table 2: estimated weights of the LRL}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Attributes & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -0.84 \\
 Depth & -0.84 \\
 Table & \textbf{-2.23} \\
@@ -616,7 +661,6 @@ Carat {[}mg{]} & -0.83 \\
 x {[}µm{]} & \textbf{-1.24} \\
 y {[}µm{]} & 0.82 \\
 z {[}µm{]} & 0.56 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -632,10 +676,12 @@ z {[}µm{]} & 0.56 \\
 Components}
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 Variables & Weights \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Intercept & -2.31 \\
 \(PC1\) & 0.53 \\
 \(PC2\) & \textbf{-1.15} \\
@@ -651,7 +697,6 @@ Intercept & -2.31 \\
 \(PC2\cdot PC3\) & \textbf{-0.89} \\
 \(PC2\cdot PC4\) & -0.06 \\
 \(PC3\cdot PC4\) & 0.11 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -801,10 +846,12 @@ the standardized diamond of Table 6: \[
 Table 4: New diamond to be classified
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 & New \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{61.5} \\
 Table & 55.0 \\
 Price & 2303.8 \\
@@ -812,7 +859,6 @@ Carat & 46.0 \\
 x & 3950.0 \\
 y & 3980.0 \\
 z & 2430.0 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -827,10 +873,12 @@ z & 2430.0 \\
 Table 5: Parameters of the standardization
 
 \begin{longtable}[]{@{}lll@{}}
-\toprule
+\toprule\noalign{}
 & Mean & St.~Dev. \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{61.7} & \textbf{1.43} \\
 Table & 57.4 & 2.23 \\
 Price & 27698.1 & 28186.59 \\
@@ -838,7 +886,6 @@ Carat & 159.0 & 94.10 \\
 x & 5726.0 & 1118.19 \\
 y & 5727.9 & 1110.16 \\
 z & 3536.3 & 690.66 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
@@ -853,10 +900,12 @@ z & 3536.3 & 690.66 \\
 Table 6: Standardized new diamond
 
 \begin{longtable}[]{@{}lr@{}}
-\toprule
+\toprule\noalign{}
 & New \\
-\midrule
+\midrule\noalign{}
 \endhead
+\bottomrule\noalign{}
+\endlastfoot
 Depth & \textbf{-0.17} \\
 Table & -1.09 \\
 Price & -0.90 \\
@@ -864,7 +913,6 @@ Carat & -1.20 \\
 x & -1.58 \\
 y & -1.57 \\
 z & -1.60 \\
-\bottomrule
 \end{longtable}
 
 \end{col}
