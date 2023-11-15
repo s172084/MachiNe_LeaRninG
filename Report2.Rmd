@@ -108,7 +108,7 @@ The continuous attributes such as the carat, the table, the length, the width an
 
 In terms of feature transformations, the price of a diamond is converted from United States Dollars ($) to Danish Kroner (DKK) , (€) Euro and (£) Pound Sterling. The categorical discrete attributes of diamond colour, diamond clarity and diamond cut have either been removed or one hot encoded for linear regression. This is due to issues with multicollinearity of the dummy variables. 
 
-The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, the, values that lie outside of the upper boundary and lower boundaries, were removed. The *total depth percentage* is called *depth* and it represents: $$\frac{depth} {mean( length * width)}$$
+The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, which are the values that lie outside of the upper boundary and lower boundaries, were removed. The *total depth percentage* is called *depth* and it represents: $$\frac{depth} {mean( length * width)}$$
 
 In the dataset there are diamonds with a length, width or depth of 0.0 . The smallest measured depth is 1,070 µm and exactly two diamonds have a width of 3,730 µm. The “determine outliers”  function was used to estimate the upper and lower limits to be able to deal with outliers. It was important to deal with outliers, by removing them, due to the fact that these measurements may distort the statistical linear model. 
 
@@ -118,7 +118,7 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 
 **Introduce a lambda regularisation parameter from the lecture notes. Estimate the generalisation error for the** **different values of lambda. Choose a range of lambda where the generalisation error first drops and then** **increases. For each value, use K = 10 Fold cross-validation to estimate the generalisation error. Include a** **figure of the estimated generalisation error as a function of lambda for the report and discuss the result.**
 
-The lambda regularisation hyper-parameter was introduced.  L2 Regularisation was performed using a general linear model from the glmnet package. The lambda regularisation parameter manages the trade off between the bias and the variance as large coefficients are penalised. 
+The lambda regularisation hyper-parameter was introduced. L2 Regularisation was performed using a general linear model from the glmnet package. The lambda regularisation parameter manages the trade off between the bias and the variance as large coefficients are penalised. 
 K = 10 Cross Validation was used to find the optimal lambda. This optimal lambda can then be used downstream in a ridge regression model. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model. The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from 
 $10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A in the Appendix)
 
@@ -130,10 +130,10 @@ $10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A in the Append
 **output y of the linear model? Does the effect of the individual attribute make sense**
 **based on your understanding of the problem?**
 
-In Ridge Regression above, it is possible to calculate $\hat{y}$ using the coefficients and the lambda regularisation parameter.$X$ is the matrix of input attributes and lambda is used to shrink the coefficients in order avoid over-fitting the model. It is important not to over-fit the model in order to keep the accuracy high. 
+In Ridge Regression above, it is possible to calculate $\hat{y}$ using the coefficients and the lambda regularisation parameter.  $X$ is the matrix of input attributes and lambda is used to shrink the coefficients in order avoid over-fitting the model. It is important not to over-fit the model in order to keep the accuracy high. 
 The formula for Ridge Regression performed in 2(a) is :
 
-$$Y_{ridge} = X \times  (X'X + \lambda I)^ {-1}{X'Y})$$
+$$Y_{ridge} = X \cdot  (X'X + \lambda I)^ {-1}{X'Y}$$
 The Figure B shows that the carat is the attribute with the highest permutation importance and the highest variable importance. 
 
 The output variable $Y$ is the Price of  the diamond. To compute the Price of the diamond for a linear model, the following equation can be used: 
@@ -152,6 +152,12 @@ $\hat{y}$ is based on a linear model and also on the input variables (attributes
 **Implement two level cross validation to compare the models with** $K_{1} = K_{2} = 10$ **folds.For the baseline** **model, apply linear regression with no features. Compute the mean of **$ y $ **on the training data and use this** **value to predict** $y$ **on the test data. Fit an Artificial Neural Network model to the data. Select a** **reasonable range of values for (h) hidden layers in the model. Describe the range of values you will use**
 **for **$h$ **and **$\lambda$.
 
+The lowest Mean Squared Error Value indicates a better model performance. The model with the lowest Mean Squared Error is considered the best model in terms of prediction accuracy on the diamonds dataset. If the difference in Mean Squared Error between to models is negligible then statistical tests can be performed to see if there is a statistically significant difference between the Price predictions. 
+
+The range of values for $h$ indicate the number of hidden layers in the Neural Network. 
+The vector of c (1) indicates 1 hidden layer, with 1 node in the Neural Network (see Figure D in the Appendix) . The vector of c(3, 3) indicates 2 hidden layers with 3 nodes in each respective layer of this Artificial Neural Network (see figure E in the Appendix) . 
+
+The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from $10^-0.5$ to $10^1$. 
 
 ### Question 2 
 **Produce a table similar to Table 1 using two level cross validation.The table should show for each of the K = 10 folds** **the optimal value of the number of hidden units and the regularisation strength** $h_{i}^*%$ **and** $\lambda_{i}^*$ **respectively as found after each inner loop, as well as the estimated generalisation errors by evaluating on the test** **data. It should include the baseline test error, evaluated on the test data. Re-use the train test splits for all 3** **methods to allow statistical comparison. The error measure is the squared loss per observation.**
@@ -481,17 +487,30 @@ The answer
 knitr::include_graphics(c('Images/figure1.png'))
 ```
 
-***
 
 **Figures B & C**
 
-```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='55%'}
+```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='55%', fig.cap= "Figures B and C"}
 
 # Include images and pictures..
 knitr::include_graphics(c('Images/Variable_Importance.png','Images/Vaariable_Importance2.png'))
 ```
 
+
+**Figure D**
+
+```{r echo=FALSE, fig.align='center', out.width='80%', fig.cap="Figure D" }
+# Include images and pictures..
+knitr::include_graphics('Images/First_Neural_Network.png')
+```
+
+**Figure E**
+```{r echo=FALSE, fig.align='center',, out.width='80%'}
+knitr::include_graphics('Images/Neural_Netowork_2HL_3Nodes.png')
+```
+
 *** 
+
 \newpage
 
 # References

@@ -223,8 +223,8 @@ multicollinearity of the dummy variables.
 
 The measurements of diamond length, width and depth were converted from
 millimetres (mm) to micrometers (µm). Carat was converted to milligrams
-(mg) and the outliers, the, values that lie outside of the upper
-boundary and lower boundaries, were removed. The \emph{total depth
+(mg) and the outliers, which are the values that lie outside of the
+upper boundary and lower boundaries, were removed. The \emph{total depth
 percentage} is called \emph{depth} and it represents:
 \[\frac{depth} {mean( length * width)}\]
 
@@ -273,15 +273,15 @@ linear model? Does the effect of the individual attribute make sense}
 \textbf{based on your understanding of the problem?}
 
 In Ridge Regression above, it is possible to calculate \(\hat{y}\) using
-the coefficients and the lambda regularisation parameter.\(X\) is the
+the coefficients and the lambda regularisation parameter. \(X\) is the
 matrix of input attributes and lambda is used to shrink the coefficients
 in order avoid over-fitting the model. It is important not to over-fit
 the model in order to keep the accuracy high. The formula for Ridge
 Regression performed in 2(a) is :
 
-\[Y_{ridge} = X \times  (X'X + \lambda I)^ {-1}{X'Y})\] The Figure B
-shows that the carat is the attribute with the highest permutation
-importance and the highest variable importance.
+\[Y_{ridge} = X \cdot  (X'X + \lambda I)^ {-1}{X'Y}\] The Figure B shows
+that the carat is the attribute with the highest permutation importance
+and the highest variable importance.
 
 The output variable \(Y\) is the Price of the diamond. To compute the
 Price of the diamond for a linear model, the following equation can be
@@ -319,6 +319,23 @@ apply linear regression with no features. Compute the mean of }\$ y \$
 to the data. Select a} \textbf{reasonable range of values for (h) hidden
 layers in the model. Describe the range of values you will use}
 \textbf{for }\(h\) \textbf{and }\(\lambda\).
+
+The lowest Mean Squared Error Value indicates a better model
+performance. The model with the lowest Mean Squared Error is considered
+the best model in terms of prediction accuracy on the diamonds dataset.
+If the difference in Mean Squared Error between to models is negligible
+then statistical tests can be performed to see if there is a
+statistically significant difference between the Price predictions.
+
+The range of values for \(h\) indicate the number of hidden layers in
+the Neural Network. The vector of c (1) indicates 1 hidden layer, with 1
+node in the Neural Network (see Figure D in the Appendix) . The vector
+of c(3, 3) indicates 2 hidden layers with 3 nodes in each respective
+layer of this Artificial Neural Network (see figure E in the Appendix) .
+
+The lambda that was used for regularisation is the optimal lambda
+obtained from cross validation based on the range of lambdas from
+\(10^-0.5\) to \(10^1\).
 
 \hypertarget{question-2-1}{%
 \subsubsection{Question 2}\label{question-2-1}}
@@ -906,12 +923,29 @@ The answer
 
 \begin{center}\includegraphics[width=0.6\linewidth]{Images/figure1} \end{center}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 \textbf{Figures B \& C}
 
-\includegraphics[width=0.55\linewidth]{Images/Variable_Importance}
-\includegraphics[width=0.55\linewidth]{Images/Vaariable_Importance2}
+\begin{figure}
+\includegraphics[width=0.55\linewidth]{Images/Variable_Importance} \caption{Figures B and C}\label{fig:unnamed-chunk-5-1}
+\end{figure}
+\begin{figure}
+\includegraphics[width=0.55\linewidth]{Images/Vaariable_Importance2} \caption{Figures B and C}\label{fig:unnamed-chunk-5-2}
+\end{figure}
+
+\textbf{Figure D}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{Images/First_Neural_Network} 
+
+}
+
+\caption{Figure D}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\textbf{Figure E}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Images/Neural_Netowork_2HL_3Nodes} \end{center}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
