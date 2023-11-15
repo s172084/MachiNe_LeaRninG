@@ -180,8 +180,8 @@ Exam Problem 6 & & x \\
 
 \newpage
 
-\hypertarget{linear-regression}{%
-\section{LINEAR REGRESSION}\label{linear-regression}}
+\hypertarget{regression}{%
+\section{REGRESSION}\label{regression}}
 
 \hypertarget{section-a}{%
 \subsection{Section A}\label{section-a}}
@@ -189,11 +189,11 @@ Exam Problem 6 & & x \\
 \hypertarget{question-1}{%
 \subsubsection{Question 1}\label{question-1}}
 
-\textbf{Explain what is predicted based on which other variables, and
-what you hope to accomplish by the regression.} \textbf{Mention your
-feature transformation choices such as 1 out of K coding.} \textbf{Apply
-a feature transformation to your data matrix X, such that each column
-has a mean of 0 and a standard deviation of 1}
+\textbf{Linear Regrerssion : Explain what is predicted based on which
+other variables, and what you hope to accomplish by the regression.}
+\textbf{Mention your feature transformation choices such as 1 out of K
+coding.} \textbf{Apply a feature transformation to your data matrix X,
+such that each column has a mean of 0 and a standard deviation of 1}
 
 This project uses the Diamonds Dataset from The Grammar of Graphics
 (\textbf{ggplot2}) package, which is part of the TidyVerse package. The
@@ -225,8 +225,8 @@ The measurements of diamond length, width and depth were converted from
 millimetres (mm) to micrometers (µm). Carat was converted to milligrams
 (mg) and the outliers, the, values that lie outside of the upper
 boundary and lower boundaries, were removed. The \emph{total depth
-percentage} is called \emph{depth} and it represents
-\(\frac{depth} {mean( length * width)}\)
+percentage} is called \emph{depth} and it represents:
+\[\frac{depth} {mean( length * width)}\]
 
 In the dataset there are diamonds with a length, width or depth of 0.0 .
 The smallest measured depth is 1,070 µm and exactly two diamonds have a
