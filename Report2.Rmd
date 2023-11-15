@@ -474,9 +474,9 @@ The answer
 
 **Figure A**
 
-```{r echo=FALSE, fig.align='center', out.width='80%'}
+```{r echo=FALSE, fig.align='center', out.width='60%'}
 # Include images and pictures..
-knitr::include_graphics(c('Images/Generalisation_Error.png'))
+knitr::include_graphics(c('Images/figure1.png'))
 ```
 
 ***
