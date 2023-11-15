@@ -172,46 +172,233 @@ Exam Problem 5 & x & \\
 Exam Problem 6 & & x \\
 \end{longtable}
 
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{verbatim}
+                - https://github.com/s172084/MachiNe_LeaRninG/tree/main
+\end{verbatim}
+
+\newpage
+
+\hypertarget{regression}{%
+\section{REGRESSION}\label{regression}}
+
+\hypertarget{section-a}{%
+\subsection{Section A}\label{section-a}}
+
+\hypertarget{question-1}{%
+\subsubsection{Question 1}\label{question-1}}
+
+\textbf{Linear Regrerssion : Explain what is predicted based on which
+other variables, and what you hope to accomplish by the regression.}
+\textbf{Mention your feature transformation choices such as 1 out of K
+coding.} \textbf{Apply a feature transformation to your data matrix X,
+such that each column has a mean of 0 and a standard deviation of 1}
+
+This project uses the Diamonds Dataset from The Grammar of Graphics
+(\textbf{ggplot2}) package, which is part of the TidyVerse package. The
+Diamonds Dataset contains the Prices and other attributes of over 50,000
+round cut diamonds. The package was created by Hadley Wickham and other
+data scientists to be used with the statistical programming language
+called R .
+
+Multiple Linear Regression is performed in order to predict the Price of
+a Diamond based on the other attributes. In this section, the subgroup
+of diamonds under analysis come from the \textbf{Premium Group} in the
+colour category \textbf{D}. This subgroup of diamonds have a varied
+clarity.
+
+The continuous attributes such as the carat, the table, the length, the
+width and the depth of a diamond are used to estimate the price of the
+diamond. The \textbf{``SLM Calculate a prediction''} function takes new
+observation of a diamond that is 142 mg in weight and predicts that the
+price of that diamond is £2,909 or approximately DKK 24,830 .
+
+In terms of feature transformations, the price of a diamond is converted
+from United States Dollars (\$) to Danish Kroner (DKK) , (€) Euro and
+(£) Pound Sterling. The categorical discrete attributes of diamond
+colour, diamond clarity and diamond cut have either been removed or one
+hot encoded for linear regression. This is due to issues with
+multicollinearity of the dummy variables.
+
+The measurements of diamond length, width and depth were converted from
+millimetres (mm) to micrometers (µm). Carat was converted to milligrams
+(mg) and the outliers, which are the values that lie outside of the
+upper boundary and lower boundaries, were removed. The \emph{total depth
+percentage} is called \emph{depth} and it represents:
+\[\frac{depth} {mean( length * width)}\]
+
+In the dataset there are diamonds with a length, width or depth of 0.0 .
+The smallest measured depth is 1,070 µm and exactly two diamonds have a
+width of 3,730 µm. The ``determine outliers'' function was used to
+estimate the upper and lower limits to be able to deal with outliers. It
+was important to deal with outliers, by removing them, due to the fact
+that these measurements may distort the statistical linear model.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{question-2}{%
+\subsubsection{Question 2}\label{question-2}}
+
+\textbf{Introduce a lambda regularisation parameter from the lecture
+notes. Estimate the generalisation error for the} \textbf{different
+values of lambda. Choose a range of lambda where the generalisation
+error first drops and then} \textbf{increases. For each value, use K =
+10 Fold cross-validation to estimate the generalisation error. Include
+a} \textbf{figure of the estimated generalisation error as a function of
+lambda for the report and discuss the result.}
+
+The lambda regularisation hyper-parameter was introduced. L2
+Regularisation was performed using a general linear model from the
+glmnet package. The lambda regularisation parameter manages the trade
+off between the bias and the variance as large coefficients are
+penalised. K = 10 Cross Validation was used to find the optimal lambda.
+This optimal lambda can then be used downstream in a ridge regression
+model. The graph shows a drop in the Mean Squared Error and then a
+steady increase. Lambda controls the amount of regularisation that is
+applied to the model. The lambda that was used for regularisation is the
+optimal lambda obtained from cross validation based on the range of
+lambdas from \(10 ^{-0.5}\) to \(10^1\) . The optimal lambda is
+1.353.(see figure A in the Appendix)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{question-3}{%
+\subsubsection{Question 3}\label{question-3}}
+
+\textbf{Explain how the output (y) from the linear model with the
+smallest generalisation} \textbf{error is computed using X. What is the
+effect of an individual attribute x on the} \textbf{output y of the
+linear model? Does the effect of the individual attribute make sense}
+\textbf{based on your understanding of the problem?}
+
+In Ridge Regression above, it is possible to calculate \(\hat{y}\) using
+the coefficients and the lambda regularisation parameter. \(X\) is the
+matrix of input attributes and lambda is used to shrink the coefficients
+in order avoid over-fitting the model. It is important not to over-fit
+the model in order to keep the accuracy high. The formula for Ridge
+Regression performed in 2(a) is :
+
+\[Y_{ridge} = X \cdot  (X'X + \lambda I)^ {-1}{X'Y}\] The Figure B shows
+that the carat is the attribute with the highest permutation importance
+and the highest variable importance.
+
+The output variable \(Y\) is the Price of the diamond. To compute the
+Price of the diamond for a linear model, the following equation can be
+used:
+
+\[\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon \] Or
+\[ Price = \beta_{0} + ( \beta_{1} * total.depth.percentage) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth)\]
+\(\hat{y}\) is based on a linear model and also on the input variables
+(attributes) inside of the Matrix X. The effect of each of the
+attributes on the Price is determined by the coefficients associated
+with each of the attributes in the linear model. The coefficients
+indicate how much each attribute contributes to the prediction of the
+diamond Price. The positive coefficients indicate a positive
+relationship and the negative coefficients indicate a negative
+relationship. For example, as the carat increases so too does the Price
+of the diamond . As the length increases, the Price of the diamond
+decreases.
+
+\hypertarget{section-b}{%
+\subsection{Section B}\label{section-b}}
+
+\textbf{In this section is a comparison of 3 models : A baseline model ,
+A regularised linear} \textbf{regression model and an Artificial Neural
+Network.} \textbf{Is one model is better than the other? Is the model
+better than the baseline ?}
+
+\hypertarget{question-1-1}{%
+\subsubsection{Question 1}\label{question-1-1}}
+
+\textbf{Implement two level cross validation to compare the models with}
+\(K_{1} = K_{2} = 10\) \textbf{folds.For the baseline} \textbf{model,
+apply linear regression with no features. Compute the mean of }\$ y \$
+\textbf{on the training data and use this} \textbf{value to predict}
+\(y\) \textbf{on the test data. Fit an Artificial Neural Network model
+to the data. Select a} \textbf{reasonable range of values for (h) hidden
+layers in the model. Describe the range of values you will use}
+\textbf{for }\(h\) \textbf{and }\(\lambda\).
+
+The lowest Mean Squared Error Value indicates a better model
+performance. The model with the lowest Mean Squared Error is considered
+the best model in terms of prediction accuracy on the diamonds dataset.
+If the difference in Mean Squared Error between to models is negligible
+then statistical tests can be performed to see if there is a
+statistically significant difference between the Price predictions.
+
+The range of values for \(h\) indicate the number of hidden layers in
+the Neural Network. The vector of {[}1{]} indicates 1 hidden layer, with
+1 node in the Neural Network (see Figure D in the Appendix) . The vector
+of {[}3, 3{]} indicates 2 hidden layers with 3 nodes in each respective
+layer of this Artificial Neural Network (see figure E in the Appendix) .
+
+The lambda that was used for regularisation is the optimal lambda
+obtained from cross validation based on the range of lambdas from
+\(10^{-0.5}\) to \(10^{1}\).
+
+\hypertarget{question-2-1}{%
+\subsubsection{Question 2}\label{question-2-1}}
+
+\textbf{Produce a table similar to Table 1 using two level cross
+validation.The table should show for each of the K = 10 folds}
+\textbf{the optimal value of the number of hidden units and the
+regularisation strength} \(h_{i}^*%
+\) \textbf{and} \(\lambda_{i}^*\) \textbf{respectively as found after
+each inner loop, as well as the estimated generalisation errors by
+evaluating on the test} \textbf{data. It should include the baseline
+test error, evaluated on the test data. Re-use the train test splits for
+all 3} \textbf{methods to allow statistical comparison. The error
+measure is the squared loss per observation.}
+
+\textbf{Include a Table in the report and briefly discuss what it tells
+you at a glance.}
+
+\textbf{Neural Network} \textbf{Ridge Regression Model}
+\textbf{Baseline}
+
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.9889}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1733}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2000}}@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-- \url{https://github.com/s172084/MachiNe_LeaRninG/tree/main}
+\begin{minipage}[b]{\linewidth}\centering
+Outer Fold
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+decay
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+MSE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+alpha
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+lambda
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+MSE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+MSE
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textbar{} Neural Network \textbar{} Ridge Regression Model \textbar{}
-Baseline \textbar{} \textbar{}
---------------------------------------------------------------------------------\textbar{}
-\textbar{} Outer Fold \textbar{} decay \textbar{} MSE \textbar{} alpha
-\textbar{} lambda. \textbar{} MSE \textbar{} MSE \textbar{}
-\textbar-------------\textbar---------\textbar---------------------------------------------------------\textbar{}
-\textbar{} Fold 1 \textbar{} 0 \textbar{} 1270785 \textbar{} 0.8
-\textbar{} 1.509 \textbar{} 1386461 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 2 \textbar{} 0.4 \textbar{} 1289627 \textbar{} 1.0
-\textbar{} 1.522 \textbar{} 1385472 \textbar{} 9060134 \textbar{}
-\textbar{} Fold 3 \textbar{} 0.2 \textbar{} 1292015 \textbar{} 0.7
-\textbar{} 1.530 \textbar{} 1384592 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 4 \textbar{} 1 \textbar{} 1301900 \textbar{} 0.8
-\textbar{} 1.514 \textbar{} 1384023 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 5 \textbar{} 0.6 \textbar{} 1302977 \textbar{} 0.9
-\textbar{} 1.515 \textbar{} 1383483 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 6 \textbar{} 0.2 \textbar{} 1305577 \textbar{} 0.9
-\textbar{} 1.518 \textbar{} 1382991 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 7 \textbar{} 0 \textbar{} 1308757 \textbar{} 0.7
-\textbar{} 1.510 \textbar{} 1382800 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 8 \textbar{} 0.4 \textbar{} 1317249 \textbar{} 0.8
-\textbar{} 1.517 \textbar{} 1382791 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 9 \textbar{} 0.6 \textbar{} 1326146 \textbar{} 1.0
-\textbar{} 1.462 \textbar{} 1382797 \textbar{} 9060134. \textbar{}
-\textbar{} Fold 10 \textbar{} 0.8 \textbar{} 1332439 \textbar{} 0.9
-\textbar{} 1.484 \textbar{} 1382814 \textbar{} 9060134. \textbar{} \\
+Fold 1 & 0 & 1270785 & 0.8 & 1.509 & 1386461 & 9060134. \\
+Fold 2 & 0.4 & 1289627 & 1.0 & 1.522 & 1385472 & 9060134 \\
+Fold 3 & 0.2 & 1292015 & 0.7 & 1.530 & 1384592 & 9060134. \\
+Fold 4 & 1 & 1301900 & 0.8 & 1.514 & 1384023 & 9060134. \\
+Fold 5 & 0.6 & 1302977 & 0.9 & 1.515 & 1383483 & 9060134. \\
+Fold 6 & 0.2 & 1305577 & 0.9 & 1.518 & 1382991 & 9060134. \\
+Fold 7 & 0 & 1308757 & 0.7 & 1.510 & 1382800 & 9060134. \\
+Fold 8 & 0.4 & 1317249 & 0.8 & 1.517 & 1382791 & 9060134. \\
+Fold 9 & 0.6 & 1326146 & 1.0 & 1.462 & 1382797 & 9060134. \\
+Fold 10 & 0.8 & 1332439 & 0.9 & 1.484 & 1382814 & 9060134. \\
 \end{longtable}
 
-\hypertarget{question-3}{%
-\subsubsection{Question 3}\label{question-3}}
+\hypertarget{question-3-1}{%
+\subsubsection{Question 3}\label{question-3-1}}
 
 \textbf{Statistically Evaluate if there is a significant performance
 difference between the fitted ANN, linear } \textbf{regression model and
@@ -231,8 +418,8 @@ you've learned? }
 \hypertarget{classification}{%
 \section{CLASSIFICATION}\label{classification}}
 
-\hypertarget{question-1}{%
-\subsection{Question 1}\label{question-1}}
+\hypertarget{question-1-2}{%
+\subsection{Question 1}\label{question-1-2}}
 
 \begin{cols}
 
