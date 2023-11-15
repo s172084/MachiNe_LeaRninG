@@ -108,7 +108,7 @@ The continuous attributes such as the carat, the table, the length, the width an
 
 In terms of feature transformations, the price of a diamond is converted from United States Dollars ($) to Danish Kroner (DKK) , (€) Euro and (£) Pound Sterling. The categorical discrete attributes of diamond colour, diamond clarity and diamond cut have either been removed or one hot encoded for linear regression. This is due to issues with multicollinearity of the dummy variables. 
 
-The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, the, values that lie outside of the upper boundary and lower boundaries, were removed. 
+The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, the, values that lie outside of the upper boundary and lower boundaries, were removed. The *total depth percentage* is called *depth* and it represents $\frac{depth} {mean( length * width)}$ 
 
 In the dataset there are diamonds with a length, width or depth of 0.0 . The smallest measured depth is 1,070 µm and exactly two diamonds have a width of 3,730 µm. The “determine outliers”  function was used to estimate the upper and lower limits to be able to deal with outliers. It was important to deal with outliers, by removing them, due to the fact that these measurements may distort the statistical linear model. 
 
