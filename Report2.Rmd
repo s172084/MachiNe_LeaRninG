@@ -130,19 +130,19 @@ $10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A in the Append
 **output y of the linear model? Does the effect of the individual attribute make sense**
 **based on your understanding of the problem?**
 
-The output variable ( Y )  is the Price of  the diamond. This is based on the linear model and also on the input variables (attributes) inside of the Matrix X. To compute the Price of the diamond, the following equation can be used: 
+In Ridge Regression above, it is possible to calculate $\hat{y}$ using the coefficients and the lambda regularisation parameter.$X$ is the matrix of input attributes and lambda is used to shrink the coefficients in order avoid over-fitting the model. It is important not to over-fit the model in order to keep the accuracy high. 
+The formula for Ridge Regression performed in 2(a) is :
 
-$$\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i}$$
+$$Y_{ridge} = X \times  (X'X + \lambda I)^ {-1}{X'Y})$$
+The Figure B shows that the carat is the attribute with the highest permutation importance and the highest variable importance. 
 
-The input variables are also called predictors. The effect of each of the attributes on the Price is determined by the coefficients associated with each of the attributes in the linear model. 
-The coefficients indicate how much each attribute contributes to the prediction of the diamond Price. 
-To compute the Price of the diamond the following equation can be used: 
+The output variable $Y$ is the Price of  the diamond. To compute the Price of the diamond for a linear model, the following equation can be used: 
 
-$$ Price = \beta_{0} + (\beta_{1} * depth) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth )$$
-So, in summary, the coefficients explain how much each attribute contributes to the prediction of the Price.  The positive coefficients indicate a positive relationship and the negative coefficients indicate a negative relationship.  For example, as the carat increases so too does the Price of the diamond . As the length increases, the Price of the diamond decreases. The table must be less than the width of the diamond in a premium cut diamond. 
+$$\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon $$
+Or 
+$$ Price = \beta_{0} + ( \beta_{1} * depth) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth )$$
+$\hat{y}$ is based on a linear model and also on the input variables (attributes) inside of the Matrix X. The effect of each of the attributes on the Price is determined by the coefficients associated with each of the attributes in the linear model. The coefficients indicate how much each attribute contributes to the prediction of the diamond Price. The positive coefficients indicate a positive relationship and the negative coefficients indicate a negative relationship.  For example, as the carat increases so too does the Price of the diamond . As the length increases, the Price of the diamond decreases.
 
-In Ridge Regression, it is possible to calculate y using the coefficients $\hat{\beta}$ and the lambda regularisation parameter.Lambda is used to shrink the coefficients in order avoid over-fitting the model. 
-The Figure B and Figure C show that the carat is the attribute with the  highest "variable importance". (see figures B & C in the Appendix)
 
 ## Section B
 **In this section is a comparison of 3 models : A baseline model , A regularised linear** **regression model and an Artificial Neural Network.**
