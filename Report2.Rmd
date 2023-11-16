@@ -111,7 +111,7 @@ The continuous attributes such as the carat, the table, the length, the width an
 
 In terms of feature transformations, the price of a diamond is converted from United States Dollars ($) to Danish Kroner (DKK) , (€) Euro and (£) Pound Sterling. The categorical discrete attributes of diamond colour, diamond clarity and diamond cut have either been removed or one hot encoded for linear regression. This is due to issues with multicollinearity of the dummy variables. 
 
-The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, which are the values that lie outside of the upper boundary and lower boundaries, were removed. The *total depth percentage* is called *depth* and it represents: $$\frac{depth} {mean( length * width)}$$
+The measurements of diamond length, width and depth were converted from millimetres (mm) to micrometers (µm). Carat was converted to milligrams (mg) and the outliers, which are the values that lie outside of the upper boundary and lower boundaries, were removed.The actual depth is called $z$. However, the *total depth percentage* is also called *depth* and it represents: $$\frac{depth} {mean( length * width)}$$
 
 In the dataset there are diamonds with a length, width or depth of 0.0 . The smallest measured depth is 1,070 µm and exactly two diamonds have a width of 3,730 µm. The “determine outliers”  function was used to estimate the upper and lower limits to be able to deal with outliers. It was important to deal with outliers, by removing them, due to the fact that these measurements may distort the statistical linear model. 
 
@@ -121,8 +121,8 @@ In the dataset there are diamonds with a length, width or depth of 0.0 . The sma
 **Introduce a lambda regularisation parameter from the lecture notes. Estimate the generalisation error for the** **different values of lambda. Choose a range of lambda where the generalisation error first drops and then** **increases. For each value, use K = 10 Fold cross-validation to estimate the generalisation error. Include a** **figure of the estimated generalisation error as a function of lambda for the report and discuss the result.**
 
 The lambda regularisation hyper-parameter was introduced. L2 Regularisation was performed using a general linear model from the glmnet package. The lambda regularisation parameter manages the trade off between the bias and the variance as large coefficients are penalised. 
-K = 10 Cross Validation was used to find the optimal lambda. This optimal lambda can then be used downstream in a ridge regression model. The graph shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model. The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from 
-$10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A in the Appendix)
+K = 10 Cross Validation was used to find the optimal lambda. This optimal lambda can then be used downstream in a ridge regression model. The graph (figure A II) shows a drop in the Mean Squared Error and then a steady increase. Lambda controls the amount of regularisation that is applied to the model. The lambda that was used for regularisation is the optimal lambda obtained from cross validation based on the range of lambdas from 
+$10 ^{-0.5}$ to $10^1$ . The optimal lambda is 1.353.(see figure A I and A II in the Appendix)
 
 ### Question 3
 **Explain how the output (y) from the linear model with the smallest generalisation**
@@ -139,7 +139,6 @@ The Figure B shows that the carat is the attribute with the highest permutation 
 The output variable $Y$ is the Price of  the diamond. To compute the Price of the diamond for a linear model, the following equation can be used: 
 
 $$\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon $$
-Or 
 $$ Price = \beta_{0} + ( \beta_{1} * total.depth.percentage) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth)$$
 $\hat{y}$ is based on a linear model and also on the input variables (attributes) inside of the Matrix X. The effect of each of the attributes on the Price is determined by the coefficients associated with each of the attributes in the linear model. The coefficients indicate how much each attribute contributes to the prediction of the diamond Price. The positive coefficients indicate a positive relationship and the negative coefficients indicate a negative relationship.  For example, as the carat increases so too does the Price of the diamond . As the length increases, the Price of the diamond decreases.
 
@@ -181,6 +180,8 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
  | Fold 9      |              0.6   | 1326146            |  1.0             | 1.462              | 1382797         |    9060134.      |
  | Fold 10     |              0.8   | 1332439            |  0.9             | 1.484              | 1382814         |    9060134.      |
 
+The Neural Network has the lowest Generalisation Error so therefore it is the model with the better performance. The Baseline Model has the worst performance and the Regularised Model is in the middle.
+
 ### Question 3 
 **Statistically Evaluate if there is a significant performance difference between the fitted ANN, linear regression model and baseline, using the methods in Chapter 11.**
 **These comparisons are to be made pairwise:**
@@ -190,16 +191,16 @@ The lambda that was used for regularisation is the optimal lambda obtained from 
 **Choose Setup 1 Section (11.3) and use the paired t-test described in box 11.34**
 **Include Confidence intervals and P-values and for the three pairwise tests in the report and conclude the results.**
 **Is one model better than the other? Are the two models better than the baseline?**
-**Are some of the models identical? ****What recommendations would you make based on what you've learned? **
+**Are some of the models identical?**
+**What recommendations would you make based on what you've learned?**
 
-The paired t-test is used to determine if the mean difference between two sets of observations is zero. The differences have a Normal  Distribution. The Null Hypothesis $H_{0}$ is that the mean of the differences is 0, whereas the alternative hypotheses $H_{1}$ is that the mean of the differences is not 0. The p-value indicates whether the difference in mean squared errors between the models is statistically significant.
+The paired t-test is used to determine if the mean difference between two sets of observations is zero. The differences have a Normal Distribution. The Null Hypothesis $H_{0}$ is that the mean of the differences is 0, whereas the alternative hypotheses $H_{1}$ is that the mean of the differences is not 0. The p-value indicates whether the difference in mean squared errors between the models, or predictions, is statistically significant.
 
-Evaluation of the values from the Artificial Neural Network against the values from the Baseline show that the p-value is less than 2.2e-16 and the confidence interval is  - 3009.865 up to - 3009.776 . This indicates that the null hypothesis can be rejected. 
+Evaluation of the values from the Artificial Neural Network against the values from the Baseline show that the p-value is less than 2.2e-16. This indicates that the null hypothesis can be rejected. (see the Code.R file)
 
-Evaluation of the values from the Regularised Linear Regression against values from the Baseline, 
-Show that the p-value is 1 and the confidence interval is - 166 up to 166 . This indicates that the null hypothesis can be accepted. 
+Evaluation of the values from the Regularised Linear Regression against values from the Baseline, show that the p-value is 1. This indicates that the null hypothesis can be accepted. 
 
-Evaluation of the values from the Artificial Neural Network against the Regularised Linear Regression, show that p-value is 2.2e-16 and the confidence interval is - 3176.502 up to - 2843.138. This indicates that the null hypothesis can be rejected.
+Evaluation of the values from the Artificial Neural Network against the Regularised Linear Regression, show that p-value is 2.2e-16. This indicates that the null hypothesis can be rejected.
 
 # CLASSIFICATION
 
@@ -289,7 +290,7 @@ Where *w* is the model vector containing estimated weights of the linear regress
 $$
 w=(X_{train}^T X_{train}+\lambda I)^{-1}X_{train}y_{train}
 $$
-By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one. On the other hand, by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without overfitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This is the reason why we choose to consider only small values of $\lambda$ and Table 1 confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
+By increasing $\lambda$, more importance is given to the model (linear model for the LRL, quadratic model for the LRQ) as the first term of the above equations becomes negligible with respect to the second one. On the other hand, by decreasing $\lambda$ more importance is given to observations (second term negligible with respect to the first one). The regularization parameter $\lambda$ allows to use complex models even in case of small datasets without over-fitting the model because it constrains the observations to better follow the model. But in our case, the dataset is very large and the model is very poor with respect to the whole variability of data (it consists in a hyper-plane for the LRL and in a hyper-paraboloid for the LRQ in the multi-dimensional space defined by the attributes) and it does not manage to precisely explain the behavior of the *Cut* of diamonds based on the other attributes. We are somehow facing with a problem of underfitting, which cannot be solved because more complex models would have too many parameters to be estimated. This is the reason why we choose to consider only small values of $\lambda$ and Table 1 confirms that the smallest values of $\lambda$ are the ones giving the smallest error rates. 
 
 Table 2 shows the estimated weights of the Logistic Regression based on the linear combination of the attributes (LRL). It can be noticed that the highest weights are associated to the *Table* and to the *x dimension* of the diamonds, meaning that the LRL model bases its predictions of the *Cut* mostly on these two variables. 
 
@@ -530,26 +531,38 @@ Answer **B**: we aim to find three $\hat{y}_k$ as negative as possible, so that 
 
 # Appendix
 
-**Figure A**
+**Figure A -I**
 
 ```{r echo=FALSE, fig.align='center', out.width='60%'}
 # Include images and pictures..
 knitr::include_graphics(c('Images/figure1.png'))
 ```
 
+**Figure A -II**
 
-**Figures B & C**
-
-```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='55%', fig.cap= "Figures B and C"}
-
+```{r echo=FALSE, fig.align='center', out.width='80%'}
 # Include images and pictures..
-knitr::include_graphics(c('Images/Variable_Importance.png','Images/Vaariable_Importance2.png'))
+knitr::include_graphics(c('Images/Generalisation_Error.png'))
 ```
 
+\newpage
+
+**Figure B**
+
+```{r echo=FALSE, fig.align='center', out.width='70%'}
+# Include images and pictures..
+knitr::include_graphics(c('Images/Variable_Importance.png'))
+```
+
+**Figure C**
+```{r echo=FALSE,   fig.alt='left', fig.show='asis', out.width='60%'}
+# Include images and pictures..
+knitr::include_graphics(c('Images/Vaariable_Importance2.png'))
+```
+\newpage
 
 **Figure D**
-
-```{r echo=FALSE, fig.align='center', out.width='80%', fig.cap="Figure D" }
+```{r echo=FALSE, fig.align='center', out.width='80%' }
 # Include images and pictures..
 knitr::include_graphics('Images/First_Neural_Network.png')
 ```
@@ -558,6 +571,7 @@ knitr::include_graphics('Images/First_Neural_Network.png')
 ```{r echo=FALSE, fig.align='center',, out.width='80%'}
 knitr::include_graphics('Images/Neural_Netowork_2HL_3Nodes.png')
 ```
+
 
 *** 
 

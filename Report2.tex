@@ -227,9 +227,9 @@ multicollinearity of the dummy variables.
 The measurements of diamond length, width and depth were converted from
 millimetres (mm) to micrometers (µm). Carat was converted to milligrams
 (mg) and the outliers, which are the values that lie outside of the
-upper boundary and lower boundaries, were removed. The \emph{total depth
-percentage} is called \emph{depth} and it represents:
-\[\frac{depth} {mean( length * width)}\]
+upper boundary and lower boundaries, were removed.The actual depth is
+called \(z\). However, the \emph{total depth percentage} is also called
+\emph{depth} and it represents: \[\frac{depth} {mean( length * width)}\]
 
 In the dataset there are diamonds with a length, width or depth of 0.0 .
 The smallest measured depth is 1,070 µm and exactly two diamonds have a
@@ -255,12 +255,12 @@ glmnet package. The lambda regularisation parameter manages the trade
 off between the bias and the variance as large coefficients are
 penalised. K = 10 Cross Validation was used to find the optimal lambda.
 This optimal lambda can then be used downstream in a ridge regression
-model. The graph shows a drop in the Mean Squared Error and then a
-steady increase. Lambda controls the amount of regularisation that is
-applied to the model. The lambda that was used for regularisation is the
-optimal lambda obtained from cross validation based on the range of
-lambdas from \(10 ^{-0.5}\) to \(10^1\) . The optimal lambda is
-1.353.(see figure A in the Appendix)
+model. The graph (figure A II) shows a drop in the Mean Squared Error
+and then a steady increase. Lambda controls the amount of regularisation
+that is applied to the model. The lambda that was used for
+regularisation is the optimal lambda obtained from cross validation
+based on the range of lambdas from \(10 ^{-0.5}\) to \(10^1\) . The
+optimal lambda is 1.353.(see figure A I and A II in the Appendix)
 
 \hypertarget{question-3}{%
 \subsubsection{Question 3}\label{question-3}}
@@ -286,7 +286,7 @@ The output variable \(Y\) is the Price of the diamond. To compute the
 Price of the diamond for a linear model, the following equation can be
 used:
 
-\[\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon \] Or
+\[\hat{y} =  \sum_{i = 0}^{n} x_{i} * \beta_{i} + \epsilon \]
 \[ Price = \beta_{0} + ( \beta_{1} * total.depth.percentage) + (\beta{2} * table)  + (\beta{3} * carat) + (\beta{4} * length ) + (\beta{5} * width ) + (\beta{6} * depth)\]
 \(\hat{y}\) is based on a linear model and also on the input variables
 (attributes) inside of the Matrix X. The effect of each of the
@@ -397,6 +397,10 @@ Fold 9 & 0.6 & 1326146 & 1.0 & 1.462 & 1382797 & 9060134. \\
 Fold 10 & 0.8 & 1332439 & 0.9 & 1.484 & 1382814 & 9060134. \\
 \end{longtable}
 
+The Neural Network has the lowest Generalisation Error so therefore it
+is the model with the better performance. The Baseline Model has the
+worst performance and the Regularised Model is in the middle.
+
 \hypertarget{question-3-1}{%
 \subsubsection{Question 3}\label{question-3-1}}
 
@@ -409,31 +413,29 @@ Baseline} - \textbf{Linear Regression vs.~Baseline} \textbf{Choose Setup
 \textbf{Include Confidence intervals and P-values and for the three
 pairwise tests in the report and conclude the results.} \textbf{Is one
 model better than the other? Are the two models better than the
-baseline?} \textbf{Are some of the models identical? What
-recommendations would you make based on what you've learned? }
+baseline?} \textbf{Are some of the models identical?} \textbf{What
+recommendations would you make based on what you've learned?}
 
 The paired t-test is used to determine if the mean difference between
 two sets of observations is zero. The differences have a Normal
 Distribution. The Null Hypothesis \(H_{0}\) is that the mean of the
 differences is 0, whereas the alternative hypotheses \(H_{1}\) is that
 the mean of the differences is not 0. The p-value indicates whether the
-difference in mean squared errors between the models is statistically
-significant.
+difference in mean squared errors between the models, or predictions, is
+statistically significant.
 
 Evaluation of the values from the Artificial Neural Network against the
-values from the Baseline show that the p-value is less than 2.2e-16 and
-the confidence interval is - 3009.865 up to - 3009.776 . This indicates
-that the null hypothesis can be rejected.
+values from the Baseline show that the p-value is less than 2.2e-16.
+This indicates that the null hypothesis can be rejected. (see the Code.R
+file)
 
 Evaluation of the values from the Regularised Linear Regression against
-values from the Baseline, Show that the p-value is 1 and the confidence
-interval is - 166 up to 166 . This indicates that the null hypothesis
-can be accepted.
+values from the Baseline, show that the p-value is 1. This indicates
+that the null hypothesis can be accepted.
 
 Evaluation of the values from the Artificial Neural Network against the
-Regularised Linear Regression, show that p-value is 2.2e-16 and the
-confidence interval is - 3176.502 up to - 2843.138. This indicates that
-the null hypothesis can be rejected.
+Regularised Linear Regression, show that p-value is 2.2e-16. This
+indicates that the null hypothesis can be rejected.
 
 \hypertarget{classification}{%
 \section{CLASSIFICATION}\label{classification}}
@@ -620,7 +622,7 @@ term of the above equations becomes negligible with respect to the
 second one. On the other hand, by decreasing \(\lambda\) more importance
 is given to observations (second term negligible with respect to the
 first one). The regularization parameter \(\lambda\) allows to use
-complex models even in case of small datasets without overfitting the
+complex models even in case of small datasets without over-fitting the
 model because it constrains the observations to better follow the model.
 But in our case, the dataset is very large and the model is very poor
 with respect to the whole variability of data (it consists in a
@@ -1031,29 +1033,28 @@ of \(k=4\) results to be the greatest among them.
 \hypertarget{appendix}{%
 \section{Appendix}\label{appendix}}
 
-\textbf{Figure A}
+\textbf{Figure A -I}
 
 \begin{center}\includegraphics[width=0.6\linewidth]{Images/figure1} \end{center}
 
-\textbf{Figures B \& C}
+\textbf{Figure A -II}
 
-\begin{figure}
-\includegraphics[width=0.55\linewidth]{Images/Variable_Importance} \caption{Figures B and C}\label{fig:unnamed-chunk-5-1}
-\end{figure}
-\begin{figure}
-\includegraphics[width=0.55\linewidth]{Images/Vaariable_Importance2} \caption{Figures B and C}\label{fig:unnamed-chunk-5-2}
-\end{figure}
+\begin{center}\includegraphics[width=0.8\linewidth]{Images/Generalisation_Error} \end{center}
+
+\newpage
+
+\textbf{Figure B}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{Images/Variable_Importance} \end{center}
+
+\textbf{Figure C}
+
+\includegraphics[width=0.6\linewidth]{Images/Vaariable_Importance2}
+\newpage
 
 \textbf{Figure D}
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{Images/First_Neural_Network} 
-
-}
-
-\caption{Figure D}\label{fig:unnamed-chunk-6}
-\end{figure}
+\begin{center}\includegraphics[width=0.8\linewidth]{Images/First_Neural_Network} \end{center}
 
 \textbf{Figure E}
 
